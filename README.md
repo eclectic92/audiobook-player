@@ -1,0 +1,1 @@
+This is a scratchpad app to investigate building a better audiobook player for Android
