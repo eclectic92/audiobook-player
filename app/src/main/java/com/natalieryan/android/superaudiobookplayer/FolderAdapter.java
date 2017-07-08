@@ -2,14 +2,15 @@ package com.natalieryan.android.superaudiobookplayer;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.natalieryan.android.superaudiobookplayer.databinding.FolderItemBinding;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -19,20 +20,42 @@ import java.util.ArrayList;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>
 {
-	private ArrayList<FolderItem> mFolders;
+	private ArrayList<File> mFolders;
 	private FolderItemBinding mBinder;
+	private FolderClickListener clickListener;
 
 	//default constructor
 	public FolderAdapter(){}
 
-	public class ViewHolder extends RecyclerView.ViewHolder
+	public interface FolderClickListener
 	{
-		private TextView mFolderNameTv;
-		public FolderItem folderItem;
+		void onFolderClick(View view, int position);
+	}
 
-		public ViewHolder(View view)
+	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+	{
+		private final FolderItemBinding mBinding;
+
+		public ViewHolder(FolderItemBinding binding)
 		{
-			super(view);
+			super(binding.getRoot());
+			binding.getRoot().setOnClickListener(this);
+			this.mBinding = binding;
+		}
+
+		public void bind(File folder)
+		{
+			mBinding.setVariable(BR.folder, folder);
+			mBinding.executePendingBindings();
+		}
+
+		@Override
+		public void onClick(View view)
+		{
+			if (clickListener!=null)
+			{
+				clickListener.onFolderClick(view, getAdapterPosition());
+			}
 		}
 	}
 
@@ -43,15 +66,14 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		int layoutIdForListItem=R.layout.folder_item;
 		LayoutInflater inflater=LayoutInflater.from(context);
 		mBinder=DataBindingUtil.inflate(inflater, layoutIdForListItem, viewGroup, false);
-		View view=mBinder.getRoot();
-		return new FolderAdapter.ViewHolder(view);
+		return new FolderAdapter.ViewHolder(mBinder);
 	}
 
 	@Override
 	public void onBindViewHolder(FolderAdapter.ViewHolder viewHolder, int position)
 	{
-		FolderItem folderItem = mFolders.get(position);
-		mBinder.setFolder(folderItem);
+		File folderItem = mFolders.get(position);
+		viewHolder.bind(folderItem);
 	}
 
 	@Override
@@ -64,24 +86,34 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		return mFolders.size();
 	}
 
-	FolderItem getItem (int position){
+	@Nullable
+	File getItem (int position){
 		if(mFolders != null)
 		{
 			return mFolders.get(position);
 		}else
 		{
-			return new FolderItem();
+			return null;
 		}
 	}
 
-	public ArrayList<FolderItem> getFolderList()
+	public ArrayList<File> getFolderList()
 	{
 		return mFolders;
 	}
 
-	void setFolderList(ArrayList<FolderItem> folderList)
+	void setFolderList(ArrayList<File> folderList)
 	{
+		if(mFolders != null && !mFolders.isEmpty())
+		{
+			mFolders.clear();
+		}
 		mFolders = folderList;
 		notifyDataSetChanged();
+	}
+
+	public void setClickListener(FolderClickListener folderClickListener)
+	{
+		this.clickListener=folderClickListener;
 	}
 }
