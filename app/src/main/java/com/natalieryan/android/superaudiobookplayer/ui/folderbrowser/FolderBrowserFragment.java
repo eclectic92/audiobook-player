@@ -86,6 +86,12 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 
 		View rootView = mBinder.getRoot();
 
+		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				navigateBack();
+			}
+		});
+
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
 		mFolderAdapter = new FolderAdapter();
 		mFolderAdapter.setClickListener(this);
@@ -136,7 +142,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 			mSelectedFolderName = singleFolder.getName();
 		}
 
-		mBinder.selectedFolderNameTv.setText(mSelectedFolderName);
+		setSelectedDisplay(mSelectedFolderName);
 
 		mParentFolderPath = getParentFolderPath(singleFolder);
 
@@ -179,7 +185,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		{
 			mSelectedFolderPath = folder.getAbsolutePath();
 			mSelectedFolderName = folder.getName();
-			mBinder.selectedFolderNameTv.setText(mSelectedFolderName);
+			setSelectedDisplay(mSelectedFolderName);
 			File[] subFolders = folder.listFiles(new FileFilter() {
 				@Override
 				public boolean accept(File pathname) {
@@ -210,13 +216,39 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		}
 	}
 
-	public void navigateBack() {
-		if(mParentFolderPath != null){
-			mCurrentFolderPath = mParentFolderPath;
-			mSelectedFolderName = null;
-			mSelectedFolderPath = null;
-			loadFolderList();
+	public void setSelectedDisplay(String folderName){
+		if(mSelectedFolderPath.equalsIgnoreCase(mDeviceRootPath))
+		{
+			folderName =  getResources().getString(R.string.device_root_folder);
+			mBinder.backArrowImageView.setImageResource(R.drawable.ic_phone_android_black_24dp);
 		}
+		else if (mSelectedFolderPath.equalsIgnoreCase(mSdCardRootPath))
+		{
+			folderName =  getResources().getString(R.string.sd_root_folder);
+			mBinder.backArrowImageView.setImageResource(R.drawable.ic_phone_android_black_24dp);
+		}
+		else
+		{
+			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+		}
+		String displayName = getResources().getString(R.string.selected_folder, folderName);
+		mBinder.selectedFolderNameTv.setText(displayName);
+
+	}
+
+	public void navigateBack() {
+		if(mParentFolderPath != null)
+		{
+			mCurrentFolderPath = mParentFolderPath;
+		}
+		else
+		{
+			mCurrentFolderPath = mDeviceRootPath;
+		}
+		mSelectedFolderName = null;
+		mSelectedFolderPath = null;
+		loadFolderList();
+
 		Log.d (TAG, "back pressed");
 	}
 

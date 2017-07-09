@@ -12,21 +12,57 @@
 		<RelativeLayout
 			android:id="@+id/folder_browser_header"
 			android:layout_width="match_parent"
-			android:layout_height="48dp"
+			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
 			android:gravity="start"
 			android:layout_gravity="start">
+			<android.support.constraint.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="48dp">
 
-			<TextView
-			android:id="@+id/selected_folder_name_tv"
-			tools:text="Parent Folder Name"
-			style="@style/FolderText"
-			android:maxLines="1"
-			android:ellipsize="end"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="0dp"
-			android:layout_marginBottom="0dp"/>
+				<ImageView
+					android:id="@+id/back_arrow_image_view"
+					android:layout_width="@dimen/back_arrow_icon_size"
+					android:layout_height="@dimen/back_arrow_icon_size"
+					android:layout_marginStart="@dimen/folder_icon_margin_start"
+					android:layout_marginEnd="@dimen/folder_icon_margin_end"
+					android:contentDescription="@string/description_folder_icon"
+					app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					android:layout_marginTop="8dp"/>
+
+				<TextView
+					android:id="@+id/selected_folder_name_tv"
+					style="@style/FolderText"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="0dp"
+					android:layout_marginEnd="8dp"
+					android:layout_marginLeft="8dp"
+					android:layout_marginRight="8dp"
+					android:layout_marginStart="24dp"
+					android:layout_marginTop="0dp"
+					android:ellipsize="end"
+					android:maxLines="1"
+					app:layout_constraintBottom_toTopOf="@+id/back_arrow_image_view"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintLeft_toRightOf="@+id/back_arrow_image_view"
+					app:layout_constraintRight_toRightOf="parent"
+					app:layout_constraintStart_toEndOf="@+id/back_arrow_image_view"
+					app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"
+					app:layout_constraintVertical_bias="0.489"
+					tools:text="Selected Folder Name"/>
+
+				<View style="@style/Divider"
+					  tools:layout_editor_absoluteX="0dp"
+					  app:layout_constraintBottom_toBottomOf="parent"
+					  app:layout_constraintEnd_toEndOf="parent"
+					  app:layout_constraintStart_toStartOf="parent"
+					  android:layout_marginBottom="0dp"/>
+
+			</android.support.constraint.ConstraintLayout>
+
 		</RelativeLayout>
 		<RelativeLayout
 			android:id="@+id/folder_browser_footer"
@@ -58,10 +94,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:fillViewport="true">
+
 				<android.support.v7.widget.RecyclerView
 					android:id="@+id/folder_list_rv"
-					xmlns:android="http://schemas.android.com/apk/res/android"
-					xmlns:app="http://schemas.android.com/apk/res-auto"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginEnd="0dp"

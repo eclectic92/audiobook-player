@@ -3,4 +3,9 @@
 
 	<!-- content descriptors -->
 	<string name="description_folder_icon">Folder icon</string>
+
+	<!-- folder browser -->
+	<string name="selected_folder">Selected:\u0020%1$s</string>
+	<string name="device_root_folder">Device storage root</string>
+	<string name="sd_root_folder">SD card root</string>
 </resources>
