@@ -24,7 +24,6 @@ import java.util.ArrayList;
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>
 {
 	private ArrayList<File> mFolders;
-	private boolean mShowParent;
 	private FolderClickListener clickListener;
 
 	//default constructor
@@ -46,15 +45,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 			this.mBinding = binding;
 		}
 
-		public void bind(File folder, boolean showAsParent)
+		public void bind(File folder)
 		{
 			mBinding.setVariable(BR.folder, folder);
-			if(showAsParent){
-				mBinding.folderNameTv.setText("..");
-			}else
-			{
-				mBinding.folderNameTv.setText(folder.getName());
-			}
 			mBinding.executePendingBindings();
 		}
 
@@ -82,12 +75,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 	public void onBindViewHolder(FolderAdapter.ViewHolder viewHolder, int position)
 	{
 		File folderItem = mFolders.get(position);
-		boolean showAsParent = false;
-		if(position == 0 && mShowParent)
-		{
-			showAsParent = true;
-		}
-		viewHolder.bind(folderItem, showAsParent);
+		viewHolder.bind(folderItem);
 	}
 
 	@Override
@@ -116,13 +104,12 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		return mFolders;
 	}
 
-	void setFolderList(ArrayList<File> folderList, boolean showParent)
+	void setFolderList(ArrayList<File> folderList)
 	{
 		if(mFolders != null && !mFolders.isEmpty())
 		{
 			mFolders.clear();
 		}
-		this.mShowParent = showParent;
 		mFolders = folderList;
 		notifyDataSetChanged();
 	}

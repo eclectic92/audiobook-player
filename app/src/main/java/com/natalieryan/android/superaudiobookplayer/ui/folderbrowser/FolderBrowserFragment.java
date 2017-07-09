@@ -46,9 +46,6 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		if(sdCardPaths != null && !sdCardPaths.isEmpty())
 		{
 			mSdCardRootPath= sdCardPaths.get(0);
-		}else
-		{
-			mSdCardRootPath= "";
 		}
 
 		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_folder_browser, container, false);
@@ -88,13 +85,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		if (!mFolders.isEmpty())
 		{
 			Collections.sort(mFolders);
-
-			if(mParentFolder != null)
-			{
-				mFolders.add(0, mParentFolder);
-				showParent = true;
-			}
-			mFolderAdapter.setFolderList(mFolders, showParent);
+			mFolderAdapter.setFolderList(mFolders);
 		}
 	}
 
