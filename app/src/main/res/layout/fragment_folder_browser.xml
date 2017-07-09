@@ -2,34 +2,37 @@
 <layout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment">
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<RelativeLayout
+		android:id="@+id/folder_browser_fragment"
+		tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<RelativeLayout
-			android:id="@+id/header"
+			android:id="@+id/folder_browser_header"
 			android:layout_width="match_parent"
-			android:layout_height="30dp"
+			android:layout_height="48dp"
 			android:layout_alignParentTop="true"
-			android:background="#689F38"
-			android:gravity="center"
-			android:layout_gravity="center">
+			android:gravity="start"
+			android:layout_gravity="start">
+
 			<TextView
-				android:id="@+id/header_text"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="header"
-				android:textColor="#FFFFFF"
-				android:textSize="25sp"/>
+			android:id="@+id/selected_folder_name_tv"
+			tools:text="Parent Folder Name"
+			style="@style/FolderText"
+			android:maxLines="1"
+			android:ellipsize="end"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="0dp"
+			android:layout_marginBottom="0dp"/>
 		</RelativeLayout>
 		<RelativeLayout
-			android:id="@+id/footer"
+			android:id="@+id/folder_browser_footer"
 			android:layout_width="match_parent"
 			android:layout_height="30dp"
 			android:layout_alignParentBottom="true"
-			android:background="#689F38"
 			android:gravity="center"
 			android:layout_gravity="center">
 			<TextView
@@ -43,17 +46,17 @@
 		</RelativeLayout>
 		<ScrollView
 			android:id="@+id/scroll_view"
-			android:layout_width="fill_parent"
-			android:layout_height="fill_parent"
-			android:layout_above="@+id/footer"
-			android:layout_below="@+id/header"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_above="@+id/folder_browser_footer"
+			android:layout_below="@+id/folder_browser_header"
+			android:scrollbars="none"
 			android:fillViewport="true">
 			<LinearLayout
 				android:id="@+id/myLayout"
 				android:orientation="vertical"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:background="#FFFFFF"
 				android:fillViewport="true">
 				<android.support.v7.widget.RecyclerView
 					android:id="@+id/folder_list_rv"

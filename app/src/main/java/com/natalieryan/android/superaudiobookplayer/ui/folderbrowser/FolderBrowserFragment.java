@@ -24,13 +24,22 @@ import java.util.Collections;
 
 public class FolderBrowserFragment extends Fragment implements FolderAdapter.FolderClickListener
 {
+	public static final String TAG = FolderBrowserFragment.class.getSimpleName();
+
+	private static final String EXTRA_CURRENT_FOLDER = "current_folder";
+	private static final String EXTRA_PARENT_FOLDER = "parent_folder";
+	private static final String EXTRA_SELECTED_FOLDER = "selected_folder";
+	private static final String EXTRA_SELECTED_FOLDER_NAME = "selected_folder_name";
+
 
 	private FolderAdapter mFolderAdapter;
 	private FragmentFolderBrowserBinding mBinder;
-	private String mCurrentFolderName;
-	private File mParentFolder;
+	private String mCurrentFolderPath;
+	private String mParentFolderPath;
 	private String mDeviceRootPath;
 	private String mSdCardRootPath;
+	private String mSelectedFolderPath;
+	private String mSelectedFolderName;
 
 	private ArrayList<File> mFolders;
 
@@ -41,8 +50,33 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		mDeviceRootPath= Environment.getExternalStorageDirectory().getAbsolutePath();
+		if(savedInstanceState != null)
+		{
+			if(savedInstanceState.containsKey(EXTRA_CURRENT_FOLDER))
+			{
+				mCurrentFolderPath = savedInstanceState.getString(EXTRA_CURRENT_FOLDER);
+			}
+
+			if(savedInstanceState.containsKey(EXTRA_PARENT_FOLDER))
+			{
+				mParentFolderPath = savedInstanceState.getString(EXTRA_PARENT_FOLDER);
+			}
+
+			if(savedInstanceState.containsKey(EXTRA_SELECTED_FOLDER))
+			{
+				mSelectedFolderPath = savedInstanceState.getString(EXTRA_SELECTED_FOLDER);
+			}
+
+			if(savedInstanceState.containsKey(EXTRA_SELECTED_FOLDER_NAME))
+			{
+				mSelectedFolderName = savedInstanceState.getString(EXTRA_SELECTED_FOLDER_NAME);
+			}
+
+		}
+
+		mDeviceRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 		ArrayList<String> sdCardPaths = getSdCardPaths(mDeviceRootPath);
+
 		if(sdCardPaths != null && !sdCardPaths.isEmpty())
 		{
 			mSdCardRootPath= sdCardPaths.get(0);
@@ -57,23 +91,54 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		mFolderAdapter.setClickListener(this);
 		mBinder.folderListRv.setAdapter(mFolderAdapter);
 		mBinder.folderListRv.setLayoutManager(layoutManager);
-
 		loadFolderList();
 
 		return rootView;
 	}
 
-	private void loadFolderList()
-	{
-		boolean showParent = false;
 
-		if (mCurrentFolderName== null || mCurrentFolderName.isEmpty())
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		if (mCurrentFolderPath!=null)
 		{
-			mCurrentFolderName=mDeviceRootPath;
+			outState.putString(EXTRA_CURRENT_FOLDER, mCurrentFolderPath);
 		}
 
-		File singleFolder = new File(mCurrentFolderName);
-		mParentFolder = getParentFolder(singleFolder);
+		if (mParentFolderPath != null)
+		{
+			outState.putString(EXTRA_PARENT_FOLDER, mParentFolderPath);
+		}
+
+		if (mSelectedFolderPath != null)
+		{
+			outState.putString(EXTRA_SELECTED_FOLDER, mSelectedFolderPath);
+		}
+
+		if (mSelectedFolderName != null)
+		{
+			outState.putString(EXTRA_SELECTED_FOLDER_NAME, mSelectedFolderName);
+		}
+	}
+
+	private void loadFolderList()
+	{
+
+		if (mCurrentFolderPath == null || mCurrentFolderPath.isEmpty())
+		{
+			mCurrentFolderPath = mDeviceRootPath;
+		}
+
+		File singleFolder = new File(mCurrentFolderPath);
+
+		if(mSelectedFolderPath == null){
+			mSelectedFolderPath = singleFolder.getAbsolutePath();
+			mSelectedFolderName = singleFolder.getName();
+		}
+
+		mBinder.selectedFolderNameTv.setText(mSelectedFolderName);
+
+		mParentFolderPath = getParentFolderPath(singleFolder);
 
 		File[] folders = singleFolder.listFiles(new FileFilter() {
 			@Override
@@ -110,34 +175,52 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	public void onFolderClick (View view, int position)
 	{
 		final File folder = mFolderAdapter.getItem(position);
-		if(folder != null){
-			mCurrentFolderName= folder.getAbsolutePath();
-			loadFolderList();
+		if(folder != null)
+		{
+			mSelectedFolderPath = folder.getAbsolutePath();
+			mSelectedFolderName = folder.getName();
+			mBinder.selectedFolderNameTv.setText(mSelectedFolderName);
+			File[] subFolders = folder.listFiles(new FileFilter() {
+				@Override
+				public boolean accept(File pathname) {
+					return pathname.isDirectory();
+				}
+			});
+
+			if(subFolders != null && subFolders.length > 0)
+			{
+				mCurrentFolderPath = folder.getAbsolutePath();
+				loadFolderList();
+			}
 		}
 	}
 
 	@Nullable
-	private File getParentFolder(File currentFolder)
+	private String getParentFolderPath(File currentFolder)
 	{
 		String currentFolderPath = currentFolder.getAbsolutePath();
-		File parentFolder = null;
 
 		if(!currentFolderPath.equalsIgnoreCase(mDeviceRootPath) && !currentFolderPath.equalsIgnoreCase(mSdCardRootPath))
 		{
-			parentFolder = currentFolder.getParentFile();
+			return currentFolder.getParentFile().getAbsolutePath();
 		}
-		return parentFolder;
+		else
+		{
+			return null;
+		}
 	}
 
-	public void backButtonWasPressed() {
-		if(mParentFolder != null){
-			mCurrentFolderName = mParentFolder.getAbsolutePath();
+	public void navigateBack() {
+		if(mParentFolderPath != null){
+			mCurrentFolderPath = mParentFolderPath;
+			mSelectedFolderName = null;
+			mSelectedFolderPath = null;
 			loadFolderList();
 		}
-		Log.d ("browser", "back pressed");
+		Log.d (TAG, "back pressed");
 	}
 
 	public boolean isAtTopLevel(){
-		return mParentFolder == null;
+		return mParentFolderPath == null;
 	}
 }
