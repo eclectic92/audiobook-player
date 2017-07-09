@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,5 +102,9 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		if(folder != null){
 			loadFolderList(folder.getAbsolutePath());
 		}
+	}
+
+	public void backButtonWasPressed() {
+		Log.d ("browser", "back pressed");
 	}
 }
