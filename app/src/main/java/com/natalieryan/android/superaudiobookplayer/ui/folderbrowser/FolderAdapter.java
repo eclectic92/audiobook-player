@@ -14,8 +14,6 @@ import com.natalieryan.android.superaudiobookplayer.databinding.FolderItemBindin
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-
 
 /**
  * Created by natalier258 on 7/8/17.
@@ -26,6 +24,7 @@ import java.util.Collections;
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>
 {
 	private ArrayList<File> mFolders;
+	private boolean mShowParent;
 	private FolderClickListener clickListener;
 
 	//default constructor
@@ -47,9 +46,15 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 			this.mBinding = binding;
 		}
 
-		public void bind(File folder)
+		public void bind(File folder, boolean showAsParent)
 		{
 			mBinding.setVariable(BR.folder, folder);
+			if(showAsParent){
+				mBinding.folderNameTv.setText("..");
+			}else
+			{
+				mBinding.folderNameTv.setText(folder.getName());
+			}
 			mBinding.executePendingBindings();
 		}
 
@@ -77,7 +82,12 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 	public void onBindViewHolder(FolderAdapter.ViewHolder viewHolder, int position)
 	{
 		File folderItem = mFolders.get(position);
-		viewHolder.bind(folderItem);
+		boolean showAsParent = false;
+		if(position == 0 && mShowParent)
+		{
+			showAsParent = true;
+		}
+		viewHolder.bind(folderItem, showAsParent);
 	}
 
 	@Override
@@ -106,13 +116,13 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		return mFolders;
 	}
 
-	void setFolderList(ArrayList<File> folderList)
+	void setFolderList(ArrayList<File> folderList, boolean showParent)
 	{
 		if(mFolders != null && !mFolders.isEmpty())
 		{
 			mFolders.clear();
 		}
-		Collections.sort(folderList);
+		this.mShowParent = showParent;
 		mFolders = folderList;
 		notifyDataSetChanged();
 	}

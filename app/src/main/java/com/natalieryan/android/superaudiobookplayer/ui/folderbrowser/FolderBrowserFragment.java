@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 
 public class FolderBrowserFragment extends Fragment implements FolderAdapter.FolderClickListener
@@ -26,11 +27,11 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 
 	private FolderAdapter mFolderAdapter;
 	private FragmentFolderBrowserBinding mBinder;
-	private String mCurrentFolder;
+	private String mCurrentFolderName;
+	private File mParentFolder;
 	private String mRootDirPath;
 	private ArrayList<File> mFolders;
-	private ArrayList<String> mSdCardPaths = new ArrayList<>();
-
+	private String mSdCardPath;
 
 	//default constructor
 	public FolderBrowserFragment() {}
@@ -40,7 +41,14 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		mRootDirPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		mSdCardPaths = getSdCardPaths(mRootDirPath);
+		ArrayList<String> sdCardPaths = getSdCardPaths(mRootDirPath);
+		if(sdCardPaths != null && !sdCardPaths.isEmpty())
+		{
+			mSdCardPath = sdCardPaths.get(0);
+		}else
+		{
+			mSdCardPath = "";
+		}
 
 		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_folder_browser, container, false);
 
@@ -52,19 +60,23 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		mBinder.folderListRv.setAdapter(mFolderAdapter);
 		mBinder.folderListRv.setLayoutManager(layoutManager);
 
-		loadFolderList(mCurrentFolder);
+		loadFolderList();
 
 		return rootView;
 	}
 
-	private void loadFolderList(@Nullable String currentFolder)
+	private void loadFolderList()
 	{
-		if (currentFolder == null || currentFolder.isEmpty())
+		boolean showParent = false;
+
+		if (mCurrentFolderName== null || mCurrentFolderName.isEmpty())
 		{
-			currentFolder = mRootDirPath;
+			mCurrentFolderName= mRootDirPath;
 		}
 
-		File singleFolder = new File(currentFolder);
+		File singleFolder = new File(mCurrentFolderName);
+		mParentFolder = getParentFolder(singleFolder);
+
 		File[] folders = singleFolder.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
@@ -74,7 +86,14 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		mFolders = new ArrayList<>(Arrays.asList(folders));
 		if (!mFolders.isEmpty())
 		{
-			mFolderAdapter.setFolderList(mFolders);
+			Collections.sort(mFolders);
+
+			if(mParentFolder != null)
+			{
+				mFolders.add(0, mParentFolder);
+				showParent = true;
+			}
+			mFolderAdapter.setFolderList(mFolders, showParent);
 		}
 	}
 
@@ -100,11 +119,33 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	{
 		final File folder = mFolderAdapter.getItem(position);
 		if(folder != null){
-			loadFolderList(folder.getAbsolutePath());
+			mCurrentFolderName= folder.getAbsolutePath();
+			loadFolderList();
 		}
 	}
 
+	@Nullable
+	private File getParentFolder(File currentFolder)
+	{
+		String currentFolderPath = currentFolder.getAbsolutePath();
+		File parentFolder = null;
+
+		if(!currentFolderPath.equalsIgnoreCase(mRootDirPath) && !currentFolderPath.equalsIgnoreCase(mSdCardPath))
+		{
+			parentFolder = currentFolder.getParentFile();
+		}
+		return parentFolder;
+	}
+
 	public void backButtonWasPressed() {
+		if(mParentFolder != null){
+			mCurrentFolderName = mParentFolder.getAbsolutePath();
+			loadFolderList();
+		}
 		Log.d ("browser", "back pressed");
+	}
+
+	public boolean isAtTopLevel(){
+		return mParentFolder == null;
 	}
 }

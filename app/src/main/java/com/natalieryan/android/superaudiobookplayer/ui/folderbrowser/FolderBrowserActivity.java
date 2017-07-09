@@ -27,7 +27,11 @@ public class FolderBrowserActivity extends AppCompatActivity
 
 	@Override
 	public void onBackPressed() {
-		//super.onBackPressed();
-		mBrowserFragment.backButtonWasPressed();
+		if(mBrowserFragment.isAtTopLevel()){
+			super.onBackPressed();
+		}
+		else{
+			mBrowserFragment.backButtonWasPressed();
+		}
 	}
 }

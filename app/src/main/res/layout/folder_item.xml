@@ -16,7 +16,6 @@
 			android:id="@+id/folder_name_tv"
 			android:layout_width="368dp"
 			android:layout_height="wrap_content"
-			android:text="@{folder.name}"
 			tools:text="Folder Name"
 			app:layout_constraintTop_toTopOf="parent"
 			android:layout_marginTop="8dp"
