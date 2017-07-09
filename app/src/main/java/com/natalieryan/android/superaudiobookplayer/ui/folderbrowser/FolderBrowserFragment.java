@@ -29,9 +29,10 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	private FragmentFolderBrowserBinding mBinder;
 	private String mCurrentFolderName;
 	private File mParentFolder;
-	private String mRootDirPath;
+	private String mDeviceRootPath;
+	private String mSdCardRootPath;
+
 	private ArrayList<File> mFolders;
-	private String mSdCardPath;
 
 	//default constructor
 	public FolderBrowserFragment() {}
@@ -40,14 +41,14 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		mRootDirPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		ArrayList<String> sdCardPaths = getSdCardPaths(mRootDirPath);
+		mDeviceRootPath= Environment.getExternalStorageDirectory().getAbsolutePath();
+		ArrayList<String> sdCardPaths = getSdCardPaths(mDeviceRootPath);
 		if(sdCardPaths != null && !sdCardPaths.isEmpty())
 		{
-			mSdCardPath = sdCardPaths.get(0);
+			mSdCardRootPath= sdCardPaths.get(0);
 		}else
 		{
-			mSdCardPath = "";
+			mSdCardRootPath= "";
 		}
 
 		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_folder_browser, container, false);
@@ -71,7 +72,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 
 		if (mCurrentFolderName== null || mCurrentFolderName.isEmpty())
 		{
-			mCurrentFolderName= mRootDirPath;
+			mCurrentFolderName=mDeviceRootPath;
 		}
 
 		File singleFolder = new File(mCurrentFolderName);
@@ -130,7 +131,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		String currentFolderPath = currentFolder.getAbsolutePath();
 		File parentFolder = null;
 
-		if(!currentFolderPath.equalsIgnoreCase(mRootDirPath) && !currentFolderPath.equalsIgnoreCase(mSdCardPath))
+		if(!currentFolderPath.equalsIgnoreCase(mDeviceRootPath) && !currentFolderPath.equalsIgnoreCase(mSdCardRootPath))
 		{
 			parentFolder = currentFolder.getParentFile();
 		}
