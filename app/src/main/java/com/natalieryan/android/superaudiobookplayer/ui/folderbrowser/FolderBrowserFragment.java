@@ -185,6 +185,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		{
 			mSelectedFolderPath = folder.getAbsolutePath();
 			mSelectedFolderName = folder.getName();
+			mParentFolderPath = getParentFolderPath(folder);
 			setSelectedDisplay(mSelectedFolderName);
 			File[] subFolders = folder.listFiles(new FileFilter() {
 				@Override
