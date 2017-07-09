@@ -253,6 +253,7 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 	}
 
 	public boolean isAtTopLevel(){
-		return mParentFolderPath == null;
+		return mSelectedFolderPath.equalsIgnoreCase(mDeviceRootPath)
+				|| mSelectedFolderPath.equalsIgnoreCase(mSdCardRootPath);
 	}
 }
