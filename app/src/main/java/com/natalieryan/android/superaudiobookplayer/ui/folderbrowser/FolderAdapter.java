@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer;
+package com.natalieryan.android.superaudiobookplayer.ui.folderbrowser;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -8,20 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.natalieryan.android.superaudiobookplayer.BR;
+import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FolderItemBinding;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
  * Created by natalier258 on 7/8/17.
+ *
  */
 
+@SuppressWarnings("unused")
 public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder>
 {
 	private ArrayList<File> mFolders;
-	private FolderItemBinding mBinder;
 	private FolderClickListener clickListener;
 
 	//default constructor
@@ -65,8 +69,8 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		Context context=viewGroup.getContext();
 		int layoutIdForListItem=R.layout.folder_item;
 		LayoutInflater inflater=LayoutInflater.from(context);
-		mBinder=DataBindingUtil.inflate(inflater, layoutIdForListItem, viewGroup, false);
-		return new FolderAdapter.ViewHolder(mBinder);
+		FolderItemBinding binding =DataBindingUtil.inflate(inflater, layoutIdForListItem, viewGroup, false);
+		return new FolderAdapter.ViewHolder(binding);
 	}
 
 	@Override
@@ -108,6 +112,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
 		{
 			mFolders.clear();
 		}
+		Collections.sort(folderList);
 		mFolders = folderList;
 		notifyDataSetChanged();
 	}

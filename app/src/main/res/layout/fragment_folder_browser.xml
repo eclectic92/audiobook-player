@@ -6,7 +6,7 @@
 	<android.support.constraint.ConstraintLayout
 				 android:layout_width="match_parent"
 				 android:layout_height="match_parent"
-				 tools:context="com.natalieryan.android.superaudiobookplayer.FolderBrowserFragment">
+				 tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment">
 
 		<android.support.v7.widget.RecyclerView
 			xmlns:android="http://schemas.android.com/apk/res/android"

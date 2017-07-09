@@ -15,11 +15,20 @@ android {
     defaultConfig {
         applicationId "com.natalieryan.android.superaudiobookplayer"
         minSdkVersion 21
+        //noinspection OldTargetApi
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    lintOptions {
+        disable 'AllowBackup'
+        disable 'GoogleAppIndexingWarning'
+        disable 'AndroidLintOldTargetApi'
+        disable 'Typos'
+    }
+
     buildTypes {
         release {
             minifyEnabled false

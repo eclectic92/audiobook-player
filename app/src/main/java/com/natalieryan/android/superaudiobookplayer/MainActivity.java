@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserActivity;
+
 public class MainActivity extends AppCompatActivity
 {
 
 	private static final int PERMISSION_REQUEST_CODE = 101;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -44,19 +47,19 @@ public class MainActivity extends AppCompatActivity
 		});
 	}
 
-	public void launchTagReader()
+	private void launchTagReader()
 	{
 		Intent intent = new Intent(this, TagReader.class);
 		startActivity(intent);
 
 	}
 
-	public void launchFolderBrowser()
+	private void launchFolderBrowser()
 	{
-
 		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 		if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+			ActivityCompat.requestPermissions(this,
+					new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 		} else {
 			Intent intent = new Intent(this, FolderBrowserActivity.class);
 			startActivity(intent);
@@ -64,7 +67,8 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode,
+										   @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (requestCode == PERMISSION_REQUEST_CODE) {
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

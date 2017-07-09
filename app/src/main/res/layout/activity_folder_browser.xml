@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="com.natalieryan.android.superaudiobookplayer.FolderBrowserActivity">
+	tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserActivity">
 
 	<LinearLayout
 		android:id="@+id/folder_list_container"
@@ -24,7 +24,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:id="@+id/folder_list_fragment"
-			android:name="com.natalieryan.android.superaudiobookplayer.FolderBrowserFragment"
+			android:name="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment"
 			tools:layout="@layout/fragment_folder_browser">
 
 		</fragment>

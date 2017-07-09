@@ -1,7 +1,6 @@
-package com.natalieryan.android.superaudiobookplayer;
+package com.natalieryan.android.superaudiobookplayer.ui.folderbrowser;
 
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,16 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderBrowserBinding;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class FolderBrowserFragment extends Fragment implements FolderAdapter.FolderClickListener
