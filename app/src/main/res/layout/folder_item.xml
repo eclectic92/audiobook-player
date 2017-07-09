@@ -14,7 +14,7 @@
 		android:layout_height="wrap_content">
 
 		<ImageView
-			android:id="@+id/imageView"
+			android:id="@+id/folder_icon_image_view"
 			android:layout_width="@dimen/folder_icon_size"
 			android:layout_height="@dimen/folder_icon_size"
 			android:layout_marginStart="@dimen/folder_icon_margin_start"
@@ -37,10 +37,10 @@
 			android:layout_marginTop="0dp"
 			android:layout_marginBottom="0dp"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintStart_toEndOf="@+id/imageView"
-			app:layout_constraintTop_toBottomOf="@+id/imageView"
-			app:layout_constraintBottom_toTopOf="@+id/imageView"
-			app:layout_constraintLeft_toRightOf="@+id/imageView"
+			app:layout_constraintStart_toEndOf="@+id/folder_icon_image_view"
+			app:layout_constraintTop_toBottomOf="@+id/folder_icon_image_view"
+			app:layout_constraintBottom_toTopOf="@+id/folder_icon_image_view"
+			app:layout_constraintLeft_toRightOf="@+id/folder_icon_image_view"
 			android:layout_marginStart="@dimen/folder_icon_margin_end"
 			app:layout_constraintVertical_bias="0.5"/>
 

@@ -221,16 +221,17 @@ public class FolderBrowserFragment extends Fragment implements FolderAdapter.Fol
 		if(mSelectedFolderPath.equalsIgnoreCase(mDeviceRootPath))
 		{
 			folderName =  getResources().getString(R.string.device_root_folder);
-			mBinder.backArrowImageView.setImageResource(R.drawable.ic_phone_android_black_24dp);
+			mBinder.backArrowImageView.setVisibility(View.INVISIBLE);
 		}
 		else if (mSelectedFolderPath.equalsIgnoreCase(mSdCardRootPath))
 		{
 			folderName =  getResources().getString(R.string.sd_root_folder);
-			mBinder.backArrowImageView.setImageResource(R.drawable.ic_phone_android_black_24dp);
+			mBinder.backArrowImageView.setVisibility(View.INVISIBLE);
 		}
 		else
 		{
 			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+			mBinder.backArrowImageView.setVisibility(View.VISIBLE);
 		}
 		String displayName = getResources().getString(R.string.selected_folder, folderName);
 		mBinder.selectedFolderNameTv.setText(displayName);
