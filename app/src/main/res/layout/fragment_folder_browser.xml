@@ -9,19 +9,19 @@
 				 tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment">
 
 		<android.support.v7.widget.RecyclerView
+			android:id="@+id/folder_list_rv"
 			xmlns:android="http://schemas.android.com/apk/res/android"
 			xmlns:app="http://schemas.android.com/apk/res-auto"
-			android:id="@+id/folder_list_rv"
-			android:layout_width="368dp"
-			android:layout_height="495dp"
-			app:layoutManager="LinearLayoutManager"
-			tools:listitem="@layout/folder_item"
-			app:layout_constraintTop_toTopOf="parent"
-			android:layout_marginTop="0dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_marginLeft="8dp"
-			app:layout_constraintLeft_toLeftOf="parent"
 			android:layout_marginRight="8dp"
-			app:layout_constraintRight_toRightOf="parent"/>
+			android:layout_marginTop="0dp"
+			app:layoutManager="LinearLayoutManager"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:listitem="@layout/folder_item"/>
 
 	</android.support.constraint.ConstraintLayout>
 </layout>
