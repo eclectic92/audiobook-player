@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserActivity;
+import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 			ActivityCompat.requestPermissions(this,
 					new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 		} else {
-			Intent intent = new Intent(this, FolderBrowserActivity.class);
+			Intent intent = new Intent(this, FileBrowserActivity.class);
 			startActivity(intent);
 		}
 	}
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 		if (requestCode == PERMISSION_REQUEST_CODE) {
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				Intent intent = new Intent(this, FolderBrowserActivity.class);
+				Intent intent = new Intent(this, FileBrowserActivity.class);
 				startActivity(intent);
 			}
 		}

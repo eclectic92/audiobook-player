@@ -5,12 +5,12 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<RelativeLayout
-		android:id="@+id/folder_browser_fragment"
-		tools:context="com.natalieryan.android.superaudiobookplayer.ui.folderbrowser.FolderBrowserFragment"
+		android:id="@+id/file_browser_fragment"
+		tools:context="com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<RelativeLayout
-			android:id="@+id/folder_browser_header"
+			android:id="@+id/file_browser_header"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
 					android:id="@+id/back_arrow_image_view"
 					android:layout_width="@dimen/back_arrow_icon_size"
 					android:layout_height="@dimen/back_arrow_icon_size"
-					android:layout_marginStart="@dimen/folder_icon_margin_start"
+					android:layout_marginStart="@dimen/file_icon_margin_start"
 					android:layout_marginEnd="@dimen/folder_icon_margin_end"
 					android:contentDescription="@string/description_folder_icon"
 					app:srcCompat="@drawable/ic_arrow_back_black_24dp"
@@ -33,8 +33,8 @@
 					android:layout_marginTop="8dp"/>
 
 				<TextView
-					android:id="@+id/selected_folder_name_tv"
-					style="@style/FolderText"
+					android:id="@+id/selected_file_name_tv"
+					style="@style/FileText"
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="0dp"
@@ -52,7 +52,7 @@
 					app:layout_constraintStart_toEndOf="@+id/back_arrow_image_view"
 					app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"
 					app:layout_constraintVertical_bias="0.489"
-					tools:text="Selected Folder Name"/>
+					tools:text="Selected File Name"/>
 
 				<View style="@style/Divider"
 					  tools:layout_editor_absoluteX="0dp"
@@ -65,7 +65,7 @@
 
 		</RelativeLayout>
 		<RelativeLayout
-			android:id="@+id/folder_browser_footer"
+			android:id="@+id/file_browser_footer"
 			android:layout_width="match_parent"
 			android:layout_height="30dp"
 			android:layout_alignParentBottom="true"
@@ -84,8 +84,8 @@
 			android:id="@+id/scroll_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_above="@+id/folder_browser_footer"
-			android:layout_below="@+id/folder_browser_header"
+			android:layout_above="@+id/file_browser_footer"
+			android:layout_below="@+id/file_browser_header"
 			android:scrollbars="none"
 			android:fillViewport="true">
 			<LinearLayout
@@ -96,7 +96,7 @@
 				android:fillViewport="true">
 
 				<android.support.v7.widget.RecyclerView
-					android:id="@+id/folder_list_rv"
+					android:id="@+id/file_list_rv"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginEnd="0dp"
@@ -105,7 +105,7 @@
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent"
-					tools:listitem="@layout/folder_item"/>
+					tools:listitem="@layout/file_item"/>
 
 			</LinearLayout>
 		</ScrollView>

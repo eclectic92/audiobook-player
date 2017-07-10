@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.folderbrowser;
+package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
 
 
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +8,10 @@ import android.os.Bundle;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 
-public class FolderBrowserActivity extends AppCompatActivity
+public class FileBrowserActivity extends AppCompatActivity
 {
 
-	private FolderBrowserFragment mBrowserFragment;
+	private FileBrowserFragment mBrowserFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -22,13 +22,13 @@ public class FolderBrowserActivity extends AppCompatActivity
 
 		if(savedInstanceState == null)
 		{
-			mBrowserFragment = new FolderBrowserFragment();
+			mBrowserFragment = new FileBrowserFragment();
 			fragmentManager.beginTransaction()
 					.add(R.id.folder_list_container, mBrowserFragment).commit();
 		}
 		else
 		{
-			mBrowserFragment = (FolderBrowserFragment) fragmentManager.findFragmentById(R.id.folder_list_container);
+			mBrowserFragment = (FileBrowserFragment) fragmentManager.findFragmentById(R.id.folder_list_container);
 		}
 	}
 

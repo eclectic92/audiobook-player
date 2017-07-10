@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.folderbrowser;
+package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;

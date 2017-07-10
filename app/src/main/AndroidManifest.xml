@@ -21,7 +21,7 @@
 		</activity>
 		<activity android:name=".TagReader">
 		</activity>
-		<activity android:name=".ui.folderbrowser.FolderBrowserActivity">
+		<activity android:name=".ui.filebrowser.FileBrowserActivity">
 		</activity>
 	</application>
 </manifest>

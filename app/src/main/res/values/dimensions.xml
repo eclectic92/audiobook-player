@@ -8,4 +8,9 @@
 	<dimen name="folder_item_margin">8dp</dimen>
 	<dimen name="folder_browser_margin">8dp</dimen>
 	<dimen name="folder_browser_footer_height">48dp</dimen>
+
+	<!-- file browser -->
+	<dimen name="file_icon_size">48dp</dimen>
+	<dimen name="file_icon_margin_end">8dp</dimen>
+	<dimen name="file_icon_margin_start">8dp</dimen>
 </resources>

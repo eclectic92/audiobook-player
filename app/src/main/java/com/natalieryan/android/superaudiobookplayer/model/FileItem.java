@@ -1,7 +1,13 @@
 package com.natalieryan.android.superaudiobookplayer.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.natalieryan.android.superaudiobookplayer.BR;
 
 /**
  * Created by natalier258 on 7/10/17.
@@ -9,11 +15,15 @@ import android.os.Parcelable;
  */
 
 @SuppressWarnings("unused")
-public class FileItem implements Parcelable
+public class FileItem extends BaseObservable implements Parcelable, Comparable<FileItem>
 {
+
+	@Bindable
 	private String mName;
 	private String mPath;
+	private String mParentPath;
 	private long mSize;
+	@Bindable
 	private int mIcon;
 	private boolean mIsDirectory;
 	private boolean mIsTopLevel;
@@ -23,11 +33,12 @@ public class FileItem implements Parcelable
 	public FileItem(){}
 
 	//baseline constructor
-	public FileItem(String name, String path, long size, int icon, boolean mIsDirectory,
+	public FileItem(String name, String path, String parentPath, long size, int icon, boolean mIsDirectory,
 					boolean mIsTopLevel, boolean mHasChildren)
 	{
 		this.mName = name;
 		this.mPath = path;
+		this.mParentPath = parentPath;
 		this.mSize = size;
 		this.mIcon = icon;
 		this.mIsDirectory=mIsDirectory;
@@ -40,11 +51,17 @@ public class FileItem implements Parcelable
 	{
 		this.mName = in.readString();
 		this.mPath = in.readString();
+		this.mParentPath = in.readString();
 		this.mSize = in.readLong();
 		this.mIcon = in.readInt();
-		this.mIsDirectory= in.readInt() == 1;
-		this.mIsTopLevel= in.readInt() == 1;
-		this.mHasChildren= in.readInt() == 1;
+		this.mIsDirectory = in.readInt() == 1;
+		this.mIsTopLevel = in.readInt() == 1;
+		this.mHasChildren = in.readInt() == 1;
+	}
+
+	@Override
+	public int compareTo(@NonNull FileItem fileItem) {
+		return this.mName.compareTo(fileItem.getName());
 	}
 
 	@Override
@@ -58,6 +75,7 @@ public class FileItem implements Parcelable
 	{
 		out.writeString(mName);
 		out.writeString(mPath);
+		out.writeString(mParentPath);
 		out.writeLong(mSize);
 		out.writeInt(mIcon);
 		out.writeInt(mIsDirectory ? 1 : 0);
@@ -87,6 +105,7 @@ public class FileItem implements Parcelable
 	public void setName(String name)
 	{
 		this.mName = name;
+		notifyPropertyChanged(BR.name);
 	}
 
 	public String getPath()
@@ -97,6 +116,17 @@ public class FileItem implements Parcelable
 	public void setPath(String path)
 	{
 		this.mPath = path;
+	}
+
+	@Nullable
+	public String getParentPath()
+	{
+		return mParentPath;
+	}
+
+	public void setParentPath(@Nullable String parentPath)
+	{
+		this.mParentPath = parentPath;
 	}
 
 	public long getSize()
@@ -117,6 +147,7 @@ public class FileItem implements Parcelable
 	public void setIcon(int icon)
 	{
 		this.mIcon = icon;
+		notifyPropertyChanged(BR.icon);
 	}
 
 	public boolean getIsDirectory()

@@ -19,4 +19,8 @@
 	<style name="FolderText" parent="TextAppearance.AppCompat.Body2">
 		<item name="android:textColor">@color/colorSecondaryText</item>
 	</style>
+
+	<style name="FileText" parent="TextAppearance.AppCompat.Body2">
+		<item name="android:textColor">@color/colorSecondaryText</item>
+	</style>
 </resources>
