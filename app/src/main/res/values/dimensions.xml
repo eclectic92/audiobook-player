@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- folder browser -->
-	<dimen name="folder_icon_size">48dp</dimen>
-	<dimen name="back_arrow_icon_size">32dp</dimen>
-	<dimen name="folder_icon_margin_end">8dp</dimen>
-	<dimen name="folder_icon_margin_start">8dp</dimen>
-	<dimen name="folder_item_margin">8dp</dimen>
-	<dimen name="folder_browser_margin">8dp</dimen>
-	<dimen name="folder_browser_footer_height">48dp</dimen>
-
 	<!-- file browser -->
 	<dimen name="file_icon_size">48dp</dimen>
 	<dimen name="file_icon_margin_end">8dp</dimen>
 	<dimen name="file_icon_margin_start">8dp</dimen>
 	<dimen name="file_item_margin">8dp</dimen>
 	<dimen name="file_browser_back_icon_margin">24dp</dimen>
-	<dimen name="file_browser_header_height">48dp</dimen>
-
+	<dimen name="file_browser_device_button_padding">36dp</dimen>
 </resources>

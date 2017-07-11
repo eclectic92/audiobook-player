@@ -15,10 +15,10 @@
 
 		<ImageView
 			android:id="@+id/folder_icon_image_view"
-			android:layout_width="@dimen/folder_icon_size"
-			android:layout_height="@dimen/folder_icon_size"
-			android:layout_marginStart="@dimen/folder_icon_margin_start"
-			android:layout_marginEnd="@dimen/folder_icon_margin_end"
+			android:layout_width="@dimen/file_icon_size"
+			android:layout_height="@dimen/file_icon_size"
+			android:layout_marginStart="@dimen/file_icon_margin_start"
+			android:layout_marginEnd="@dimen/file_icon_margin_end"
 			android:contentDescription="@string/description_folder_icon"
 			app:srcCompat="@drawable/ic_folder_black_24dp"
 			app:layout_constraintLeft_toLeftOf="parent"
@@ -41,7 +41,7 @@
 			app:layout_constraintTop_toBottomOf="@+id/folder_icon_image_view"
 			app:layout_constraintBottom_toTopOf="@+id/folder_icon_image_view"
 			app:layout_constraintLeft_toRightOf="@+id/folder_icon_image_view"
-			android:layout_marginStart="@dimen/folder_icon_margin_end"
+			android:layout_marginStart="@dimen/file_icon_margin_end"
 			app:layout_constraintVertical_bias="0.5"/>
 
 		<View style="@style/Divider"

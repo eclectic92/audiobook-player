@@ -6,10 +6,11 @@
 	<string name="description_file_icon">File icon</string>
 	<string name="description_back_icon">Back icon</string>
 
-	<!-- folder browser -->
-	<string name="selected_folder">Selected:\u0020%1$s</string>
-	<string name="device_root_folder">Device storage root</string>
-	<string name="sd_root_folder">SD card root</string>
-
 	<!-- file browser -->
+	<string name="selected_folder">Selected:\u0020%1$s</string>
+	<string name="device_root_folder">Device home</string>
+	<string name="device_button_title">Device</string>
+	<string name="sd_root_folder">SD card home</string>
+	<string name="sd_card_button_title">SD Card</string>
+	<string name="sd_card_unmounted">Error: SD Card not mounted</string>
 </resources>

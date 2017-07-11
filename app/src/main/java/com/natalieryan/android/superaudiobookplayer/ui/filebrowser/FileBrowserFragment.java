@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
@@ -39,8 +40,6 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	private String mSdCardRootPath;
 	private FileItem mSelectedItem;
 	private FileItem mSessionRootItem;
-
-	// new sauce
 	private String mCurrentPath;
 	private String mParentPath;
 	private ArrayList<FileItem> mFiles = new ArrayList<>();
@@ -109,7 +108,8 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 		View rootView = mBinder.getRoot();
 
-		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener() {
+		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener()
+		{
 			public void onClick(View v) {
 				navigateBack();
 			}
@@ -130,7 +130,45 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			loadFileList(mCurrentPath);
 		}
 
-		mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
+		//show device/sd card toggle buttons if SD card present
+		if(sdCardIsMounted())
+		{
+			mBinder.sdCardButton.setVisibility(View.VISIBLE);
+			mBinder.deviceButton.setVisibility(View.VISIBLE);
+			mBinder.fileBrowserButtonBottom.setVisibility(View.VISIBLE);
+
+			mBinder.sdCardButton.setOnClickListener(new View.OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					if(!isUsingSdCard())
+					{
+						if(sdCardIsMounted())
+						{
+							swapRoot(mSdCardRootPath);
+						}
+						else
+						{
+							handleSdCardNotPresent();
+						}
+
+					}
+				}
+			});
+
+			mBinder.deviceButton.setOnClickListener(new View.OnClickListener()
+			{
+				public void onClick(View v)
+				{
+					if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
+					{
+						swapRoot(mDeviceRootPath);
+					}
+				}
+			});
+		}
+
+		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 		if(mSelectedItem.equals(mSessionRootItem))
 		{
 			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
@@ -184,6 +222,8 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	{
 		if(currentLocation != null && !currentLocation.isEmpty())
 		{
+			//check to make sure the SD card is still mounted if it's in play
+
 			mFiles = getFileItems(currentLocation, mShowOnlyFolders);
 			mFileItemAdapter.setFileList(mFiles);
 		}
@@ -207,6 +247,12 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 	public void navigateBack() {
 
+		if(isUsingSdCard() && !sdCardIsMounted())
+		{
+			handleSdCardNotPresent();
+			return;
+		}
+
 		if(mParentPath !=null)
 		{
 			mCurrentPath = mParentPath;
@@ -221,7 +267,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			mSelectedItem = mSessionRootItem;
 			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
 		}
-		mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
+		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 	}
 
 	public boolean isAtTopLevel(){
@@ -231,11 +277,15 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	@Override
 	public void onFileClick (View view, int position)
 	{
+		if(isUsingSdCard() && !sdCardIsMounted()){
+			handleSdCardNotPresent();
+			return;
+		}
 		final FileItem fileItem = mFileItemAdapter.getItem(position);
 		if(fileItem != null)
 		{
 			mSelectedItem = fileItem;
-			mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
+			mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
 			if(fileItem.getHasChildren())
 			{
@@ -351,19 +401,17 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 	private FileItem createRootLevelFileItem(String rootPath, boolean isSDCard)
 	{
-		String displayName;
 		FileItem fileItem = new FileItem();
 		File file = new File(rootPath);
 		if(isSDCard)
 		{
 			fileItem.setName(getString(R.string.sd_root_folder));
-			fileItem.setIcon(R.drawable.ic_sd_card_black_24dp);
 		}
 		else
 		{
 			fileItem.setName(getString(R.string.device_root_folder));
-			fileItem.setIcon(R.drawable.ic_phone_android_black_24dp);
 		}
+		fileItem.setIcon(R.drawable.ic_home_black_24dp);
 		fileItem.setPath(file.getPath());
 		fileItem.setIsDirectory(true);
 		fileItem.setSize(-1);
@@ -371,5 +419,45 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		fileItem.setIsTopLevel(isTopLevelFolder(file.getAbsolutePath()));
 		fileItem.setParentPath(null);
 		return fileItem;
+	}
+
+	private void swapRoot(String rootPath)
+	{
+		boolean isSDCard = false;
+
+		if(rootPath.equals(mSdCardRootPath))
+		{
+			isSDCard = true;
+		}
+		mSessionRootItem = createRootLevelFileItem(rootPath,isSDCard);
+		mSelectedItem = mSessionRootItem;
+		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
+		mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
+		mCurrentPath = mSelectedItem.getPath();
+		mParentPath = null;
+		loadFileList(mCurrentPath);
+	}
+
+	private boolean sdCardIsMounted()
+	{
+		if (mSdCardRootPath == null)
+		{
+			return false;
+		}
+
+		File testFile = new File(mSdCardRootPath);
+		return testFile.exists();
+	}
+
+	private boolean isUsingSdCard()
+	{
+		return mSessionRootItem.getPath().equalsIgnoreCase(mSdCardRootPath);
+	}
+
+	private void handleSdCardNotPresent()
+	{
+		Toast.makeText(getContext(), R.string.sd_card_unmounted, Toast.LENGTH_LONG).show();
+		swapRoot(mDeviceRootPath);
+		mBinder.sdCardButton.setEnabled(false);
 	}
 }
