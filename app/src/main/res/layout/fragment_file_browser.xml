@@ -99,7 +99,7 @@
 					  app:layout_constraintStart_toStartOf="parent"
 					  android:layout_marginBottom="0dp"
 					  android:layout_width="0dp"
-					  android:layout_marginTop="8dp"
+					  android:layout_marginTop="@dimen/file_browser_divider_margin"
 					  app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"/>
 			</android.support.constraint.ConstraintLayout>
 
@@ -107,18 +107,43 @@
 		<RelativeLayout
 			android:id="@+id/file_browser_footer"
 			android:layout_width="match_parent"
-			android:layout_height="30dp"
+			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:gravity="center"
 			android:layout_gravity="center">
-			<TextView
-				android:id="@+id/footer_text"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				tools:text="Footer"
-				android:textColor="#FFFFFF"
-				android:gravity="center"
-				android:textSize="25sp"/>
+			<android.support.constraint.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+
+				<View style="@style/Divider"
+					  android:id="@+id/browser_footer_divider"
+					  tools:layout_editor_absoluteX="0dp"
+					  app:layout_constraintEnd_toEndOf="parent"
+					  app:layout_constraintStart_toStartOf="parent"
+					  android:layout_width="0dp"
+					  android:layout_marginBottom="@dimen/file_browser_divider_margin"
+					  app:layout_constraintTop_toTopOf="@+id/browser_cancel_button"/>
+
+				<Button
+					android:id="@+id/browser_cancel_button"
+					style="@style/Widget.AppCompat.Button.Borderless"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toStartOf="@+id/browser_select_button"
+					android:text="@string/browser_cancel_button"/>
+
+				<Button
+					android:id="@+id/browser_select_button"
+					style="@style/Widget.AppCompat.Button.Borderless"
+					app:layout_constraintStart_toEndOf="@+id/browser_cancel_button"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:gravity="center"
+					android:text="@string/browser_select_button"/>
+			</android.support.constraint.ConstraintLayout>
 		</RelativeLayout>
 		<ScrollView
 			android:id="@+id/file_browser_scroll_view"

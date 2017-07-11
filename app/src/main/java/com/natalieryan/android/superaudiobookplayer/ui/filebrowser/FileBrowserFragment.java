@@ -1,6 +1,8 @@
 package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
@@ -34,6 +36,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	private static final String SHOW_ONLY_FOLDERS = "show_only_folders";
 	private static final String SELECTED_ITEM = "selected_item";
 	private static final String ROOT_ITEM = "root_item";
+	private static final String SELECTED_FILE = "selected_file";
 
 	private FragmentFileBrowserBinding mBinder;
 	private String mDeviceRootPath;
@@ -167,6 +170,46 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				}
 			});
 		}
+
+		//set the handlers for our select/cancel buttons
+		mBinder.browserSelectButton.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				Activity callingActivity = getActivity();
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(SELECTED_FILE, mSelectedItem.getPath());
+				callingActivity.setResult(Activity.RESULT_OK, returnIntent);
+				callingActivity.finish();
+			}
+		});
+
+		mBinder.browserCancelButton.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				Activity callingActivity = getActivity();
+				Intent returnIntent = new Intent();
+				callingActivity.setResult(Activity.RESULT_CANCELED);
+				callingActivity.finish();
+			}
+		});
+
+		/*
+		    // "Send text back" button click
+    public void onButtonClick(View view) {
+
+        // get the text from the EditText
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String stringToPassBack = editText.getText().toString();
+
+        // put the String to pass back into an Intent and close this activity
+        Intent intent = new Intent();
+        intent.putExtra("keyName", stringToPassBack);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+		 */
 
 		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 		if(mSelectedItem.equals(mSessionRootItem))

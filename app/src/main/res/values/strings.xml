@@ -13,4 +13,6 @@
 	<string name="sd_root_folder">SD card home</string>
 	<string name="sd_card_button_title">SD Card</string>
 	<string name="sd_card_unmounted">Error: SD Card not mounted</string>
+	<string name="browser_select_button">Select</string>
+	<string name="browser_cancel_button">Cancel</string>
 </resources>
