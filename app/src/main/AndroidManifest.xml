@@ -24,12 +24,15 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".TagReader"
+				  android:theme="@style/AppTheme"
 				  android:parentActivityName=".MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity" />
 		</activity>
 		<activity android:name=".ui.filebrowser.FileBrowserActivity"
+				  android:theme="@style/AppTheme.ActionBarClose"
+				  android:label="@string/title_activity_folder_browser"
 				  android:parentActivityName=".MainActivity">
 		<meta-data
 				android:name="android.support.PARENT_ACTIVITY"

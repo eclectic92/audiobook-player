@@ -3,6 +3,8 @@
 
 	<!-- screen titles -->
 	<string name="title_activity_main">Super Audiobook Player</string>
+	<string name="title_activity_folder_browser">Select a folder</string>
+
 	<!-- content descriptors -->
 	<string name="description_folder_icon">Folder icon</string>
 	<string name="description_file_icon">File icon</string>
