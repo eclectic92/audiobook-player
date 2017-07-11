@@ -15,6 +15,7 @@
 		tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 		<activity
 			android:name=".MainActivity"
+			android:launchMode="singleTop"
 			android:label="@string/title_activity_main"
 			android:theme="@style/AppTheme.NoActionBar">
 			<intent-filter>
@@ -22,9 +23,17 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".TagReader">
+		<activity android:name=".TagReader"
+				  android:parentActivityName=".MainActivity">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity" />
 		</activity>
-		<activity android:name=".ui.filebrowser.FileBrowserActivity">
+		<activity android:name=".ui.filebrowser.FileBrowserActivity"
+				  android:parentActivityName=".MainActivity">
+		<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity" />
 		</activity>
 	</application>
 
