@@ -70,18 +70,7 @@ public class MainActivity extends AppCompatActivity
 				launchTagReader();
 			}
 		});
-
-		//launch folder browser
-		Button folderButton = (Button) findViewById(R.id.folder_button);
-		folderButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				launchFolderBrowser();
-			}
-		});
-
+		
 		//launch file browser
 		Button fileButton = (Button) findViewById(R.id.file_button);
 		fileButton.setOnClickListener(new View.OnClickListener()
@@ -125,32 +114,35 @@ public class MainActivity extends AppCompatActivity
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id=item.getItemId();
+		int id = item.getItemId();
 
 		//noinspection SimplifiableIfStatement
-		if (id==R.id.action_settings)
+		if (id == R.id.action_settings)
 		{
+			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+			startActivity(startSettingsActivity);
 			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
-	}
 
+	}
 
 	@SuppressWarnings("StatementWithEmptyBody")
 	@Override
-	public boolean onNavigationItemSelected(MenuItem item)
+	public boolean onNavigationItemSelected(@NonNull MenuItem item)
 	{
 		// Handle navigation view item clicks here.
 		int id=item.getItemId();
 
-		if (id==R.id.nav_library)
+		if (id == R.id.nav_library)
 		{
 			// Handle the camera action
 		}
-		else if (id==R.id.nav_settings)
+		else if (id == R.id.nav_settings)
 		{
-
+			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+			startActivity(startSettingsActivity);
 		}
 
 
@@ -164,22 +156,6 @@ public class MainActivity extends AppCompatActivity
 		Intent intent = new Intent(this, TagReader.class);
 		startActivity(intent);
 
-	}
-
-	private void launchFolderBrowser()
-	{
-		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-		if (permissionCheck != PackageManager.PERMISSION_GRANTED)
-		{
-			ActivityCompat.requestPermissions(this,
-					new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-		}
-		else
-		{
-			Intent intent = new Intent(this, FileBrowserActivity.class);
-			intent.putExtra(SHOW_FOLDERS_ONLY, 1);
-			startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
-		}
 	}
 
 	private void launchFileBrowser()

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<Preference
+		android:title="@string/pref_manage_folders_title"
+		android:summary="@string/pref_manage_folders_summary">
+		<intent
+			android:targetPackage="com.natalieryan.android.superaudiobookplayer"
+			android:targetClass="com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity">
+			<extra android:name="@string/show_folders_only_key" android:value="@integer/show_folders_only_true" />
+		</intent>
+	</Preference>
+
+</PreferenceScreen>
