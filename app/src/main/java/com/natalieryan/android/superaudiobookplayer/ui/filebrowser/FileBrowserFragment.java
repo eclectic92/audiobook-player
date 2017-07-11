@@ -33,7 +33,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	private static final String DEVICE_ROOT_PATH = "device_root_path";
 	private static final String SD_CARD_ROOT_PATH = "sd_card_root_path";
 	private static final String FILES = "files";
-	private static final String SHOW_ONLY_FOLDERS = "show_only_folders";
+	private static final String SHOW_FOLDERS_ONLY= "show_folders_only";
 	private static final String SELECTED_ITEM = "selected_item";
 	private static final String ROOT_ITEM = "root_item";
 	private static final String SELECTED_FILE = "selected_file";
@@ -83,9 +83,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				mSdCardRootPath = savedInstanceState.getString(SD_CARD_ROOT_PATH);
 			}
 
-			if(savedInstanceState.containsKey(SHOW_ONLY_FOLDERS))
+			if(savedInstanceState.containsKey(SHOW_FOLDERS_ONLY))
 			{
-				mShowOnlyFolders = savedInstanceState.getInt(SHOW_ONLY_FOLDERS) == 1;
+				mShowOnlyFolders = savedInstanceState.getInt(SHOW_FOLDERS_ONLY) == 1;
 			}
 
 			if(savedInstanceState.containsKey(SELECTED_ITEM))
@@ -100,6 +100,14 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		}
 		else
 		{
+			Bundle args=getArguments();
+			if (args!=null)
+			{
+				if (args.containsKey(SHOW_FOLDERS_ONLY))
+				{
+					mShowOnlyFolders = getArguments().getInt(SHOW_FOLDERS_ONLY) == 1;
+				}
+			}
 			mDeviceRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 			mSdCardRootPath = getSdCardPath(mDeviceRootPath);
 			mCurrentPath = mDeviceRootPath;
@@ -189,27 +197,10 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			public void onClick(View v)
 			{
 				Activity callingActivity = getActivity();
-				Intent returnIntent = new Intent();
 				callingActivity.setResult(Activity.RESULT_CANCELED);
 				callingActivity.finish();
 			}
 		});
-
-		/*
-		    // "Send text back" button click
-    public void onButtonClick(View view) {
-
-        // get the text from the EditText
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String stringToPassBack = editText.getText().toString();
-
-        // put the String to pass back into an Intent and close this activity
-        Intent intent = new Intent();
-        intent.putExtra("keyName", stringToPassBack);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-		 */
 
 		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 		if(mSelectedItem.equals(mSessionRootItem))
@@ -258,7 +249,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			outState.putParcelable(ROOT_ITEM, mSessionRootItem);
 		}
 
-		outState.putInt(SHOW_ONLY_FOLDERS, mShowOnlyFolders ? 1 : 0);
+		outState.putInt(SHOW_FOLDERS_ONLY, mShowOnlyFolders ? 1 : 0);
 	}
 
 	private void loadFileList(String currentLocation)

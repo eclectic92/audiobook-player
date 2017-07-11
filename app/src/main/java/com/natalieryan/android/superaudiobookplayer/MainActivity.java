@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity
 	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final String SELECTED_FILE = "selected_file";
+	private static final String SHOW_FOLDERS_ONLY = "show_folders_only";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +49,17 @@ public class MainActivity extends AppCompatActivity
 				launchFolderBrowser();
 			}
 		});
+
+		//launch file browser
+		Button fileButton = (Button) findViewById(R.id.file_button);
+		fileButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				launchFileBrowser();
+			}
+		});
 	}
 
 	private void launchTagReader()
@@ -58,6 +70,22 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void launchFolderBrowser()
+	{
+		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+		if (permissionCheck != PackageManager.PERMISSION_GRANTED)
+		{
+			ActivityCompat.requestPermissions(this,
+					new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+		}
+		else
+		{
+			Intent intent = new Intent(this, FileBrowserActivity.class);
+			intent.putExtra(SHOW_FOLDERS_ONLY, 1);
+			startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
+		}
+	}
+
+	private void launchFileBrowser()
 	{
 		int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 		if (permissionCheck != PackageManager.PERMISSION_GRANTED)
@@ -93,14 +121,13 @@ public class MainActivity extends AppCompatActivity
 		super.onActivityResult(requestCode, resultCode, data);
 
 		// check that it is the SecondActivity with an OK result
-		if (requestCode == SELECT_FOLDER_RESULT_CODE) {
-			if (resultCode == RESULT_OK) {
+		if (requestCode == SELECT_FOLDER_RESULT_CODE)
+		{
+			if (resultCode == RESULT_OK)
+			{
 				// get String data from Intent
 				String returnString = data.getStringExtra(SELECTED_FILE);
-				Toast.makeText(this, returnString, Toast.LENGTH_LONG).show();
-			}
-			else{
-				Toast.makeText(this, "Nothing Selected", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, returnString, Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

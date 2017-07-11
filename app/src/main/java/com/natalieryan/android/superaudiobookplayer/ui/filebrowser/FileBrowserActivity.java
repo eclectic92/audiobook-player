@@ -1,6 +1,7 @@
 package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
 
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentManager;
 
@@ -12,6 +13,7 @@ public class FileBrowserActivity extends AppCompatActivity
 {
 
 	private FileBrowserFragment mBrowserFragment;
+	private static final String SHOW_FOLDERS_ONLY = "show_folders_only";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -20,9 +22,22 @@ public class FileBrowserActivity extends AppCompatActivity
 		setContentView(R.layout.activity_folder_browser);
 		FragmentManager fragmentManager=getSupportFragmentManager();
 
+
 		if(savedInstanceState == null)
 		{
 			mBrowserFragment = new FileBrowserFragment();
+			Intent intent = getIntent();
+			if(intent != null)
+			{
+				if (intent.hasExtra(SHOW_FOLDERS_ONLY))
+				{
+					Bundle args = new Bundle();
+					args.putInt(SHOW_FOLDERS_ONLY, intent.getIntExtra(SHOW_FOLDERS_ONLY, 1));
+					mBrowserFragment.setArguments(args);
+				}
+			}
+
+
 			fragmentManager.beginTransaction()
 					.add(R.id.folder_list_container, mBrowserFragment).commit();
 		}
