@@ -20,7 +20,7 @@
 			android:layout_marginStart="@dimen/file_icon_margin_start"
 			android:layout_marginEnd="@dimen/file_icon_margin_end"
 			android:contentDescription="@string/description_file_icon"
-			app:srcCompat="@drawable/ic_folder_black_24dp"
+			app:imageResource="@{fileItem.icon}"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			android:layout_marginTop="0dp"/>

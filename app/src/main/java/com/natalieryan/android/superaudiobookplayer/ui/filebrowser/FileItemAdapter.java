@@ -19,13 +19,12 @@ import java.util.ArrayList;
  *
  */
 
-
+@SuppressWarnings("unused")
 public class FileItemAdapter extends RecyclerView.Adapter<FileItemAdapter.ViewHolder>
 {
-	private ArrayList<FileItem> mFiles = new ArrayList<>();
+	private final ArrayList<FileItem> mFiles = new ArrayList<>();
 	private FileClickListener clickListener;
 	private FileItemBinding mBinder;
-	private static final int EMPTY_VIEW = 10;
 
 	//default constructor
 	public FileItemAdapter(){}
@@ -83,24 +82,12 @@ public class FileItemAdapter extends RecyclerView.Adapter<FileItemAdapter.ViewHo
 	@Override
 	public int getItemCount()
 	{
-		if (null == mFiles)
-		{
-			return 0;
-		}
 		return mFiles.size();
 	}
 
-
-
 	@Nullable
 	FileItem getItem (int position){
-		if(mFiles != null)
-		{
-			return mFiles.get(position);
-		}else
-		{
-			return null;
-		}
+		return mFiles.get(position);
 	}
 
 	public ArrayList<FileItem> getFileList()

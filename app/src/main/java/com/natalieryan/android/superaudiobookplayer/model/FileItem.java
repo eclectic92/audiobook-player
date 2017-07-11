@@ -144,6 +144,7 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 		return mIcon;
 	}
 
+	@Bindable
 	public void setIcon(int icon)
 	{
 		this.mIcon = icon;
