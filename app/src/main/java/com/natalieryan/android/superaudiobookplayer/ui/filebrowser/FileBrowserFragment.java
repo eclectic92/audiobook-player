@@ -357,7 +357,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		if(isSDCard)
 		{
 			fileItem.setName(getString(R.string.sd_root_folder));
-			fileItem.setIcon(R.drawable.ic_phone_android_black_24dp);
+			fileItem.setIcon(R.drawable.ic_sd_card_black_24dp);
 		}
 		else
 		{

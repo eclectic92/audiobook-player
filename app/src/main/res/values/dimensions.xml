@@ -13,4 +13,8 @@
 	<dimen name="file_icon_size">48dp</dimen>
 	<dimen name="file_icon_margin_end">8dp</dimen>
 	<dimen name="file_icon_margin_start">8dp</dimen>
+	<dimen name="file_item_margin">8dp</dimen>
+	<dimen name="file_browser_back_icon_margin">24dp</dimen>
+	<dimen name="file_browser_header_height">48dp</dimen>
+
 </resources>
