@@ -131,7 +131,10 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		}
 
 		mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
-
+		if(mSelectedItem.equals(mSessionRootItem))
+		{
+			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
+		}
 		return rootView;
 	}
 
@@ -216,6 +219,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			mCurrentPath = mSessionRootItem.getPath();
 			loadFileList(mCurrentPath);
 			mSelectedItem = mSessionRootItem;
+			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
 		}
 		mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
 	}
@@ -224,18 +228,15 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		return mSelectedItem.equals(mSessionRootItem);
 	}
 
-	// new special sauce ----------------------------------------------------
-
-
 	@Override
 	public void onFileClick (View view, int position)
 	{
-
 		final FileItem fileItem = mFileItemAdapter.getItem(position);
 		if(fileItem != null)
 		{
 			mSelectedItem = fileItem;
 			mBinder.selectedFileNameTv.setText(mSelectedItem.getName());
+			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
 			if(fileItem.getHasChildren())
 			{
 				mParentPath = fileItem.getParentPath();
@@ -328,7 +329,6 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				Collections.sort(fileItems);
 				fileAndFolderItems.addAll(fileItems);
 			}
-
 		}
 		return fileAndFolderItems;
 	}
@@ -352,21 +352,20 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	private FileItem createRootLevelFileItem(String rootPath, boolean isSDCard)
 	{
 		String displayName;
+		FileItem fileItem = new FileItem();
+		File file = new File(rootPath);
 		if(isSDCard)
 		{
-			displayName = getString(R.string.sd_root_folder);
+			fileItem.setName(getString(R.string.sd_root_folder));
+			fileItem.setIcon(R.drawable.ic_phone_android_black_24dp);
 		}
 		else
 		{
-			displayName = getString(R.string.device_root_folder);
-
+			fileItem.setName(getString(R.string.device_root_folder));
+			fileItem.setIcon(R.drawable.ic_phone_android_black_24dp);
 		}
-		FileItem fileItem = new FileItem();
-		File file = new File(rootPath);
-		fileItem.setName(displayName);
 		fileItem.setPath(file.getPath());
 		fileItem.setIsDirectory(true);
-		fileItem.setIcon(R.drawable.ic_folder_black_24dp);
 		fileItem.setSize(-1);
 		fileItem.setHasChildren(file.listFiles().length > 0);
 		fileItem.setIsTopLevel(isTopLevelFolder(file.getAbsolutePath()));
