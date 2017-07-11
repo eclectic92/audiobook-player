@@ -15,4 +15,10 @@
 	<string name="sd_card_unmounted">Error: SD Card not mounted</string>
 	<string name="browser_select_button">Select</string>
 	<string name="browser_cancel_button">Cancel</string>
+	<string name="title_activity_main">MainActivity</string>
+
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+
+	<string name="action_settings">Settings</string>
 </resources>
