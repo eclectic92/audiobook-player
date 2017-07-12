@@ -18,7 +18,7 @@
 		android:toAlpha="0.5" />
 
 	<translate
-		android:duration="400"
+		android:duration="200"
 		android:fromYDelta="0.0"
 		android:interpolator="@android:anim/accelerate_interpolator"
 		android:startOffset="100"
