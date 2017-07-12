@@ -14,7 +14,7 @@ public class TagReader extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tag_reader);
-		overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		ActionBar actionBar = this.getSupportActionBar();
 
 		if (actionBar != null)
@@ -24,18 +24,20 @@ public class TagReader extends AppCompatActivity
 	}
 
 	@Override
-	public void onBackPressed() {
+	public void onBackPressed()
+	{
 			super.onBackPressed();
-			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			super.onBackPressed();
-			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
 		return super.onOptionsItemSelected(item);
 	}

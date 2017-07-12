@@ -51,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
 				if(callingIntent.getStringExtra(Intent.EXTRA_REFERRER)
 						.equalsIgnoreCase(MainActivity.class.getSimpleName()))
 				{
-					overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+					overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 				}
 			}
 		}
@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
         int id = item.getItemId();
 		if (id == android.R.id.home) {
 			super.onBackPressed();
-			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
         return super.onOptionsItemSelected(item);
     }

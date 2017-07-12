@@ -27,7 +27,7 @@ public class FileBrowerStandaloneActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		setContentView(R.layout.activity_folder_browser);
 		FragmentManager fragmentManager=getSupportFragmentManager();
 		ActionBar actionBar = this.getSupportActionBar();
@@ -65,7 +65,7 @@ public class FileBrowerStandaloneActivity extends AppCompatActivity
 	public void onBackPressed() {
 		if(mBrowserFragment.isAtTopLevel()){
 			super.onBackPressed();
-			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
 		else{
 			mBrowserFragment.navigateBack();
@@ -77,7 +77,7 @@ public class FileBrowerStandaloneActivity extends AppCompatActivity
 		int id = item.getItemId();
 		if (id == android.R.id.home) {
 			super.onBackPressed();
-			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
 		return super.onOptionsItemSelected(item);
 	}

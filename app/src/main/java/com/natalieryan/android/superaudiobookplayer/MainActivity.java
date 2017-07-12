@@ -31,13 +31,15 @@ public class MainActivity extends AppCompatActivity
 	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final String SELECTED_FILE = "selected_file";
+	private MenuItem mMenuItemWaiting;
+	private DrawerLayout drawer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
@@ -52,11 +54,23 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
-		DrawerLayout drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
-		ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(
-				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+		drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+
+		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+		{
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+				if(mMenuItemWaiting != null)
+				{
+					onNavigationItemSelected(mMenuItemWaiting);
+				}
+			}
+		};
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
+
 
 		NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
@@ -134,6 +148,14 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item)
 	{
+
+		mMenuItemWaiting = null;
+		if(drawer.isDrawerOpen(GravityCompat.START)) {
+			mMenuItemWaiting = item;
+			drawer.closeDrawers();
+			return false;
+		};
+
 		// Handle navigation view item clicks here.
 		int id=item.getItemId();
 
