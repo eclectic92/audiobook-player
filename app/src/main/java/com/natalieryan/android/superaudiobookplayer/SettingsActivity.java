@@ -1,6 +1,7 @@
 package com.natalieryan.android.superaudiobookplayer;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -42,8 +43,21 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        ActionBar actionBar = this.getSupportActionBar();
+		Intent callingIntent = getIntent();
+		if (callingIntent != null)
+		{
+			if (callingIntent.hasExtra(Intent.EXTRA_REFERRER))
+			{
+				if(callingIntent.getStringExtra(Intent.EXTRA_REFERRER)
+						.equalsIgnoreCase(MainActivity.class.getSimpleName()))
+				{
+					overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+				}
+			}
+		}
+
+		setContentView(R.layout.activity_settings);
+		ActionBar actionBar = this.getSupportActionBar();
 
         // Set the action bar back button to look like an up button
         if (actionBar != null) {
@@ -54,10 +68,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        // When the home button is pressed, take the user back to the VisualizerActivity
-        if (id == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-        }
+		if (id == android.R.id.home) {
+			super.onBackPressed();
+			overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
+		}
         return super.onOptionsItemSelected(item);
     }
 }

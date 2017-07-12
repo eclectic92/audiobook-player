@@ -21,11 +21,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
+import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowerStandaloneActivity;
 
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
+	public static final String TAG = MainActivity.class.getSimpleName();
 
 	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		overridePendingTransition(R.anim.anim_swap_in_bottom, R.anim.anim_swap_out_bottom);
 		Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity
 		if (id == R.id.action_settings)
 		{
 			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+			startSettingsActivity.putExtra(Intent.EXTRA_REFERRER, TAG);
 			startActivity(startSettingsActivity);
 			return true;
 		}
@@ -141,6 +144,7 @@ public class MainActivity extends AppCompatActivity
 		else if (id == R.id.nav_settings)
 		{
 			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+			startSettingsActivity.putExtra(Intent.EXTRA_REFERRER, TAG);
 			startActivity(startSettingsActivity);
 		}
 
@@ -167,7 +171,7 @@ public class MainActivity extends AppCompatActivity
 		}
 		else
 		{
-			Intent intent = new Intent(this, FileBrowserActivity.class);
+			Intent intent = new Intent(this, FileBrowerStandaloneActivity.class);
 			startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 		}
 	}
@@ -181,7 +185,7 @@ public class MainActivity extends AppCompatActivity
 		{
 			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
 			{
-				Intent intent = new Intent(this, FileBrowserActivity.class);
+				Intent intent = new Intent(this, FileBrowerStandaloneActivity.class);
 				startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 			}
 		}

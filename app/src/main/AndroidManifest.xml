@@ -42,7 +42,18 @@
                 android:value="com.natalieryan.android.superaudiobookplayer.SettingsActivity" />
         </activity>
 
-        <provider
+		<activity
+			android:name=".ui.filebrowser.FileBrowerStandaloneActivity"
+			android:label="@string/title_activity_folder_browser"
+			android:parentActivityName=".MainActivity"
+			android:theme="@style/AppTheme.ActionBarClose" >
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity" />
+		</activity>
+
+
+		<provider
             android:name=".data.generated.LibraryProvider"
             android:authorities="com.natalieryan.android.superaudiobookplayer"
             android:exported="false" />
