@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity
 	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final String SELECTED_FILE = "selected_file";
-	private static final String SHOW_FOLDERS_ONLY = "show_folders_only";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 				launchTagReader();
 			}
 		});
-		
+
 		//launch file browser
 		Button fileButton = (Button) findViewById(R.id.file_button);
 		fileButton.setOnClickListener(new View.OnClickListener()
