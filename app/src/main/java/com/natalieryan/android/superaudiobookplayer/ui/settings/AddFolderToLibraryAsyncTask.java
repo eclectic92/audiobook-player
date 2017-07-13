@@ -13,7 +13,7 @@ import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
  *
  */
 
-public class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
+/*package-private*/ class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 {
 	private final Context mContext;
 	private final AddFolderListener mAddFolderListener;

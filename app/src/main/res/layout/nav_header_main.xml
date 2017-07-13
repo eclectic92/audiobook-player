@@ -19,5 +19,5 @@
 		android:layout_height="72dp"
 		android:layout_gravity="center"
 		android:paddingTop="@dimen/nav_icon_vertical_margin"
-		app:srcCompat="@drawable/ic_audiobooklauncherlogo"/>
+		app:srcCompat="@drawable/ic_audiobook_app_logo"/>
 </LinearLayout>

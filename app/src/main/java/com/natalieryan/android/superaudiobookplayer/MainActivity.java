@@ -27,7 +27,7 @@ import com.natalieryan.android.superaudiobookplayer.ui.settings.SettingsActivity
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
-	public static final String TAG = MainActivity.class.getSimpleName();
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity
 			mMenuItemWaiting = item;
 			drawer.closeDrawers();
 			return false;
-		};
+		}
 
 		// Handle navigation view item clicks here.
 		int id=item.getItemId();

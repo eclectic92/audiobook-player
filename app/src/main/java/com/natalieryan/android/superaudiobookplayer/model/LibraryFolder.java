@@ -4,13 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import net.simonvt.schematic.annotation.NotNull;
-
 /**
  * Created by natalier258 on 7/12/17.
  *
  */
 
+@SuppressWarnings("unused")
 public class LibraryFolder implements Parcelable
 {
 	private String mPath;

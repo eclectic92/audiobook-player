@@ -10,12 +10,12 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract.FolderE
  *
  */
 
-public class LibraryDbHelper extends SQLiteOpenHelper
+/*package-private*/  class LibraryDbHelper extends SQLiteOpenHelper
 {
 	private static final String DATABASE_NAME="library.db";
 	private static final int DATABASE_VERSION=1;
 
-	public LibraryDbHelper(Context context)
+	/*package-private*/  LibraryDbHelper(Context context)
 	{
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
