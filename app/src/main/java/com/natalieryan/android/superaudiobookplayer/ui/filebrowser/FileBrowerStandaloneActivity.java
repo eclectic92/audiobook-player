@@ -1,7 +1,6 @@
 package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
 
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.os.Bundle;
 
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.SettingsActivity;
 
 
 /**

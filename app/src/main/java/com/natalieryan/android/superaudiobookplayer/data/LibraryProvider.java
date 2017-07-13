@@ -1,112 +1,225 @@
 package com.natalieryan.android.superaudiobookplayer.data;
 
+import android.content.ContentProvider;
 import android.content.ContentValues;
-import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
-
-import net.simonvt.schematic.annotation.ContentProvider;
-import net.simonvt.schematic.annotation.ContentUri;
-import net.simonvt.schematic.annotation.InexactContentUri;
-import net.simonvt.schematic.annotation.NotifyBulkInsert;
-import net.simonvt.schematic.annotation.NotifyDelete;
-import net.simonvt.schematic.annotation.NotifyInsert;
-import net.simonvt.schematic.annotation.NotifyUpdate;
-import net.simonvt.schematic.annotation.TableEndpoint;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
- * Created by natalier258 on 7/11/17.
+ * Created by natalier258 on 7/12/17.
  *
  */
 
-@ContentProvider(authority = LibraryProvider.AUTHORITY, database = LibraryDatabase.class)
-public final class LibraryProvider
+public class LibraryProvider extends ContentProvider
 {
+	private static final int CODE_FOLDERS=100;
+	private static final int CODE_FOLDER_BY_ID=101;
 
-	private LibraryProvider()
-	{
-	}
+	private static final UriMatcher sUriMatcher=buildUriMatcher();
+	private LibraryDbHelper mOpenHelper;
 
-	public static final String AUTHORITY = "com.natalieryan.android.superaudiobookplayer";
-	static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
-	interface Path
-	{
-		String FOLDERS = "folders";
-	}
-
-	private static Uri buildUri(String... paths) {
-		Uri.Builder builder = BASE_CONTENT_URI.buildUpon();
-		for (String path : paths)
-		{
-			builder.appendPath(path);
-		}
-		return builder.build();
-	}
-
-	@TableEndpoint(table = LibraryDatabase.FOLDERS) public static class Folders
+	private static UriMatcher buildUriMatcher()
 	{
 
-		@ContentUri(
-				path = Path.FOLDERS,
-				type = "vnd.android.cursor.dir/folder")
-		public static final Uri CONTENT_URI = buildUri(Path.FOLDERS);
+		final UriMatcher matcher=new UriMatcher(UriMatcher.NO_MATCH);
+		final String authority=LibraryContract.CONTENT_AUTHORITY;
 
-		@InexactContentUri(
-				name = "FOLDER_ID",
-				path = Path.FOLDERS + "/#",
-				type = "vnd.android.cursor.item/folder",
-				whereColumn = LibraryFoldersColumns.ID,
-				pathSegment = 1)
-		public static Uri withId(long id)
+		matcher.addURI(authority, LibraryContract.PATH_LIBRARY_FOLDER, CODE_FOLDERS);
+		matcher.addURI(authority, LibraryContract.PATH_LIBRARY_FOLDER+"/#", CODE_FOLDER_BY_ID);
+
+		return matcher;
+	}
+
+
+	@Override
+	public boolean onCreate()
+	{
+		mOpenHelper=new LibraryDbHelper(getContext());
+		return true;
+	}
+
+
+	@Nullable
+	@Override
+	public Cursor query(@NonNull Uri uri, String[] projection, String selection,
+						String[] selectionArgs, String sortOrder)
+	{
+
+		Cursor cursor;
+
+		switch (sUriMatcher.match(uri))
 		{
-			return buildUri(Path.FOLDERS, String.valueOf(id));
+			case CODE_FOLDER_BY_ID:
+			{
+				String folderId=uri.getLastPathSegment();
+				String[] selectionArguments=new String[]{folderId};
+				cursor=mOpenHelper.getReadableDatabase().query(
+						LibraryContract.FolderEntry.TABLE_NAME,
+						projection,
+						LibraryContract.FolderEntry._ID+" = ? ",
+						selectionArguments,
+						null,
+						null,
+						sortOrder);
+				break;
+			}
+			case CODE_FOLDERS:
+			{
+				cursor=mOpenHelper.getReadableDatabase().query(
+						LibraryContract.FolderEntry.TABLE_NAME,
+						projection,
+						selection,
+						selectionArgs,
+						null,
+						null,
+						sortOrder);
+				break;
+			}
+			default:
+				throw new UnsupportedOperationException("Unknown uri: "+uri);
 		}
 
-
-		@NotifyInsert(paths = Path.FOLDERS)
-		public static Uri[] onInsert(ContentValues values)
+		if (getContext()!=null)
 		{
-			final long folderId = values.getAsLong(LibraryFoldersColumns.ID);
-			return new Uri[] {
-					Folders.withId(folderId)
-			};
+			cursor.setNotificationUri(getContext().getContentResolver(), uri);
+		}
+		return cursor;
+	}
+
+
+	@Nullable
+	@Override
+	public Uri insert(@NonNull Uri uri, ContentValues values)
+	{
+
+		Uri returnUri;
+
+		switch (sUriMatcher.match(uri))
+		{
+			case CODE_FOLDERS:
+			{
+				long id=mOpenHelper.getWritableDatabase().insert(
+						LibraryContract.FolderEntry.TABLE_NAME,
+						null,
+						values
+				);
+
+				if (id>0)
+				{
+					returnUri=LibraryContract.FolderEntry.buildFolderUriWithId(id);
+				}
+				else
+				{
+					throw new android.database.SQLException("Failed to insert row into "+uri);
+				}
+				break;
+			}
+			default:
+				throw new UnsupportedOperationException("Unknown uri: "+uri);
 		}
 
-		@NotifyBulkInsert(paths = Path.FOLDERS)
-		public static Uri[] onBulkInsert(Context context, Uri uri, ContentValues[] values, long[] ids)
+		if (getContext()!=null)
 		{
-			return new Uri[] {
-					uri,
-			};
+			getContext().getContentResolver().notifyChange(uri, null);
 		}
 
-		@NotifyUpdate(paths = Path.FOLDERS + "/#")
-		public static Uri[] onUpdate(Context context, Uri uri, String where, String[] whereArgs)
-		{
-			final long noteId = Long.valueOf(uri.getPathSegments().get(1));
-			Cursor c = context.getContentResolver().query(uri, new String[] {
-					LibraryFoldersColumns.ID,
-			}, null, null, null);
-			c.moveToFirst();
-			c.close();
+		return returnUri;
+	}
 
-			return new Uri[] {
-					withId(noteId)
-			};
+
+	@Override
+	public int delete(@NonNull Uri uri, String selection, String[] selectionArgs)
+	{
+
+		int deletedDrowsCount;
+
+		if (null==selection)
+		{
+			selection="1";
 		}
 
-		@NotifyDelete(paths = Path.FOLDERS + "/#")
-		public static Uri[] onDelete(Context context, Uri uri)
+		switch (sUriMatcher.match(uri))
 		{
-			final long folderId = Long.valueOf(uri.getPathSegments().get(1));
-			Cursor c = context.getContentResolver().query(uri, null, null, null, null);
-			c.moveToFirst();
-			c.close();
 
-			return new Uri[] {
-					withId(folderId)
-			};
+			case CODE_FOLDERS:
+				deletedDrowsCount=mOpenHelper.getWritableDatabase().delete(
+						LibraryContract.FolderEntry.TABLE_NAME,
+						selection,
+						selectionArgs);
+				break;
+
+			default:
+				throw new UnsupportedOperationException("Unknown uri: "+uri);
+		}
+
+		if (deletedDrowsCount!=0)
+		{
+			if (getContext()!=null)
+			{
+				getContext().getContentResolver().notifyChange(uri, null);
+			}
+		}
+
+		return deletedDrowsCount;
+	}
+
+
+	@Override
+	public int update(@NonNull Uri uri, ContentValues values,
+					  String selection, String[] selectionArgs)
+	{
+
+		int updatedRowsCount;
+
+		switch (sUriMatcher.match(uri))
+		{
+			case CODE_FOLDERS:
+			{
+				updatedRowsCount=mOpenHelper.getWritableDatabase().update(
+						LibraryContract.FolderEntry.TABLE_NAME,
+						values,
+						selection,
+						selectionArgs
+				);
+				break;
+			}
+			default:
+				throw new UnsupportedOperationException("Unknown uri: "+uri);
+		}
+
+		if (updatedRowsCount!=0)
+		{
+			if (getContext()!=null)
+			{
+				getContext().getContentResolver().notifyChange(uri, null);
+			}
+		}
+
+		return updatedRowsCount;
+	}
+
+
+	@Nullable
+	@Override
+	public String getType(@NonNull Uri uri)
+	{
+		switch (sUriMatcher.match(uri))
+		{
+			case CODE_FOLDERS:
+			{
+				return LibraryContract.FolderEntry.CONTENT_TYPE;
+			}
+			case CODE_FOLDER_BY_ID:
+			{
+				return LibraryContract.FolderEntry.CONTENT_ITEM_TYPE;
+			}
+			default:
+				throw new UnsupportedOperationException("Unknown uri: "+uri);
+
 		}
 	}
 }

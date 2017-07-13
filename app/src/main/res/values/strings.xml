@@ -29,6 +29,7 @@
 	<string name="title_activity_settings">Settings</string>
 
 	<!-- Strings related to Settings -->
+	<string name="pref_manage_folders_key">audiobook_folders</string>
 	<string name="pref_manage_folders_title">Audiobook folders</string>
 	<string name="pref_manage_folders_summary">Set or change locations containing books</string>
 

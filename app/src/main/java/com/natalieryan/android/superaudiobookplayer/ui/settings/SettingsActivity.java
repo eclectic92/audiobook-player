@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer;
+package com.natalieryan.android.superaudiobookplayer.ui.settings;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -25,6 +28,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.natalieryan.android.superaudiobookplayer.MainActivity;
+import com.natalieryan.android.superaudiobookplayer.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -74,4 +80,5 @@ public class SettingsActivity extends AppCompatActivity {
 		}
         return super.onOptionsItemSelected(item);
     }
+
 }

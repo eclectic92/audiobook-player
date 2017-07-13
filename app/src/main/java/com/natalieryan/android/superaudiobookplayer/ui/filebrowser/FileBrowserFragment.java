@@ -28,12 +28,15 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 {
 	public static final String TAG = FileBrowserFragment.class.getSimpleName();
 
+	public static final String SHOW_FOLDERS_ONLY = "show_folders_only";
+	public static final String EXTRA_FILE_PATH = "file_path";
+	public static final String EXTRA_FILE_IS_ON_SD_CARD = "file_is_on_sd_card";
+
 	private static final String CURRENT_PATH = "current_path";
 	private static final String PARENT_PATH = "parent_path";
 	private static final String DEVICE_ROOT_PATH = "device_root_path";
 	private static final String SD_CARD_ROOT_PATH = "sd_card_root_path";
 	private static final String FILES = "files";
-	private static final String SHOW_FOLDERS_ONLY= "show_folders_only";
 	private static final String SELECTED_ITEM = "selected_item";
 	private static final String ROOT_ITEM = "root_item";
 	private static final String SELECTED_FILE = "selected_file";
@@ -186,7 +189,8 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			{
 				Activity callingActivity = getActivity();
 				Intent returnIntent = new Intent();
-				returnIntent.putExtra(SELECTED_FILE, mSelectedItem.getPath());
+				returnIntent.putExtra(EXTRA_FILE_PATH, mSelectedItem.getPath());
+				returnIntent.putExtra(EXTRA_FILE_IS_ON_SD_CARD, isUsingSdCard());
 				callingActivity.setResult(Activity.RESULT_OK, returnIntent);
 				callingActivity.finish();
 			}

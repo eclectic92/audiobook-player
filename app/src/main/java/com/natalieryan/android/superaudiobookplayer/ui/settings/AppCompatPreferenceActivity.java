@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer;
+package com.natalieryan.android.superaudiobookplayer.ui.settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
