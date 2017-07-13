@@ -292,7 +292,11 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			mCurrentPath = mParentPath;
 			mParentPath = getParentFilePath(mCurrentPath);
 			loadFileList(mCurrentPath);
-			mSelectedItem = mFiles.get(0);
+			mSelectedItem = CreateParentFileItem(mCurrentPath);
+			if(mSelectedItem.getPath().equalsIgnoreCase(mSessionRootItem.getPath())){
+				mSelectedItem = mSessionRootItem;
+				mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
+			}
 		}
 		else
 		{
@@ -321,7 +325,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			mSelectedItem = fileItem;
 			mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
-			if(fileItem.getHasChildren())
+			if(fileItem.getIsDirectory())
 			{
 				mParentPath = fileItem.getParentPath();
 				mCurrentPath = fileItem.getPath();
@@ -452,6 +456,26 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		fileItem.setHasChildren(file.listFiles().length > 0);
 		fileItem.setIsTopLevel(isTopLevelFolder(file.getAbsolutePath()));
 		fileItem.setParentPath(null);
+		return fileItem;
+	}
+
+	private FileItem CreateParentFileItem(String path)
+	{
+
+		FileItem fileItem = new FileItem();
+		File file = new File(path);
+		fileItem.setName(file.getName());
+		fileItem.setIcon(R.drawable.ic_folder_black_24dp);
+		fileItem.setPath(file.getPath());
+		fileItem.setIsDirectory(true);
+		fileItem.setSize(-1);
+		fileItem.setHasChildren(true);
+		boolean isTopLevel = isTopLevelFolder(file.getAbsolutePath());
+		if(!isTopLevel)
+		{
+			File parentFile = new File(file.getParent());
+			fileItem.setParentPath(parentFile.getAbsolutePath());
+		}
 		return fileItem;
 	}
 
