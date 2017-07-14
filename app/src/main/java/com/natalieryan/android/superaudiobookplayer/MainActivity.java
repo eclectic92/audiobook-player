@@ -28,6 +28,7 @@ import com.natalieryan.android.superaudiobookplayer.ui.settings.SettingsActivity
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
+	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private static final int PERMISSION_REQUEST_CODE = 101;

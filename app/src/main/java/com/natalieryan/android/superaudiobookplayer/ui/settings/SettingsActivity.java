@@ -1,6 +1,5 @@
 package com.natalieryan.android.superaudiobookplayer.ui.settings;
 
-import android.content.Intent;
 import android.preference.PreferenceActivity;
 
 import android.support.v7.app.ActionBar;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.natalieryan.android.superaudiobookplayer.MainActivity;
 import com.natalieryan.android.superaudiobookplayer.R;
 
 /**

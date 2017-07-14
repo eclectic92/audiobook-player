@@ -30,7 +30,7 @@
 		android:layout_marginEnd="@dimen/fab_menu_margin">
 
 		<com.getbase.floatingactionbutton.FloatingActionButton
-			android:id="@+id/action_folder_file_is_book"
+			android:id="@+id/action_folder_single_file_per_book"
 			android:theme="@style/FabMain"
 			android:scaleType="center"
 			android:layout_width="wrap_content"

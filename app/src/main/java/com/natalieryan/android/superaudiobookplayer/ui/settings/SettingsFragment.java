@@ -1,41 +1,23 @@
 package com.natalieryan.android.superaudiobookplayer.ui.settings;
 
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
-import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
-import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowerStandaloneActivity;
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment;
 import com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener,
 																		  Preference.OnPreferenceChangeListener
 {
-
-	private static final int SELECT_FOLDER_RESULT_CODE = 1;
-	private static final int PERMISSION_REQUEST_CODE = 200;
-
-	private LibraryFolder mLibraryFolder;
-
 	@Override
 	public void onCreatePreferences(Bundle bundle, String s) {
 
