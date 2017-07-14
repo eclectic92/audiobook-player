@@ -14,7 +14,7 @@ public class LibraryFolder implements Parcelable
 {
 	private String mPath;
 	private boolean mIsSdCardFolder = false;
-	private boolean mContainsMultipleBooks = false;
+	private boolean mEachFileIsABook = false;
 
 	public LibraryFolder(){}
 
@@ -22,7 +22,7 @@ public class LibraryFolder implements Parcelable
 	{
 		this.mPath = path;
 		this.mIsSdCardFolder = isSdCardFolder;
-		this.mContainsMultipleBooks = containsMultipleBooks;
+		this.mEachFileIsABook = containsMultipleBooks;
 	}
 
 	//constructor for parceler
@@ -30,7 +30,7 @@ public class LibraryFolder implements Parcelable
 	{
 		this.mPath = in.readString();
 		this.mIsSdCardFolder = in.readInt() == 1;
-		this.mContainsMultipleBooks = in.readInt() == 1;
+		this.mEachFileIsABook = in.readInt() == 1;
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class LibraryFolder implements Parcelable
 	{
 		out.writeString(mPath);
 		out.writeInt(mIsSdCardFolder ? 1 : 0);
-		out.writeInt(mContainsMultipleBooks ? 1 : 0);
+		out.writeInt(mEachFileIsABook ? 1 : 0);
 	}
 
 	public static final Parcelable.Creator<LibraryFolder> CREATOR = new Parcelable.Creator<LibraryFolder>()
@@ -80,13 +80,13 @@ public class LibraryFolder implements Parcelable
 		this.mIsSdCardFolder = isSdCardFolder;
 	}
 
-	public boolean getContainsMultipleBooks()
+	public boolean getEachFileIsABook()
 	{
-		return mContainsMultipleBooks;
+		return mEachFileIsABook;
 	}
 
-	public void setContainsMultipleBooks(boolean containsMultipleBooks)
+	public void setEachFileIsABook(boolean eachFileIsABook)
 	{
-		this.mContainsMultipleBooks = containsMultipleBooks;
+		this.mEachFileIsABook = eachFileIsABook;
 	}
 }

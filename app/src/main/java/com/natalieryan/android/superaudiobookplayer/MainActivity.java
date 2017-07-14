@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowerStandaloneActivity;
+import com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity;
 import com.natalieryan.android.superaudiobookplayer.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -41,10 +42,10 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
-		Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+		Toolbar toolbar=(Toolbar)findViewById(R.id.folder_manager_toolbar);
 		setSupportActionBar(toolbar);
 
-		FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.fab);
+		FloatingActionButton fab=(FloatingActionButton)findViewById(R.id.folder_manager_fab);
 		fab.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -77,13 +78,13 @@ public class MainActivity extends AppCompatActivity
 		navigationView.setNavigationItemSelectedListener(this);
 
 		//launch tag reader
-		Button tagButton = (Button) findViewById(R.id.tag_reader_btn);
+		Button tagButton = (Button) findViewById(R.id.manager_btn);
 		tagButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
 			{
-				launchTagReader();
+				launchManager();
 			}
 		});
 
@@ -136,8 +137,8 @@ public class MainActivity extends AppCompatActivity
 		if (id == R.id.action_settings)
 		{
 			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
-			startSettingsActivity.putExtra(Intent.EXTRA_REFERRER, TAG);
 			startActivity(startSettingsActivity);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 			return true;
 		}
 
@@ -167,8 +168,8 @@ public class MainActivity extends AppCompatActivity
 		else if (id == R.id.nav_settings)
 		{
 			Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
-			startSettingsActivity.putExtra(Intent.EXTRA_REFERRER, TAG);
 			startActivity(startSettingsActivity);
+			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
 
 
@@ -177,9 +178,9 @@ public class MainActivity extends AppCompatActivity
 		return true;
 	}
 
-	private void launchTagReader()
+	private void launchManager()
 	{
-		Intent intent = new Intent(this, TagReader.class);
+		Intent intent = new Intent(this, FolderManagerActivity.class);
 		startActivity(intent);
 
 	}

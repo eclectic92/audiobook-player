@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	tools:context="com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity">
+
+	<View
+		android:id="@+id/shadow_overlay"
+		android:visibility="gone"
+		android:background="@color/colorOverlaySemiTransparent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
+	<com.getbase.floatingactionbutton.FloatingActionsMenu
+		android:id="@+id/fab_folder_menu"
+		android:theme="@style/FabMain"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentEnd="true"
+		app:fab_labelStyle="@style/FabLabels"
+		app:fab_labelsPosition="left"
+		app:fab_addButtonStrokeVisible="true"
+		android:layout_marginBottom="@dimen/fab_menu_margin"
+		android:layout_marginEnd="@dimen/fab_menu_margin">
+
+		<com.getbase.floatingactionbutton.FloatingActionButton
+			android:id="@+id/action_folder_file_is_book"
+			android:theme="@style/FabMain"
+			android:scaleType="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:fab_stroke_visible="true"
+			app:fab_icon="@drawable/ic_book_light_18dp"
+			android:tint="@color/colorIcons"
+			app:fab_title="@string/title_fab_each_file_is_book"/>
+
+		<com.getbase.floatingactionbutton.FloatingActionButton
+			android:id="@+id/action_folder_multifile_books"
+			android:theme="@style/FabMain"
+			android:scaleType="center"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:fab_stroke_visible="true"
+			app:fab_icon="@drawable/ic_library_books_light_18dp"
+			android:tint="@color/colorIcons"
+			app:fab_title="@string/title_fab_folder_is_multibook"/>
+	</com.getbase.floatingactionbutton.FloatingActionsMenu>
+</RelativeLayout>

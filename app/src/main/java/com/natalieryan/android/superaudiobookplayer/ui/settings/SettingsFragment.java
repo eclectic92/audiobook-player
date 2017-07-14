@@ -20,14 +20,16 @@ import android.support.v7.preference.PreferenceScreen;
 import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowerStandaloneActivity;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment;
+import com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener,
-																		  Preference.OnPreferenceChangeListener,
-																		  AddFolderToLibraryAsyncTask.AddFolderListener {
+																		  Preference.OnPreferenceChangeListener
+{
 
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final int PERMISSION_REQUEST_CODE = 200;
@@ -55,7 +57,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 						@Override
 						public boolean onPreferenceClick(Preference preference)
 						{
-							launchFolderBrowser();
+							Intent intent = new Intent(getActivity(), FolderManagerActivity.class);
+							startActivity(intent);
 							return true;
 						}
 					});
@@ -128,76 +131,4 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 		getPreferenceScreen().getSharedPreferences()
 				.unregisterOnSharedPreferenceChangeListener(this);
 	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		// check that it is the SecondActivity with an OK result
-		if (requestCode == SELECT_FOLDER_RESULT_CODE)
-		{
-			if (resultCode == Activity.RESULT_OK)
-			{
-				// get String data from Intent
-				String filePath = data.getStringExtra(FileBrowserFragment.EXTRA_FILE_PATH);
-				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD, false);
-				if(filePath != null && !filePath.isEmpty())
-				{
-					mLibraryFolder = new LibraryFolder(filePath, isOnSDCard, true);
-					AddFolderToLibraryAsyncTask addLibraryFolder = new AddFolderToLibraryAsyncTask(getActivity(), this);
-					addLibraryFolder.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mLibraryFolder);
-				}
-			}
-		}
-	}
-
-	private void launchFolderBrowser()
-	{
-		int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
-				Manifest.permission.WRITE_EXTERNAL_STORAGE);
-		if (permissionCheck != PackageManager.PERMISSION_GRANTED)
-		{
-			requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-		}
-		else
-		{
-			Intent intent = new Intent(getActivity(), FileBrowserActivity.class);
-			intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, 1);
-			startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
-		}
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode,
-										   @NonNull String[] permissions, @NonNull int[] grantResults)
-	{
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == PERMISSION_REQUEST_CODE)
-		{
-			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-			{
-				Intent intent = new Intent(getActivity(), FileBrowerStandaloneActivity.class);
-				intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, 1);
-				startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
-			}
-		}
-	}
-
-
-	@Override
-	public void onFolderAdded(int addedRowId)
-	{
-		String message;
-
-		if(addedRowId == -1){
-			message =  "Failed to add folder to library. See logs";
-		}
-		else
-		{
-			message =  mLibraryFolder.getPath() + " added as folder " + String.valueOf(addedRowId);
-		}
-		Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-		mLibraryFolder = null;
-	}
-
 }

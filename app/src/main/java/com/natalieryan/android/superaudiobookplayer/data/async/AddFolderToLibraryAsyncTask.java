@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.settings;
+package com.natalieryan.android.superaudiobookplayer.data.async;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,7 +13,7 @@ import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
  *
  */
 
-/*package-private*/ class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
+public class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 {
 	private final Context mContext;
 	private final AddFolderListener mAddFolderListener;
@@ -30,7 +30,7 @@ import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 	 * Listener for async task completion
 	 * Must be implemented by hosting class
 	 */
-	interface AddFolderListener
+	public interface AddFolderListener
 	{
 		void onFolderAdded(int addedRowId);
 	}
@@ -52,8 +52,8 @@ import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_PATH, libraryFolder.getPath());
 		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_IS_SD_FOLDER,
 				libraryFolder.getIsSdCardFolder() ? 1 : 0);
-		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_CONTAINS_MULTIPLE_BOOKS,
-				libraryFolder.getContainsMultipleBooks() ? 1 : 0);
+		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_EACH_FILE_IS_A_BOOK,
+				libraryFolder.getEachFileIsABook() ? 1 : 0);
 
 		if (mContext!=null && mContext.getContentResolver()!=null)
 		{

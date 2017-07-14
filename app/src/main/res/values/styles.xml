@@ -6,7 +6,9 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:listDivider">@color/colorDivider</item>
-		<item name="colorControlNormal">@color/colorSecondaryText</item>
+		<item name="android:colorControlNormal">@color/colorSecondaryText</item>
+		<item name="android:textColorPrimary">@color/colorPrimaryText</item>
+		<item name="android:windowBackground">@color/colorWindowBackground</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 	</style>
 
@@ -32,6 +34,7 @@
 	<style name="AppTheme.ActionBarClose">
 		<item name="android:homeAsUpIndicator">@drawable/ic_action_close</item>
 	</style>
+
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
@@ -42,5 +45,19 @@
 
 	<style name="CancelButton" parent="Widget.AppCompat.Button.Borderless">
 		<item name="android:textColor">@color/colorCancelButton</item>
+	</style>
+
+
+	<style name="FabLabels">
+		<item name="android:background">@drawable/fab_label_background</item>
+		<item name="android:textColor">@color/colorIcons</item>
+	</style>
+
+	<style name="FabMain">
+		<item name="fab_addButtonColorNormal">@color/colorAccent</item>
+		<item name="fab_addButtonColorPressed">@color/colorAccentPressed</item>
+		<item name="fab_addButtonPlusIconColor">@color/colorIcons</item>
+		<item name="fab_colorNormal">@color/colorAccent</item>
+		<item name="fab_colorPressed">@color/colorAccentPressed</item>
 	</style>
 </resources>

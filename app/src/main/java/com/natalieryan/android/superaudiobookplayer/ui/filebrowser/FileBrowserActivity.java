@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentManager;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 
@@ -62,5 +63,4 @@ public class FileBrowserActivity extends AppCompatActivity
 			mBrowserFragment.navigateBack();
 		}
 	}
-
 }

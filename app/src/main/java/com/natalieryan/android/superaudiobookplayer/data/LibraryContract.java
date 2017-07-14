@@ -38,7 +38,7 @@ public class LibraryContract
 
 		public static final String COLUMN_IS_SD_FOLDER="isSdFolder";
 
-		public static final String COLUMN_CONTAINS_MULTIPLE_BOOKS="containsMultipleBooks";
+		public static final String COLUMN_EACH_FILE_IS_A_BOOK="eachFileIsABook";
 
 
 		public static Uri buildFolderUriWithId(long id)

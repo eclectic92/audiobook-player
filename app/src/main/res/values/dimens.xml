@@ -14,5 +14,8 @@
 	<dimen name="activity_vertical_margin">16dp</dimen>
 	<dimen name="nav_icon_vertical_margin">24dp</dimen>
 	<dimen name="nav_header_height">100dp</dimen>
+
+	<!-- fab  -->
 	<dimen name="fab_margin">16dp</dimen>
+	<dimen name="fab_menu_margin">8dp</dimen>
 </resources>

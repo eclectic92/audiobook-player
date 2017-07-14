@@ -10,14 +10,14 @@
 	tools:showIn="@layout/app_bar_main">
 
 	<Button
-		android:id="@+id/tag_reader_btn"
+		android:id="@+id/manager_btn"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="8dp"
 		android:layout_marginRight="8dp"
 		android:layout_marginEnd="8dp"
 		android:layout_marginStart="8dp"
-		android:text="Tag Reader"
+		android:text="Folder Manager"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
@@ -36,5 +36,5 @@
 		android:text="File Browser"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/tag_reader_btn"/>
+		app:layout_constraintTop_toBottomOf="@+id/manager_btn"/>
 </android.support.constraint.ConstraintLayout>

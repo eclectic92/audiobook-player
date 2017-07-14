@@ -28,23 +28,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		Intent callingIntent = getIntent();
-		if (callingIntent != null)
-		{
-			if (callingIntent.hasExtra(Intent.EXTRA_REFERRER))
-			{
-				if(callingIntent.getStringExtra(Intent.EXTRA_REFERRER)
-						.equalsIgnoreCase(MainActivity.class.getSimpleName()))
-				{
-					overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
-				}
-			}
-		}
 
 		setContentView(R.layout.activity_settings);
 		ActionBar actionBar = this.getSupportActionBar();
 
-        // Set the action bar back button to look like an up button
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
