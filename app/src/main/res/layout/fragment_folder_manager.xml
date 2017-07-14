@@ -1,54 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity">
-
-	<View
-		android:id="@+id/shadow_overlay"
-		android:visibility="gone"
-		android:background="@color/colorOverlaySemiTransparent"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"/>
-
-	<com.getbase.floatingactionbutton.FloatingActionsMenu
-		android:id="@+id/fab_folder_menu"
-		android:theme="@style/FabMain"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior"
+		tools:context="com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity">
 
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentEnd="true"
-		app:fab_labelStyle="@style/FabLabels"
-		app:fab_labelsPosition="left"
-		app:fab_addButtonStrokeVisible="true"
-		android:layout_marginBottom="@dimen/fab_menu_margin"
-		android:layout_marginEnd="@dimen/fab_menu_margin">
+		<ScrollView
+			android:id="@+id/library_folder_manager_scroll_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:scrollbars="none"
+			android:fillViewport="false">
+			<LinearLayout
+				android:id="@+id/library_folder_manager_rv_container"
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:fillViewport="true">
 
-		<com.getbase.floatingactionbutton.FloatingActionButton
-			android:id="@+id/action_folder_single_file_per_book"
+				<android.support.v7.widget.RecyclerView
+					android:id="@+id/_library_folder_list_rv"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginEnd="0dp"
+					android:layout_marginStart="0dp"
+					app:layoutManager="LinearLayoutManager"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					tools:listitem="@layout/file_item"/>
+			</LinearLayout>
+		</ScrollView>
+
+		<View
+			android:id="@+id/shadow_overlay"
+			android:visibility="gone"
+			android:background="@color/colorOverlaySemiTransparent"
+			tools:visibility="visible"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+		</View>
+
+
+		<com.getbase.floatingactionbutton.FloatingActionsMenu
+			android:id="@+id/fab_folder_menu"
 			android:theme="@style/FabMain"
-			android:scaleType="center"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:fab_stroke_visible="true"
-			app:fab_icon="@drawable/ic_book_light_18dp"
-			android:tint="@color/colorIcons"
-			app:fab_title="@string/title_fab_each_file_is_book"/>
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 
-		<com.getbase.floatingactionbutton.FloatingActionButton
-			android:id="@+id/action_folder_multifile_books"
-			android:theme="@style/FabMain"
-			android:scaleType="center"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			app:fab_stroke_visible="true"
-			app:fab_icon="@drawable/ic_library_books_light_18dp"
-			android:tint="@color/colorIcons"
-			app:fab_title="@string/title_fab_folder_is_multibook"/>
-	</com.getbase.floatingactionbutton.FloatingActionsMenu>
-</RelativeLayout>
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentEnd="true"
+			app:fab_labelStyle="@style/FabLabels"
+			app:fab_labelsPosition="left"
+			app:fab_addButtonStrokeVisible="true"
+			android:layout_marginBottom="@dimen/fab_menu_margin"
+			android:layout_marginEnd="@dimen/fab_menu_margin">
+
+			<com.getbase.floatingactionbutton.FloatingActionButton
+				android:id="@+id/action_folder_single_file_per_book"
+				android:theme="@style/FabMain"
+				android:scaleType="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:fab_stroke_visible="true"
+				app:fab_icon="@drawable/ic_book_light_18dp"
+				android:tint="@color/colorIcons"
+				app:fab_title="@string/title_fab_each_file_is_book"/>
+
+			<com.getbase.floatingactionbutton.FloatingActionButton
+				android:id="@+id/action_folder_multifile_books"
+				android:theme="@style/FabMain"
+				android:scaleType="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:fab_stroke_visible="true"
+				app:fab_icon="@drawable/ic_library_books_light_18dp"
+				android:tint="@color/colorIcons"
+				app:fab_title="@string/title_fab_folder_is_multibook"/>
+		</com.getbase.floatingactionbutton.FloatingActionsMenu>
+	</RelativeLayout>
+</layout>

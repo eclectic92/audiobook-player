@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
+import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -112,7 +113,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				}
 			}
 			mDeviceRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-			mSdCardRootPath = getSdCardPath(mDeviceRootPath);
+			mSdCardRootPath = PathUtils.getSdCardPath(mDeviceRootPath);
 			mCurrentPath = mDeviceRootPath;
 			mSessionRootItem = createRootLevelFileItem(mCurrentPath, false);
 			mSelectedItem = mSessionRootItem;
@@ -155,18 +156,18 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			{
 				public void onClick(View v)
 				{
-					if(!isUsingSdCard())
+				if(!isUsingSdCard())
+				{
+					if(sdCardIsMounted())
 					{
-						if(sdCardIsMounted())
-						{
-							swapRoot(mSdCardRootPath);
-						}
-						else
-						{
-							handleSdCardNotPresent();
-						}
-
+						swapRoot(mSdCardRootPath);
 					}
+					else
+					{
+						handleSdCardNotPresent();
+					}
+
+				}
 				}
 			});
 
@@ -174,10 +175,10 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			{
 				public void onClick(View v)
 				{
-					if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
-					{
-						swapRoot(mDeviceRootPath);
-					}
+				if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
+				{
+					swapRoot(mDeviceRootPath);
+				}
 				}
 			});
 		}
@@ -335,31 +336,6 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				mCurrentPath = fileItem.getPath();
 				loadFileList(mCurrentPath);
 			}
-		}
-	}
-
-	private String getSdCardPath(String baseStoragePath)
-	{
-		File storageRoots[] = new File("/storage/").listFiles();
-		ArrayList<String> sdCardPaths = new ArrayList<>();
-
-		for(File singleRoot : storageRoots)
-		{
-			if(!singleRoot.getAbsolutePath().equalsIgnoreCase(baseStoragePath)
-					&& singleRoot.isDirectory()
-					&& singleRoot.canRead())
-			{
-				sdCardPaths.add(singleRoot.getAbsolutePath());
-			}
-		}
-
-		if(sdCardPaths.isEmpty())
-		{
-			return null;
-		}
-		else
-		{
-			return sdCardPaths.get(0);
 		}
 	}
 
