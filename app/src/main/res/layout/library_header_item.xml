@@ -17,7 +17,7 @@
 
 		<TextView
 			android:id="@+id/library_header_item_tv"
-			style="@style/TextAppearance.AppCompat.Subhead"
+			style="@style/FolderText"
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
