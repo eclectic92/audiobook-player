@@ -127,7 +127,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 	private void launchFolderBrowser()
 	{
-		mFam.collapse();
+		mFam.collapseImmediately();
 		int permissionCheck = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
 		if (permissionCheck != PackageManager.PERMISSION_GRANTED)
 		{
