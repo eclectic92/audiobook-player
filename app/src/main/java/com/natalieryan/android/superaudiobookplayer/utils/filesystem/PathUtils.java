@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.utils;
+package com.natalieryan.android.superaudiobookplayer.utils.filesystem;
 
 import android.os.Environment;
 
@@ -47,13 +47,9 @@ public class PathUtils
 
 	public static boolean sdCardIsMounted()
 	{
-		String sdCardPath = getSdCardPath();
-		if (sdCardPath == null)
-		{
-			return false;
-		}
+		String sdCardPath=getSdCardPath();
+		return sdCardPath!=null && sdCardIsMounted(sdCardPath);
 
-		return sdCardIsMounted(sdCardPath);
 	}
 
 	public static boolean sdCardIsMounted(String sdCardPath)

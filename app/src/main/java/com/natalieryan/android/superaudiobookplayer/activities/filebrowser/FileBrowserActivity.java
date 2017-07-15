@@ -1,23 +1,18 @@
-package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
+package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
+
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.MenuItem;
 
 import android.os.Bundle;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 
-
-/**
- * Created by natalier258 on 7/12/17.
- *
- */
-
-public class FileBrowerStandaloneActivity extends AppCompatActivity
+public class FileBrowserActivity extends AppCompatActivity
 {
+
 	private FileBrowserFragment mBrowserFragment;
 	private static final String SHOW_FOLDERS_ONLY = "show_folders_only";
 
@@ -25,7 +20,6 @@ public class FileBrowerStandaloneActivity extends AppCompatActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		setContentView(R.layout.activity_folder_browser);
 		FragmentManager fragmentManager=getSupportFragmentManager();
 		ActionBar actionBar = this.getSupportActionBar();
@@ -63,20 +57,9 @@ public class FileBrowerStandaloneActivity extends AppCompatActivity
 	public void onBackPressed() {
 		if(mBrowserFragment.isAtTopLevel()){
 			super.onBackPressed();
-			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		}
 		else{
 			mBrowserFragment.navigateBack();
 		}
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			super.onBackPressed();
-			overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
-		}
-		return super.onOptionsItemSelected(item);
 	}
 }

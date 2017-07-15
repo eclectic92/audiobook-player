@@ -6,7 +6,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		tools:context="com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity">
+		tools:context="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity">
 
 		<ScrollView
 			android:id="@+id/library_folder_manager_scroll_view"

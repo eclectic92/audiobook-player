@@ -33,7 +33,7 @@
 				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
 		</activity>
 		<activity
-			android:name=".ui.filebrowser.FileBrowerStandaloneActivity"
+			android:name=".activities.filebrowser.FileBrowerStandaloneActivity"
 			android:label="@string/title_activity_folder_browser"
 			android:parentActivityName=".MainActivity"
 			android:theme="@style/AppTheme.ActionBarClose">
@@ -42,7 +42,7 @@
 				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
 		</activity>
 		<activity
-			android:name=".ui.settings.SettingsActivity"
+			android:name=".activities.settings.SettingsActivity"
 			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity">
 			<meta-data
@@ -50,22 +50,22 @@
 				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
 		</activity>
 		<activity
-			android:name=".ui.foldermanager.FolderManagerActivity"
+			android:name=".activities.foldermanager.FolderManagerActivity"
 			android:label="@string/title_activity_folder_manager"
 			android:theme="@style/AppTheme"
-			android:parentActivityName=".ui.settings.SettingsActivity">
+			android:parentActivityName=".activities.settings.SettingsActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.ui.settings.SettingsActivity"/>
+				android:value="com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity"/>
 		</activity>
 		<activity
-			android:name=".ui.filebrowser.FileBrowserActivity"
+			android:name=".activities.filebrowser.FileBrowserActivity"
 			android:label="@string/title_activity_folder_browser"
-			android:parentActivityName=".ui.foldermanager.FolderManagerActivity"
+			android:parentActivityName=".activities.foldermanager.FolderManagerActivity"
 			android:theme="@style/AppTheme.ActionBarClose">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity"/>
+				android:value="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity"/>
 		</activity>
 
 		<provider

@@ -6,7 +6,7 @@
 
 	<RelativeLayout
 		android:id="@+id/file_browser_fragment"
-		tools:context="com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment"
+		tools:context="com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<RelativeLayout

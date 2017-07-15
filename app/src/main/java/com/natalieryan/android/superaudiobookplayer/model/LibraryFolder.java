@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 
 /**
  * Created by natalier258 on 7/12/17.

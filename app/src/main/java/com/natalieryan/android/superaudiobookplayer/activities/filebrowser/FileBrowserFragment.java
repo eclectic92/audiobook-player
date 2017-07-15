@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.filebrowser;
+package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
 
 import android.app.Activity;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
-import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 
 import java.io.File;
 import java.io.FileFilter;

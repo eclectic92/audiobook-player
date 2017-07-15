@@ -7,7 +7,6 @@
 	<string name="title_activity_folder_manager">Library Folders</string>
 
 	<!-- content descriptors -->
-	<string name="description_folder_icon">Folder icon</string>
 	<string name="description_file_icon">File icon</string>
 	<string name="description_back_icon">Back icon</string>
 	<string name="description_logo_icon">Super Audiobook Player</string>
@@ -43,13 +42,9 @@
 	<string name="header_for_device_folders">Folders on device</string>
 	<string name="folder_each_file_is_book">Each file is a single book</string>
 	<string name="folder_contains_multiple_books">Books arranged into subfolders</string>
+	<string name="delete_folder">Delete</string>
 	<plurals name="folder_book_count">
 		<item quantity="one">%d book</item>
 		<item quantity="other">%d books</item>
-	</plurals>
-
-	<plurals name="numberOfComments">
-		<item quantity="one">%d comment</item>
-		<item quantity="other">%d comments</item>
 	</plurals>
 </resources>

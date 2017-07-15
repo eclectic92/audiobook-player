@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.utils;
+package com.natalieryan.android.superaudiobookplayer.utils.media;
 
 import java.util.Random;
 

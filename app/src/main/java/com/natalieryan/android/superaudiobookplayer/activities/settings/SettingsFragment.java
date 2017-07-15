@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.settings;
+package com.natalieryan.android.superaudiobookplayer.activities.settings;
 
 
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener,
 																		  Preference.OnPreferenceChangeListener

@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.foldermanager;
+package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,7 +14,7 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryFolderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 
 import java.util.ArrayList;
 
@@ -28,14 +28,14 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdapter.LibraryViewHolder>
 {
-	private static final int VIEW_TYPE_HEADER=1;
-	private static final int VIEW_TYPE_FOLDER=2;
+	public static final int VIEW_TYPE_HEADER=1;
+	public static final int VIEW_TYPE_FOLDER=2;
 
 	private final ArrayList<LibraryFolder> mFolders = new ArrayList<>();
 	private boolean mShowHeaders = false;
 	private List<Integer> mNumberOfHeadersOnOrAbove;
 	private LibraryFolderItemBinding mBinder;
-	private Context mContext;
+	private final Context mContext;
 
 
 	FolderManagerAdapter(Context context, boolean showHeaders)
@@ -51,7 +51,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 			super(view);
 		}
 
-		public void bind(Object binding){};
+		public void bind(Object binding){}
 
 	}
 
@@ -69,7 +69,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		public void bind(Object libraryFolderObject)
 		{
 			LibraryFolder libraryFolder = (LibraryFolder) libraryFolderObject;
-			mBinding.folderRegular.setLibraryFolderItem(libraryFolder);
+			mBinding.setLibraryFolderItem(libraryFolder);
 			mBinding.executePendingBindings();
 		}
 	}
@@ -109,7 +109,6 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 			}
 			case VIEW_TYPE_HEADER:
 			{
-				int layoutIdForListItem = R.layout.library_header_item;
 				LibraryHeaderItemBinding libraryHeaderItemBinding =
 						DataBindingUtil.inflate(inflater, R.layout.library_header_item, viewGroup, false);
 				return new LibraryHeaderViewHolder(libraryHeaderItemBinding);
@@ -269,6 +268,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 
 		return totalItemCount;
 	}
+
 
 	public String getHeaderForFolderGroup(LibraryFolder currentFolder)
 	{

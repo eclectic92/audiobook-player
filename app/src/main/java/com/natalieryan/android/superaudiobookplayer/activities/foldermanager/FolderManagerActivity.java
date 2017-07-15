@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui.foldermanager;
+package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -9,7 +9,6 @@ import android.view.MenuItem;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.ui.FabScrollListener;
 
 public class FolderManagerActivity extends AppCompatActivity
 {

@@ -21,9 +21,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowerStandaloneActivity;
-import com.natalieryan.android.superaudiobookplayer.ui.foldermanager.FolderManagerActivity;
-import com.natalieryan.android.superaudiobookplayer.ui.settings.SettingsActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowerStandaloneActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener

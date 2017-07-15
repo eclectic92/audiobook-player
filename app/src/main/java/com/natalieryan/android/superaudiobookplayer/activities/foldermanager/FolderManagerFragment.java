@@ -1,10 +1,7 @@
-package com.natalieryan.android.superaudiobookplayer.ui.foldermanager;
+package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
 
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,43 +11,41 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
+import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.ui.FabScrollListener;
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
-import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment;
-import com.natalieryan.android.superaudiobookplayer.utils.MediaScanner;
-import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
-
-import java.util.ArrayList;
+import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
+import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
+import com.natalieryan.android.superaudiobookplayer.utils.media.MediaScanner;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FolderManagerFragment extends Fragment implements AddFolderToLibraryAsyncTask.AddFolderListener,
 															   LoaderManager.LoaderCallbacks<Cursor>,
-															   FabScrollListener.FabPositionListener
+															   FabScrollListener.FabPositionListener,
+															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener
 {
 
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
@@ -61,7 +56,6 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			LibraryContract.FolderEntry.COLUMN_PATH + " ASC";
 
 	private FloatingActionsMenu mFam;
-	private LibraryFolder mLibraryFolder = null;
 	private boolean mEachFileIsBook = false;
 	private boolean mFabIsVisible;
 
@@ -81,8 +75,17 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		View rootView = mBinder.getRoot();
 
+		//create the floating action button menu
 		setupFabMenu(rootView);
 
+		return rootView;
+	}
+
+
+	@Override
+	public void onResume()
+	{
+		super.onResume();
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
 		mAdapter = new FolderManagerAdapter(getContext(), true);
@@ -95,8 +98,10 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		//attach the fab scroll listener
 		mBinder.LibraryFolderListRv.addOnScrollListener(new FabScrollListener(this));
 
-		return rootView;
+		//create and attach the swipe helper for deleting items
+		setSwipeForRecyclerView();
 	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -112,9 +117,9 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
 					int bookCount = MediaScanner.getBookCount();
-					mLibraryFolder = new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, bookCount);
-					AddFolderToLibraryAsyncTask addLibraryFolder = new AddFolderToLibraryAsyncTask(getContext(), this);
-					addLibraryFolder.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mLibraryFolder);
+					LibraryFolder folderToAdd =
+							new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, bookCount);
+					addFolderToLibrary(folderToAdd);
 				}
 			}
 		}
@@ -155,25 +160,38 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		}
 	}
 
-	@Override
-	public void onFolderAdded(int addedRowId)
-	{
-		String message;
 
-		if(addedRowId == -1){
-			message =  "Failed to add folder to library. See logs";
-		}
-		else
-		{
-			message =  mLibraryFolder.getPath() + " added as folder " + String.valueOf(addedRowId);
-		}
-		Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-		mLibraryFolder = null;
-	}
 
 	//
 	//utility functions
 	//
+
+	private void addFolderToLibrary(LibraryFolder folderToAdd)
+	{
+		AddFolderToLibraryAsyncTask addLibraryFolder = new AddFolderToLibraryAsyncTask(getContext(), this);
+		addLibraryFolder.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderToAdd);
+	}
+
+	@Override
+	public void onFolderAdded(int addedRowId)
+	{
+		//nothing to do here quite yet.
+	}
+
+
+	private void removeFolderFromLibrary(LibraryFolder folderToRemove)
+	{
+		RemoveFolderFromLibraryAsyncTask removeFolderFromLibraryAsyncTask =
+				new RemoveFolderFromLibraryAsyncTask(getContext(), this);
+		removeFolderFromLibraryAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderToRemove);
+	}
+
+	@Override
+	public void onFolderRemoved(String folderFriendlyPath)
+	{
+		//nothing to do here quite yet.
+	}
+
 	public FloatingActionsMenu getFam(){
 		return this.mFam;
 	}
@@ -225,6 +243,37 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		});
 
 		mFam.setOnFloatingActionsMenuUpdateListener(listener);
+	}
+
+	private void setSwipeForRecyclerView()
+	{
+
+		SwipeHelper swipeHelper=new SwipeHelper(getContext())
+		{
+			@Override
+			public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction)
+			{
+				int swipedPosition=viewHolder.getAdapterPosition();
+				removeFolderFromLibrary(mAdapter.getItem(swipedPosition));
+			}
+
+			@Override
+			public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+				final int dragFlags = 0;
+				final int swipeFlags = ItemTouchHelper.START;
+				return viewHolder.getItemViewType() == FolderManagerAdapter.VIEW_TYPE_HEADER
+						? 0 : makeMovementFlags(dragFlags, swipeFlags);
+			}
+
+
+		};
+
+		ItemTouchHelper mItemTouchHelper=new ItemTouchHelper(swipeHelper);
+		mItemTouchHelper.attachToRecyclerView(mBinder.LibraryFolderListRv);
+
+		swipeHelper.setSwipeLeftLabel(getContext().getString( R.string.delete_folder));
+		swipeHelper.setSwipeLeftColorCode(ContextCompat.getColor(getActivity(), R.color.colorCancelButton));
+		swipeHelper.setSwipeLeftIconId(R.drawable.ic_delete_black_24dp);
 	}
 
 	@Override
@@ -291,6 +340,6 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader)
 	{
-		//nothing to do here
+		//nothing to do here yet
 	}
 }

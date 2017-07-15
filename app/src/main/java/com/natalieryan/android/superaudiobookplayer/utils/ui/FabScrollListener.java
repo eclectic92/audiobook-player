@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.ui;
+package com.natalieryan.android.superaudiobookplayer.utils.ui;
 
 
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +13,7 @@ import android.support.v7.widget.RecyclerView;
 public class FabScrollListener extends RecyclerView.OnScrollListener
 {
 
-	private FabPositionListener positionListener;
+	private final FabPositionListener positionListener;
 
 
 	public interface FabPositionListener
