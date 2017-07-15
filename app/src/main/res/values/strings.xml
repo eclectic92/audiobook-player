@@ -1,6 +1,9 @@
 <resources>
 	<string name="app_name">SuperAudiobookPlayer</string>
 
+	<!-- temp strings -->
+	<string name="main_activity_placeholder_title">Work in progress</string>
+	<string name="main_activity_placeholder_subtitle">Click the menu button</string>
 	<!-- screen titles -->
 	<string name="title_activity_main">Super Audiobook Player</string>
 	<string name="title_activity_folder_browser">Select a folder</string>
