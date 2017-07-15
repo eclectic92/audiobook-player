@@ -65,7 +65,7 @@ public class PathUtils
 
 	public static String getFriendlyPath(String path, String rootPath)
 	{
-		return path.equalsIgnoreCase(rootPath) ?  path : path.replace(rootPath, "");
+		return path.replace(rootPath, "");
 	}
 
 	public static String getFriendlySdCardName(String path)

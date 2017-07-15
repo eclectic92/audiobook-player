@@ -17,7 +17,7 @@
 		<TextView
 			android:id="@+id/folder_name_tv"
 			tools:text="/this/folder/name"
-			android:text="@{libraryFolderItem.friendlyPath}"
+			android:text="@{libraryFolderItem.friendlyPath.isEmpty() ? @string/folder_root_path : libraryFolderItem.friendlyPath}"
 			style="@style/FolderText"
 			android:maxLines="1"
 			android:ellipsize="end"
