@@ -50,10 +50,12 @@ public class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, 
 		ContentValues libaryFolderValues=new ContentValues();
 
 		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_PATH, libraryFolder.getPath());
+		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_ROOT_PATH, libraryFolder.getRootPath());
 		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_IS_SD_FOLDER,
 				libraryFolder.getIsSdCardFolder() ? 1 : 0);
 		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_EACH_FILE_IS_A_BOOK,
 				libraryFolder.getEachFileIsABook() ? 1 : 0);
+		libaryFolderValues.put(LibraryContract.FolderEntry.COLUMN_BOOK_COUNT, libraryFolder.getBookCount());
 
 		if (mContext!=null && mContext.getContentResolver()!=null)
 		{

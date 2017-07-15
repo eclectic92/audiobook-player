@@ -12,14 +12,22 @@ import java.util.ArrayList;
 
 public class PathUtils
 {
-	public static String getSdCardPath(String baseStoragePath)
+
+	private static final String BASE_STORAGE_PATH = "/storage/";
+
+	public static String getDeviceRootStoragePath()
 	{
-		File storageRoots[] = new File("/storage/").listFiles();
+		return Environment.getExternalStorageDirectory().getAbsolutePath();
+	}
+
+	public static String getSdCardPath()
+	{
+		File storageRoots[] = new File(BASE_STORAGE_PATH).listFiles();
 		ArrayList<String> sdCardPaths = new ArrayList<>();
 
 		for(File singleRoot : storageRoots)
 		{
-			if(!singleRoot.getAbsolutePath().equalsIgnoreCase(baseStoragePath)
+			if(!singleRoot.getAbsolutePath().equalsIgnoreCase(getDeviceRootStoragePath())
 					&& singleRoot.isDirectory()
 					&& singleRoot.canRead())
 			{
@@ -37,20 +45,35 @@ public class PathUtils
 		}
 	}
 
-	public static String getFriendlyPath(String pathName, boolean isOnSdCard)
+	public static boolean sdCardIsMounted()
 	{
-		String deviceBasePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-		if(isOnSdCard)
+		String sdCardPath = getSdCardPath();
+		if (sdCardPath == null)
 		{
-			String sdCardBasePath = getSdCardPath(deviceBasePath);
-			if(sdCardBasePath != null){
-				pathName = pathName.replace(sdCardBasePath, "");
-			}
+			return false;
 		}
-		else
+
+		return sdCardIsMounted(sdCardPath);
+	}
+
+	public static boolean sdCardIsMounted(String sdCardPath)
+	{
+		if (sdCardPath == null || sdCardPath.isEmpty())
 		{
-			pathName = pathName.replace(deviceBasePath, "");
+			return false;
 		}
-		return pathName + "/";
+
+		File testFile = new File(sdCardPath);
+		return testFile.exists();
+	}
+
+	public static String getFriendlyPath(String path, String rootPath)
+	{
+		return path.replace(rootPath, "");
+	}
+
+	public static String getFriendlySdCardName(String path)
+	{
+		return path.replace(BASE_STORAGE_PATH,"");
 	}
 }

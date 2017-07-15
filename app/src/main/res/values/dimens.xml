@@ -12,6 +12,7 @@
 	<!-- library folder manager -->
 	<dimen name="folder_item_margin_start">8dp</dimen>
 	<dimen name="folder_item_margin_end">8dp</dimen>
+	<dimen name="folder_header_elevation">2dp</dimen>
 
 	<!-- nav drawer -->
 	<dimen name="activity_horizontal_margin">16dp</dimen>
@@ -22,4 +23,6 @@
 	<!-- fab  -->
 	<dimen name="fab_margin">16dp</dimen>
 	<dimen name="fab_menu_margin">8dp</dimen>
+
+	<dimen name="divider_height">1dp</dimen>
 </resources>

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -112,8 +111,8 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 					mShowOnlyFolders = getArguments().getInt(SHOW_FOLDERS_ONLY) == 1;
 				}
 			}
-			mDeviceRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-			mSdCardRootPath = PathUtils.getSdCardPath(mDeviceRootPath);
+			mDeviceRootPath = PathUtils.getDeviceRootStoragePath();
+			mSdCardRootPath = PathUtils.getSdCardPath();
 			mCurrentPath = mDeviceRootPath;
 			mSessionRootItem = createRootLevelFileItem(mCurrentPath, false);
 			mSelectedItem = mSessionRootItem;
@@ -146,7 +145,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		}
 
 		//show device/sd card toggle buttons if SD card present
-		if(sdCardIsMounted())
+		if(PathUtils.sdCardIsMounted())
 		{
 			mBinder.sdCardButton.setVisibility(View.VISIBLE);
 			mBinder.deviceButton.setVisibility(View.VISIBLE);
@@ -158,7 +157,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				{
 				if(!isUsingSdCard())
 				{
-					if(sdCardIsMounted())
+					if(PathUtils.sdCardIsMounted())
 					{
 						swapRoot(mSdCardRootPath);
 					}
@@ -286,7 +285,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 	public void navigateBack() {
 
-		if(isUsingSdCard() && !sdCardIsMounted())
+		if(isUsingSdCard() && !PathUtils.sdCardIsMounted())
 		{
 			handleSdCardNotPresent();
 			return;
@@ -320,7 +319,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	@Override
 	public void onFileClick (View view, int position)
 	{
-		if(isUsingSdCard() && !sdCardIsMounted()){
+		if(isUsingSdCard() && !PathUtils.sdCardIsMounted()){
 			handleSdCardNotPresent();
 			return;
 		}
@@ -474,17 +473,6 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		mCurrentPath = mSelectedItem.getPath();
 		mParentPath = null;
 		loadFileList(mCurrentPath);
-	}
-
-	private boolean sdCardIsMounted()
-	{
-		if (mSdCardRootPath == null)
-		{
-			return false;
-		}
-
-		File testFile = new File(mSdCardRootPath);
-		return testFile.exists();
 	}
 
 	private boolean isUsingSdCard()

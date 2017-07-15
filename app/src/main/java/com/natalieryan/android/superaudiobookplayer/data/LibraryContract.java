@@ -39,19 +39,25 @@ public class LibraryContract
 
 		public static final String TABLE_NAME="folderTable";
 		public static final String COLUMN_PATH="folderPath";
+		public static final String COLUMN_ROOT_PATH="rootPath";
 		public static final String COLUMN_IS_SD_FOLDER="isSdFolder";
 		public static final String COLUMN_EACH_FILE_IS_A_BOOK="eachFileIsABook";
+		public static final String COLUMN_BOOK_COUNT = "book_count";
 
 		public static final String[] FOLDER_COLUMNS = {
 				_ID,
 				COLUMN_PATH,
+				COLUMN_ROOT_PATH,
 				COLUMN_IS_SD_FOLDER,
-				COLUMN_EACH_FILE_IS_A_BOOK
+				COLUMN_EACH_FILE_IS_A_BOOK,
+				COLUMN_BOOK_COUNT
 		};
 
 		public static final int INDEX_LIBRARY_FOLDER_ID=0;
 		public static final int INDEX_LIBRARY_FOLDER_PATH=1;
-		public static final int INDEX_LIBRARY_FOLDER_IS_SD_FOLDER=2;
-		public static final int INDEX_LIBRARY_FOLDER_EACH_FILE_IS_A_BOOK=3;
+		public static final int INDEX_LIBRARY_FOLDER_ROOT_PATH=2;
+		public static final int INDEX_LIBRARY_FOLDER_IS_SD_FOLDER=3;
+		public static final int INDEX_LIBRARY_FOLDER_EACH_FILE_IS_A_BOOK=4;
+		public static final int INDEX_LIBRARY_FOLDER_BOOK_COUNT=5;
 	}
 }

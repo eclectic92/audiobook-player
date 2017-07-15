@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
+
 /**
  * Created by natalier258 on 7/12/17.
  *
@@ -14,9 +16,10 @@ public class LibraryFolder implements Parcelable
 {
 	private long mId;
 	private String mPath;
-	private String mFriendlyPath;
+	private String mRootPath;
 	private boolean mIsSdCardFolder=false;
 	private boolean mEachFileIsABook=false;
+	private int mBookCount;
 
 
 	public LibraryFolder()
@@ -24,21 +27,22 @@ public class LibraryFolder implements Parcelable
 	}
 
 
-	public LibraryFolder(long id, @NonNull String path, @NonNull String friendlyPath,
-						 boolean isSdCardFolder, boolean containsMultipleBooks)
+	public LibraryFolder(long id, @NonNull String path, @NonNull String rootPath,
+						 boolean isSdCardFolder, boolean containsMultipleBooks, int bookCount)
 	{
-		this(path, friendlyPath, isSdCardFolder, containsMultipleBooks);
+		this(path, rootPath, isSdCardFolder, containsMultipleBooks, bookCount);
 		this.mId=id;
 	}
 
 
-	public LibraryFolder(@NonNull String path, @NonNull String friendlyPath,
-						 boolean isSdCardFolder, boolean containsMultipleBooks)
+	public LibraryFolder(@NonNull String path, @NonNull String rootPath,
+						 boolean isSdCardFolder, boolean containsMultipleBooks, int bookCount)
 	{
 		this.mPath=path;
-		this.mFriendlyPath=friendlyPath;
+		this.mRootPath = rootPath;
 		this.mIsSdCardFolder=isSdCardFolder;
 		this.mEachFileIsABook=containsMultipleBooks;
+		this.mBookCount = bookCount;
 	}
 
 
@@ -47,9 +51,10 @@ public class LibraryFolder implements Parcelable
 	{
 		this.mId=in.readLong();
 		this.mPath=in.readString();
-		this.mFriendlyPath=in.readString();
+		this.mRootPath = in.readString();
 		this.mIsSdCardFolder=in.readInt()==1;
 		this.mEachFileIsABook=in.readInt()==1;
+		this.mBookCount=in.readInt();
 	}
 
 
@@ -58,9 +63,10 @@ public class LibraryFolder implements Parcelable
 	{
 		out.writeLong(mId);
 		out.writeString(mPath);
-		out.writeString(mFriendlyPath);
+		out	.writeString(mRootPath);
 		out.writeInt(mIsSdCardFolder ? 1 : 0);
 		out.writeInt(mEachFileIsABook ? 1 : 0);
+		out.writeInt(mBookCount);
 	}
 
 
@@ -70,7 +76,6 @@ public class LibraryFolder implements Parcelable
 		{
 			return new LibraryFolder(parcel);
 		}
-
 
 		public LibraryFolder[] newArray(int size)
 		{
@@ -103,22 +108,21 @@ public class LibraryFolder implements Parcelable
 		return mPath;
 	}
 
-
 	public void setPath(@NonNull String path)
 	{
 		this.mPath=path;
 	}
 
-
-	public String getFriendlyPath()
+	public String getRootPath()
 	{
-		return mFriendlyPath;
+		return mRootPath;
 	}
 
-	public void setFriendlyPath(@NonNull String friendlyPath)
+	public void setRootPath(String rootPath)
 	{
-		this.mFriendlyPath = friendlyPath;
+		this.mRootPath = rootPath;
 	}
+
 	public boolean getIsSdCardFolder()
 	{
 		return mIsSdCardFolder;
@@ -139,5 +143,18 @@ public class LibraryFolder implements Parcelable
 		this.mEachFileIsABook = eachFileIsABook;
 	}
 
+	public int getBookCount()
+	{
+		return mBookCount;
+	}
 
+	public void setBookCount(int bookCount)
+	{
+		this.mBookCount = bookCount;
+	}
+
+	public String getFriendlyPath()
+	{
+		return PathUtils.getFriendlyPath(mPath, mRootPath);
+	}
 }

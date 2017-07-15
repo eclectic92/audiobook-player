@@ -10,7 +10,6 @@ import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -32,9 +31,9 @@ import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderMa
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment;
+import com.natalieryan.android.superaudiobookplayer.utils.MediaScanner;
 import com.natalieryan.android.superaudiobookplayer.utils.PathUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +47,8 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private static final int PERMISSION_REQUEST_CODE = 200;
 	private static final int LIBRARY_FOLDER_LOADER = 100;
 
-	private static final String FOLDER_SORT_ORDER = LibraryContract.FolderEntry.COLUMN_PATH + " ASC";
+	private static final String FOLDER_SORT_ORDER = LibraryContract.FolderEntry.COLUMN_ROOT_PATH + " DESC, "+
+			LibraryContract.FolderEntry.COLUMN_PATH + " ASC";
 
 	private FloatingActionsMenu mFam;
 	private LibraryFolder mLibraryFolder = null;
@@ -76,7 +76,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-		mAdapter = new FolderManagerAdapter();
+		mAdapter = new FolderManagerAdapter(getContext(), true);
 		mBinder.LibraryFolderListRv.setAdapter(mAdapter);
 		mBinder.LibraryFolderListRv.setLayoutManager(layoutManager);
 
@@ -96,10 +96,11 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			{
 				String filePath = data.getStringExtra(FileBrowserFragment.EXTRA_FILE_PATH);
 				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD, false);
-				if(filePath != null && !filePath.isEmpty())
+				String rootPath = isOnSDCard ? PathUtils.getSdCardPath() : PathUtils.getDeviceRootStoragePath();
+				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
-					String friendlyPath = PathUtils.getFriendlyPath(filePath, isOnSDCard);
-					mLibraryFolder = new LibraryFolder(filePath, friendlyPath, isOnSDCard, mEachFileIsBook);
+					int bookCount = MediaScanner.getBookCount();
+					mLibraryFolder = new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, bookCount);
 					AddFolderToLibraryAsyncTask addLibraryFolder = new AddFolderToLibraryAsyncTask(getContext(), this);
 					addLibraryFolder.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, mLibraryFolder);
 				}
@@ -158,8 +159,9 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		mLibraryFolder = null;
 	}
 
+	//
 	//utility functions
-
+	//
 	public FloatingActionsMenu getFam(){
 		return this.mFam;
 	}
@@ -234,7 +236,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 				throw new RuntimeException("Loader Not Implemented: "+loaderId);
 		}
 	}
-	
+
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data)
 	{

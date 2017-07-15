@@ -12,8 +12,8 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract.FolderE
 
 /*package-private*/  class LibraryDbHelper extends SQLiteOpenHelper
 {
-	private static final String DATABASE_NAME="library.db";
-	private static final int DATABASE_VERSION=2;
+	private static final String DATABASE_NAME = "library.db";
+	private static final int DATABASE_VERSION = 5;
 
 	/*package-private*/  LibraryDbHelper(Context context)
 	{
@@ -39,8 +39,10 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract.FolderE
 				"CREATE TABLE "+ FolderEntry.TABLE_NAME+" ("+
 						FolderEntry._ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
 						FolderEntry.COLUMN_PATH+" TEXT NOT NULL, "+
+						FolderEntry.COLUMN_ROOT_PATH+" TEXT NOT NULL, "+
 						FolderEntry.COLUMN_IS_SD_FOLDER+" INTEGER NOT NULL, " +
 						FolderEntry.COLUMN_EACH_FILE_IS_A_BOOK+" INTEGER NOT NULL, " +
+						FolderEntry.COLUMN_BOOK_COUNT+" INTEGER DEFAULT 0, " +
 						" UNIQUE ("+FolderEntry.COLUMN_PATH+") ON CONFLICT REPLACE);";
 
 		db.execSQL(SQL_CREATE_FOLDERS_TABLE);

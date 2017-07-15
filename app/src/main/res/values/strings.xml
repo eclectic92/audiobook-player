@@ -4,6 +4,7 @@
 	<!-- screen titles -->
 	<string name="title_activity_main">Super Audiobook Player</string>
 	<string name="title_activity_folder_browser">Select a folder</string>
+	<string name="title_activity_folder_manager">Library Folders</string>
 
 	<!-- content descriptors -->
 	<string name="description_folder_icon">Folder icon</string>
@@ -29,10 +30,26 @@
 	<string name="title_activity_settings">Settings</string>
 	<string name="title_fab_each_file_is_book">Each file in the folder\ncontains a single book</string>
 	<string name="title_fab_folder_is_multibook">Contains mulit-file books\narranged into subfolders</string>
+
 	<!-- Strings related to Settings -->
 	<string name="pref_manage_folders_key">audiobook_folders</string>
 	<string name="pref_manage_folders_title">Audiobook folders</string>
 	<string name="pref_manage_folders_summary">Set or change locations containing books</string>
-	<string name="title_activity_folder_manager">FolderManager</string>
 
+	<!-- Strings for folder manager -->
+	<string name="header_sd_inserted">inserted</string>
+	<string name="header_sd_not_inserted">not inserted</string>
+	<string name="header_for_sd_card_folders">Folders on SD card\u0020%1$s\u0020(%2$s)</string>
+	<string name="header_for_device_folders">Folders on device</string>
+	<string name="folder_each_file_is_book">Each file is a single book</string>
+	<string name="folder_contains_multiple_books">Books arranged into subfolders</string>
+	<plurals name="folder_book_count">
+		<item quantity="one">%d book</item>
+		<item quantity="other">%d books</item>
+	</plurals>
+
+	<plurals name="numberOfComments">
+		<item quantity="one">%d comment</item>
+		<item quantity="other">%d comments</item>
+	</plurals>
 </resources>

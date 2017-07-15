@@ -21,8 +21,7 @@ public class FolderManagerActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_folder_manager);
 		final FragmentManager fragmentManager=getSupportFragmentManager();
-		//Toolbar toolbar = (Toolbar) findViewById(R.id.folder_manager_toolbar);
-		//setSupportActionBar(toolbar);
+
 		ActionBar actionBar = this.getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
