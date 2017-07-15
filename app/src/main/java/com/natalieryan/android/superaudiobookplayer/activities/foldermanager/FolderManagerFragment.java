@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -33,6 +35,7 @@ import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromL
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
+import com.natalieryan.android.superaudiobookplayer.utils.ui.FloatingActionMenuBehaviour;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
@@ -190,6 +193,15 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	public void onFolderRemoved(String folderFriendlyPath)
 	{
 		//nothing to do here quite yet.
+		Snackbar bar = Snackbar.make(getActivity().findViewById( R.id.clayout), "Weclome to SwA", Snackbar.LENGTH_LONG)
+				.setAction("Dismiss", new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						// Handle user action
+					}
+				});
+
+		bar.show();
 	}
 
 	public FloatingActionsMenu getFam(){
