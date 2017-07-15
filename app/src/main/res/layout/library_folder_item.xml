@@ -11,7 +11,8 @@
 
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:paddingTop="@dimen/folder_item_vertical_margin">
 
 		<TextView
 			android:id="@+id/folder_name_tv"
@@ -43,7 +44,7 @@
 			android:layout_width="0dp"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="0dp"
-			android:layout_marginBottom="0dp"
+			android:layout_marginBottom="@dimen/folder_item_vertical_margin"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintEnd_toStartOf="@+id/folder_book_count"
 			app:layout_constraintTop_toBottomOf="@+id/folder_name_tv"
@@ -63,7 +64,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="0dp"
-			android:layout_marginBottom="0dp"
+			android:layout_marginBottom="@dimen/folder_item_vertical_margin"
 			android:gravity="end"
 			app:layout_constraintStart_toEndOf="@+id/folder_type_tv"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +72,7 @@
 			android:layout_marginStart="@dimen/folder_item_margin_start"
 			android:layout_marginEnd="@dimen/folder_item_margin_end"
 			app:layout_constraintLeft_toRightOf="@+id/folder_type_tv"
-			app:layout_constraintVertical_bias="0.555"
+			app:layout_constraintVertical_bias="0.55"
 			app:layout_constraintTop_toTopOf="@+id/folder_type_tv"/>
 
 		<View style="@style/Divider"
@@ -79,7 +80,8 @@
 			  app:layout_constraintEnd_toEndOf="parent"
 			  app:layout_constraintStart_toStartOf="parent"
 			  android:layout_marginBottom="0dp"
-			  android:id="@+id/view2"/>
+			  android:id="@+id/view2"
+			  tools:layout_editor_absoluteX="0dp"/>
 
 	</android.support.constraint.ConstraintLayout>
 
