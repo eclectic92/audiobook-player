@@ -17,7 +17,7 @@
 			android:id="@+id/folder_name_tv"
 			tools:text="/this/folder/name"
 			android:text="@{libraryFolderItem.friendlyPath}"
-			style="@style/TextAppearance.AppCompat.Subhead"
+			style="@style/FolderText"
 			android:maxLines="1"
 			android:ellipsize="end"
 			android:layout_width="0dp"
