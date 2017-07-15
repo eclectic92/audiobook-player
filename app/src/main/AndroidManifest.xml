@@ -25,23 +25,6 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name=".TagReader"
-			android:parentActivityName=".MainActivity"
-			android:theme="@style/AppTheme">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
-		</activity>
-		<activity
-			android:name=".activities.filebrowser.FileBrowerStandaloneActivity"
-			android:label="@string/title_activity_folder_browser"
-			android:parentActivityName=".MainActivity"
-			android:theme="@style/AppTheme.ActionBarClose">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
-		</activity>
-		<activity
 			android:name=".activities.settings.SettingsActivity"
 			android:label="@string/title_activity_settings"
 			android:parentActivityName=".MainActivity">
