@@ -69,7 +69,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		public void bind(Object libraryFolderObject)
 		{
 			LibraryFolder libraryFolder = (LibraryFolder) libraryFolderObject;
-			mBinding.setLibraryFolderItem(libraryFolder);
+			mBinding.folderRegular.setLibraryFolderItem(libraryFolder);
 			mBinding.executePendingBindings();
 		}
 	}
