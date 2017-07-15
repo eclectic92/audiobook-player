@@ -47,7 +47,6 @@
 		<item name="android:textColor">@color/colorCancelButton</item>
 	</style>
 
-
 	<style name="FabLabels">
 		<item name="android:background">@drawable/fab_label_background</item>
 		<item name="android:textColor">@color/colorIcons</item>

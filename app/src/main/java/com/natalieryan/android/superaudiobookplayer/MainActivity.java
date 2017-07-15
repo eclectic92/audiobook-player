@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity
 	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	private static final int PERMISSION_REQUEST_CODE = 101;
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final String SELECTED_FILE = "selected_file";
 	private MenuItem mMenuItemWaiting;

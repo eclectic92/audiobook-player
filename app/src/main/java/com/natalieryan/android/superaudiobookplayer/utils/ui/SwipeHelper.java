@@ -48,11 +48,6 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 	public abstract void onSwiped(RecyclerView.ViewHolder viewHolder, int direction);
 
 	@Override
-	public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-		return super.getSwipeDirs(recyclerView, viewHolder);
-	}
-
-	@Override
 	public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
 							float dX, float dY, int actionState, boolean isCurrentlyActive) {
 

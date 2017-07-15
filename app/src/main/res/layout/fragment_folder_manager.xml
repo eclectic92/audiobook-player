@@ -6,8 +6,29 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		tools:context="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity">
+		tools:context="com.namtalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity">
 
+		<LinearLayout
+			android:id="@+id/library_folder_manager_zero_state"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:paddingBottom="?android:attr/actionBarSize"
+			android:orientation="vertical"
+			android:visibility="gone">
+			<TextView
+				android:text="@string/folders_zero_state_title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				style="@style/Base.TextAppearance.AppCompat.Title"/>
+			<TextView
+				android:text="@string/folders_zero_state_subtitle"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				style="@style/Base.TextAppearance.AppCompat.Subhead"/>
+		</LinearLayout>
 		<ScrollView
 			android:id="@+id/library_folder_manager_scroll_view"
 			android:layout_width="match_parent"

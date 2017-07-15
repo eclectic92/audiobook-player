@@ -330,11 +330,17 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data)
 	{
-		if (data!=null)
+		if (data!=null && data.getCount() > 0)
 		{
 			mAdapter.setFolderList(data);
+			mBinder.libraryFolderManagerScrollView.setVisibility(View.VISIBLE);
+			mBinder.libraryFolderManagerZeroState.setVisibility(View.GONE);
 		}
-
+		else
+		{
+			mBinder.libraryFolderManagerScrollView.setVisibility(View.GONE);
+			mBinder.libraryFolderManagerZeroState.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override

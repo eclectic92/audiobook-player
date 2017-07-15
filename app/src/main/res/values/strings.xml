@@ -43,6 +43,8 @@
 	<string name="header_for_device_folders">Folders on device</string>
 	<string name="folder_each_file_is_book">Each file is a single book</string>
 	<string name="folder_contains_multiple_books">Books arranged into subfolders</string>
+	<string name="folders_zero_state_title">No folders in your library yet!</string>
+	<string name="folders_zero_state_subtitle">Click the + button to get started</string>
 	<string name="delete_folder">Delete</string>
 	<plurals name="folder_book_count">
 		<item quantity="one">%d book</item>

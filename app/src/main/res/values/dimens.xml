@@ -22,7 +22,6 @@
 	<dimen name="nav_header_height">100dp</dimen>
 
 	<!-- fab  -->
-	<dimen name="fab_margin">16dp</dimen>
 	<dimen name="fab_menu_margin">8dp</dimen>
 
 	<dimen name="divider_height">1dp</dimen>
