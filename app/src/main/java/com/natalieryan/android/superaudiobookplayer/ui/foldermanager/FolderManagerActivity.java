@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.ui.FabScrollListener;
 
 public class FolderManagerActivity extends AppCompatActivity
 {

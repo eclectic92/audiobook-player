@@ -33,7 +33,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 
 	private final ArrayList<LibraryFolder> mFolders = new ArrayList<>();
 	private boolean mShowHeaders = false;
-	private List<Integer> numHeadersOnOrAbove;
+	private List<Integer> mNumberOfHeadersOnOrAbove;
 	private LibraryFolderItemBinding mBinder;
 	private Context mContext;
 
@@ -126,14 +126,14 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 			int itemPosition = position;
 			if(mShowHeaders)
 			{
-				itemPosition = position-numHeadersOnOrAbove.get(position);
+				itemPosition = position-mNumberOfHeadersOnOrAbove.get(position);
 			}
 			final LibraryFolder folderItem = mFolders.get(itemPosition);
 			viewHolder.bind(folderItem);
 		}
 		else if(viewHolder instanceof LibraryHeaderViewHolder)
 		{
-			LibraryFolder folderItem = mFolders.get(position-numHeadersOnOrAbove.get(position)+1);
+			LibraryFolder folderItem = mFolders.get(position-mNumberOfHeadersOnOrAbove.get(position)+1);
 			viewHolder.bind(getHeaderForFolderGroup(folderItem));
 		}
 	}
@@ -145,7 +145,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 
 		if (!mFolders.isEmpty())
 		{
-			return mFolders.get(position-numHeadersOnOrAbove.get(position));
+			return mFolders.get(position-mNumberOfHeadersOnOrAbove.get(position));
 		}
 		else
 		{
@@ -169,8 +169,8 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		}
 
 		// check if we have more than 1 item, so we can check item(position) and item(position+1)
-		int numHeadersForPreviousEntry=numHeadersOnOrAbove.get(position-1);
-		int numHeadersForCurrentEntry=numHeadersOnOrAbove.get(position);
+		int numHeadersForPreviousEntry=mNumberOfHeadersOnOrAbove.get(position-1);
+		int numHeadersForCurrentEntry=mNumberOfHeadersOnOrAbove.get(position);
 
 		if (numHeadersForCurrentEntry!=numHeadersForPreviousEntry)
 		{
@@ -185,7 +185,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 	void setFolderList(ArrayList<LibraryFolder> folderList)
 	{
 		mFolders.clear();
-		numHeadersOnOrAbove=null;
+		mNumberOfHeadersOnOrAbove=null;
 		if(folderList != null  && !folderList.isEmpty())
 		{
 			this.mFolders.addAll(folderList);
@@ -196,7 +196,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 	void setFolderList(Cursor cursor)
 	{
 		mFolders.clear();
-		numHeadersOnOrAbove=null;
+		mNumberOfHeadersOnOrAbove=null;
 		if (cursor!=null && cursor.moveToFirst())
 		{
 			do
@@ -224,12 +224,12 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		}
 
 		// if the count has already been calculated, simply return it, otherwise, calculate and return
-		if (numHeadersOnOrAbove!=null)
+		if (mNumberOfHeadersOnOrAbove!=null)
 		{
-			return numHeadersOnOrAbove.size();
+			return mNumberOfHeadersOnOrAbove.size();
 		}
 
-		numHeadersOnOrAbove=new ArrayList<>();
+		mNumberOfHeadersOnOrAbove=new ArrayList<>();
 
 		int totalItemCount=0;
 
@@ -243,8 +243,8 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 				if (i==0)
 				{
 					offsetFromItemsToListIndex++;
-					numHeadersOnOrAbove.add(offsetFromItemsToListIndex);
-					numHeadersOnOrAbove.add(offsetFromItemsToListIndex);
+					mNumberOfHeadersOnOrAbove.add(offsetFromItemsToListIndex);
+					mNumberOfHeadersOnOrAbove.add(offsetFromItemsToListIndex);
 				}
 				else
 				{
@@ -255,15 +255,16 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 							.equalsIgnoreCase(libraryFolderPreviousPosition.getRootPath()))
 					{
 						offsetFromItemsToListIndex++;
-						numHeadersOnOrAbove.add(offsetFromItemsToListIndex);
-						numHeadersOnOrAbove.add(offsetFromItemsToListIndex);
+						mNumberOfHeadersOnOrAbove.add(offsetFromItemsToListIndex);
+						mNumberOfHeadersOnOrAbove.add(offsetFromItemsToListIndex);
 					}
 					else
-					{numHeadersOnOrAbove.add(offsetFromItemsToListIndex);
+					{
+						mNumberOfHeadersOnOrAbove.add(offsetFromItemsToListIndex);
 					}
 				}
 			}
-			totalItemCount=numHeadersOnOrAbove.size();
+			totalItemCount=mNumberOfHeadersOnOrAbove.size();
 		}
 
 		return totalItemCount;

@@ -2,6 +2,9 @@ package com.natalieryan.android.superaudiobookplayer.ui.foldermanager;
 
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +24,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -29,6 +37,7 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.ui.FabScrollListener;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.ui.filebrowser.FileBrowserFragment;
 import com.natalieryan.android.superaudiobookplayer.utils.MediaScanner;
@@ -40,7 +49,8 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class FolderManagerFragment extends Fragment implements AddFolderToLibraryAsyncTask.AddFolderListener,
-															   LoaderManager.LoaderCallbacks<Cursor>
+															   LoaderManager.LoaderCallbacks<Cursor>,
+															   FabScrollListener.FabPositionListener
 {
 
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
@@ -53,15 +63,14 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private FloatingActionsMenu mFam;
 	private LibraryFolder mLibraryFolder = null;
 	private boolean mEachFileIsBook = false;
+	private boolean mFabIsVisible;
 
 	private FragmentFolderManagerBinding mBinder;
-	private ArrayList<LibraryFolder> mLibraryFolders = new ArrayList<>();
 	private FolderManagerAdapter mAdapter;
 
 	public FolderManagerFragment()
 	{
 	}
-
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +91,9 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//load up our data
 		getActivity().getSupportLoaderManager().initLoader(LIBRARY_FOLDER_LOADER, null, this);
+
+		//attach the fab scroll listener
+		mBinder.LibraryFolderListRv.addOnScrollListener(new FabScrollListener(this));
 
 		return rootView;
 	}
@@ -215,6 +227,35 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		mFam.setOnFloatingActionsMenuUpdateListener(listener);
 	}
 
+	@Override
+	public void hideFab()
+	{
+		if(mFabIsVisible){
+			if (mFam.isExpanded())
+			{
+				mFam.collapse();
+			}
+			mFam.animate().setInterpolator(new LinearInterpolator())
+					.alpha(0.0f)
+					.setDuration(250)
+					.start();
+			mFabIsVisible = false;
+		}
+
+	}
+
+	@Override
+	public void showFab()
+	{
+		if(!mFabIsVisible){
+			mFam.animate().setInterpolator(new LinearInterpolator())
+					.alpha(1.0f)
+					.setDuration(250)
+					.start();
+			mFabIsVisible = true;
+		}
+
+	}
 
 	// cursor loader to handle library folders ---------------------------------
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle loaderArgs)
