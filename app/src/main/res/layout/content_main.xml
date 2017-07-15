@@ -9,32 +9,4 @@
 	tools:context="com.natalieryan.android.superaudiobookplayer.MainActivity"
 	tools:showIn="@layout/app_bar_main">
 
-	<Button
-		android:id="@+id/manager_btn"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="8dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:text="Folder Manager"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		android:layout_marginTop="8dp"
-		app:layout_constraintHorizontal_bias="0.0"/>
-
-	<Button
-		android:id="@+id/file_button"
-		android:layout_width="0dp"
-		android:layout_height="wrap_content"
-		android:layout_marginLeft="8dp"
-		android:layout_marginRight="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="8dp"
-		android:text="File Browser"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintRight_toRightOf="parent"
-		app:layout_constraintTop_toBottomOf="@+id/manager_btn"/>
 </android.support.constraint.ConstraintLayout>
