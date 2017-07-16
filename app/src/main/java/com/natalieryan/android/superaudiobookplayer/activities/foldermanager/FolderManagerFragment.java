@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
@@ -59,6 +60,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private boolean mEachFileIsBook = false;
 	private boolean mFabIsVisible;
 
+	private LibraryFolder mDeletedFolder = null;
 	private FragmentFolderManagerBinding mBinder;
 	private FolderManagerAdapter mAdapter;
 
@@ -173,14 +175,15 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	}
 
 	@Override
-	public void onFolderAdded(int addedRowId)
+	public void onFolderAdded()
 	{
-		//nothing to do here quite yet.
+		this.mDeletedFolder = null;
 	}
 
 
 	private void removeFolderFromLibrary(LibraryFolder folderToRemove)
 	{
+		this.mDeletedFolder = folderToRemove;
 		RemoveFolderFromLibraryAsyncTask removeFolderFromLibraryAsyncTask =
 				new RemoveFolderFromLibraryAsyncTask(getContext(), this);
 		removeFolderFromLibraryAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderToRemove);
@@ -189,7 +192,19 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	@Override
 	public void onFolderRemoved(String folderFriendlyPath)
 	{
-		//nothing to do here quite yet.
+		Snackbar bar = Snackbar.make(getActivity().findViewById( R.id.folder_manager_layout),
+				getString(R.string.folder_deleted_message, mDeletedFolder.getFriendlyPath()),
+				getResources().getInteger(R.integer.snackbar_delete_length))
+				.setAction(getString(R.string.folder_delete_undo), new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if(mDeletedFolder != null)
+						{
+							addFolderToLibrary(mDeletedFolder);
+						}
+					}
+				});
+		bar.show();
 	}
 
 	public FloatingActionsMenu getFam(){

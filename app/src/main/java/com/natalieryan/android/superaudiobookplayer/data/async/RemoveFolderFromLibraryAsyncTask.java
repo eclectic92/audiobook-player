@@ -28,6 +28,7 @@ public class RemoveFolderFromLibraryAsyncTask extends AsyncTask<LibraryFolder, V
 	 * Listener for async task completion
 	 * Must be implemented by hosting class
 	 */
+	@SuppressWarnings("UnusedParameters")
 	public interface RemoveFolderListener
 	{
 		void onFolderRemoved(String folderFriendlyPath);

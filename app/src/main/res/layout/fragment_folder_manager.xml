@@ -2,12 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
 		xmlns:tools="http://schemas.android.com/tools">
-	<RelativeLayout
+	<android.support.design.widget.CoordinatorLayout
+		android:id="@+id/folder_manager_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		tools:context="com.namtalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity">
-
+		tools:context="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity">
 		<LinearLayout
 			android:id="@+id/library_folder_manager_zero_state"
 			android:layout_width="match_parent"
@@ -66,15 +65,13 @@
 			android:layout_height="match_parent">
 		</View>
 
-
 		<com.getbase.floatingactionbutton.FloatingActionsMenu
 			android:id="@+id/fab_folder_menu"
 			android:theme="@style/FabMain"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-
-			android:layout_alignParentBottom="true"
-			android:layout_alignParentEnd="true"
+			app:layout_behavior="com.natalieryan.android.superaudiobookplayer.utils.ui.FloatingActionMenuBehaviour"
+			android:layout_gravity="bottom|end"
 			app:fab_labelStyle="@style/FabLabels"
 			app:fab_labelsPosition="left"
 			app:fab_addButtonStrokeVisible="true"
@@ -103,5 +100,5 @@
 				android:tint="@color/colorIcons"
 				app:fab_title="@string/title_fab_folder_is_multibook"/>
 		</com.getbase.floatingactionbutton.FloatingActionsMenu>
-	</RelativeLayout>
+	</android.support.design.widget.CoordinatorLayout>
 </layout>
