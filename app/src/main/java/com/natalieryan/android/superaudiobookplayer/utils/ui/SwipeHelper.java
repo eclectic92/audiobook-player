@@ -16,12 +16,16 @@ import android.view.View;
 public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 
 	private Drawable mBackground;
+	private Drawable mSwipeLeftIcon;
+	private Drawable mSwipeRightIcon;
 
 	//defaults
 	private int mSwipeLeftIconId = -1;
 	private int mSwipeRightIconId = -1;
 	private int mSwipeLeftColorCode= Color.RED;
 	private int mSwipeRightColorCode= Color.DKGRAY;
+	private int mSwipeLeftIconColorCode = Color.WHITE;
+	private int mSwipeRightIconColorCode = Color.WHITE;
 	private int mIconMargin = 16;
 	private int mTextMargin = 16;
 	private int mIconVerticalMargin = 16;
@@ -68,7 +72,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 			swipeColor =mSwipeRightColorCode;
 			if(mSwipeRightIconId  != -1)
 			{
-				swipeIcon = ContextCompat.getDrawable(mContext, mSwipeRightIconId);
+				swipeIcon = mSwipeRightIcon;
 			}
 		}
 		else
@@ -77,7 +81,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 			swipeColor =mSwipeLeftColorCode;
 			if(mSwipeLeftIconId != -1)
 			{
-				swipeIcon = ContextCompat.getDrawable(mContext, mSwipeLeftIconId);
+				swipeIcon = mSwipeLeftIcon;
 			}
 		}
 
@@ -175,6 +179,12 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 	public void setSwipeLeftIconId(int iconId)
 	{
 		this.mSwipeLeftIconId = iconId;
+		this.mSwipeLeftIcon = ContextCompat.getDrawable(mContext, mSwipeLeftIconId);
+	}
+
+	public void swipeLeftIconColor(int iconColorCode)
+	{
+		this.mSwipeLeftIconColorCode = iconColorCode;
 	}
 
 	//setters for right swipe properties
@@ -191,5 +201,11 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 	public void setSwipeRightIconId(int iconId)
 	{
 		this.mSwipeRightIconId = iconId;
+		this.mSwipeRightIcon = ContextCompat.getDrawable(mContext, mSwipeRightIconId);
+	}
+
+	public void swipeRightIconColor(int iconColorCode)
+	{
+		this.mSwipeRightIconColorCode = iconColorCode;
 	}
 }
