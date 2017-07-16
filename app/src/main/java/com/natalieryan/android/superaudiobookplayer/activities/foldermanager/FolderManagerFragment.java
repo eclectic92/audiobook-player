@@ -285,8 +285,9 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		mItemTouchHelper.attachToRecyclerView(mBinder.LibraryFolderListRv);
 
 		swipeHelper.setSwipeLeftLabel(getContext().getString( R.string.delete_folder));
-		swipeHelper.setSwipeLeftIconColor(ContextCompat.getColor(getActivity(), R.color.colorIcons));
-		swipeHelper.setSwipeLeftColor(ContextCompat.getColor(getActivity(), R.color.colorCancelButton));
+		swipeHelper.setTextSize(getResources().getInteger(R.integer.swiper_text_size));
+		swipeHelper.setSwipeLeftIconColor(ContextCompat.getColor(getContext(), R.color.colorIcons));
+		swipeHelper.setSwipeLeftColor(ContextCompat.getColor(getContext(), R.color.colorCancelButton));
 		swipeHelper.setSwipeLeftIconId(R.drawable.ic_delete_black_24dp);
 	}
 

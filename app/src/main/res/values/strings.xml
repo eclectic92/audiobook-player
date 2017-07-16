@@ -49,8 +49,8 @@
 	<string name="folder_contains_multiple_books">Books arranged into subfolders</string>
 	<string name="folders_zero_state_title">No folders in your library yet!</string>
 	<string name="folders_zero_state_subtitle">Click the + button to get started</string>
-	<string name="delete_folder">Delete</string>
-	<string name="folder_delete_undo">Undo</string>
+	<string name="delete_folder">DELETE</string>
+	<string name="folder_delete_undo">UNDO</string>
 	<string name="folder_root_path">Root folder</string>
 	<string name="folder_deleted_message">%1$s\u0020removed from library</string>
 	<plurals name="folder_book_count">
