@@ -32,7 +32,7 @@ public class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, 
 	 */
 	public interface AddFolderListener
 	{
-		void onFolderAdded(int addedRowId);
+		void onFolderAdded();
 	}
 
 
@@ -72,6 +72,6 @@ public class AddFolderToLibraryAsyncTask extends AsyncTask<LibraryFolder, Void, 
 	@Override
 	protected void onPostExecute(Integer addedRowId)
 	{
-		mAddFolderListener.onFolderAdded(addedRowId);
+		mAddFolderListener.onFolderAdded();
 	}
 }

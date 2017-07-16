@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -176,7 +175,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	}
 
 	@Override
-	public void onFolderAdded(int addedRowId)
+	public void onFolderAdded()
 	{
 		this.mDeletedFolder = null;
 	}
