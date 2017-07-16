@@ -12,6 +12,7 @@
 	<android.support.constraint.ConstraintLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:background="@color/colorWindowBackground"
 		android:paddingTop="@dimen/folder_item_vertical_margin">
 
 		<TextView

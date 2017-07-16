@@ -279,15 +279,14 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 				return viewHolder.getItemViewType() == FolderManagerAdapter.VIEW_TYPE_HEADER
 						? 0 : makeMovementFlags(dragFlags, swipeFlags);
 			}
-
-
 		};
 
 		ItemTouchHelper mItemTouchHelper=new ItemTouchHelper(swipeHelper);
 		mItemTouchHelper.attachToRecyclerView(mBinder.LibraryFolderListRv);
 
 		swipeHelper.setSwipeLeftLabel(getContext().getString( R.string.delete_folder));
-		swipeHelper.setSwipeLeftColorCode(ContextCompat.getColor(getActivity(), R.color.colorCancelButton));
+		swipeHelper.setSwipeLeftIconColor(ContextCompat.getColor(getActivity(), R.color.colorIcons));
+		swipeHelper.setSwipeLeftColor(ContextCompat.getColor(getActivity(), R.color.colorCancelButton));
 		swipeHelper.setSwipeLeftIconId(R.drawable.ic_delete_black_24dp);
 	}
 

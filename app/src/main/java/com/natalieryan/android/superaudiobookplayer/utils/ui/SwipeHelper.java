@@ -171,7 +171,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 		this.mSwipeLeftLabel=leftSwipeLabel;
 	}
 
-	public void setSwipeLeftColorCode(int leftcolorCode)
+	public void setSwipeLeftColor(int leftcolorCode)
 	{
 		this.mSwipeLeftColorCode=leftcolorCode;
 	}
@@ -182,7 +182,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 		this.mSwipeLeftIcon = ContextCompat.getDrawable(mContext, mSwipeLeftIconId);
 	}
 
-	public void swipeLeftIconColor(int iconColorCode)
+	public void setSwipeLeftIconColor(int iconColorCode)
 	{
 		this.mSwipeLeftIconColorCode = iconColorCode;
 	}
@@ -204,7 +204,7 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 		this.mSwipeRightIcon = ContextCompat.getDrawable(mContext, mSwipeRightIconId);
 	}
 
-	public void swipeRightIconColor(int iconColorCode)
+	public void setSwipeRightIconColor(int iconColorCode)
 	{
 		this.mSwipeRightIconColorCode = iconColorCode;
 	}
