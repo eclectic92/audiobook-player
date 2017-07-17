@@ -52,7 +52,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final int PERMISSION_REQUEST_CODE = 200;
 	private static final int LIBRARY_FOLDER_LOADER = 100;
-
+	private static final String EXTRA_OVRLAY_VISIBLE = "overlay_visible";
 	private static final String FOLDER_SORT_ORDER = LibraryContract.FolderEntry.COLUMN_ROOT_PATH + " DESC, "+
 			LibraryContract.FolderEntry.COLUMN_PATH + " ASC";
 
@@ -75,6 +75,16 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_folder_manager, container, false);
 
+		if(savedInstanceState != null)
+		{
+			if(savedInstanceState.containsKey(EXTRA_OVRLAY_VISIBLE))
+			{
+				if(savedInstanceState.getBoolean(EXTRA_OVRLAY_VISIBLE))
+				{
+					mBinder.shadowOverlay.setVisibility(View.VISIBLE);
+				}
+			}
+		}
 		View rootView = mBinder.getRoot();
 
 		//create the floating action button menu
@@ -88,6 +98,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	public void onResume()
 	{
 		super.onResume();
+
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
 		mAdapter = new FolderManagerAdapter(getContext(), true);
@@ -102,6 +113,14 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//create and attach the swipe helper for deleting items
 		setSwipeForRecyclerView();
+	}
+
+
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(EXTRA_OVRLAY_VISIBLE, mBinder.shadowOverlay.getVisibility() == View.VISIBLE);
 	}
 
 
@@ -258,6 +277,16 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		});
 
 		mFam.setOnFloatingActionsMenuUpdateListener(listener);
+
+		mBinder.shadowOverlay.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view)
+			{
+				mFam.collapse();
+				mBinder.shadowOverlay.setVisibility(View.GONE);
+			}
+		});
 	}
 
 	private void setSwipeForRecyclerView()

@@ -40,11 +40,11 @@ public class FabScrollListener extends RecyclerView.OnScrollListener
 		}
 		else if (!recyclerView.canScrollVertically(1))
 		{
-			positionListener.showFab();
+			positionListener.hideFab();
 		}
 		else if (dy<0)
 		{
-			positionListener.hideFab();
+			positionListener.showFab();
 		}
 		else if (dy>0)
 		{

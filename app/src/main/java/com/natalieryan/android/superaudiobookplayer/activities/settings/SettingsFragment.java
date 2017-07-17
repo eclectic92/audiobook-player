@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.support.v14.preference.SwitchPreference;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.support.v7.preference.PreferenceScreen;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
@@ -44,53 +40,36 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 
 		addPreferencesFromResource(R.xml.pref_library);
 
-		//SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-		PreferenceScreen prefScreen = getPreferenceScreen();
+		//final SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+		//PreferenceScreen prefScreen = getPreferenceScreen();
 
-		int count = prefScreen.getPreferenceCount();
 
-		// Go through all of the preferences, and set up their preference summary.
-		for (int i = 0; i < count; i++) {
-			Preference p = prefScreen.getPreference(i);
-
-			if(p.hasKey()){
-				if(p.getKey().equalsIgnoreCase(getString(R.string.pref_manage_folders_key)))
-				{
-					p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-					{
-						@Override
-						public boolean onPreferenceClick(Preference preference)
-						{
-							Intent intent = new Intent(getActivity(), FolderManagerActivity.class);
-							startActivity(intent);
-							return true;
-						}
-					});
-				}
-			}
-			/*
-			if (!(p instanceof CheckBoxPreference)) {
-				String value = sharedPreferences.getString(p.getKey(), "");
-				setPreferenceSummary(p, value);
-			}
-			*/
+		final ListPreference nightMode = (ListPreference) findPreference(getString(R.string.pref_night_mode_menu_key));
+		if(nightMode != null){
+			nightMode.setOnPreferenceChangeListener(this);
+			setPreferenceSummary(nightMode, nightMode.getValue());
 		}
 
+
+		Preference folderManager = findPreference(getString(R.string.pref_manage_folders_key));
+		if(folderManager != null)
+		{
+			folderManager.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+			{
+				@Override
+				public boolean onPreferenceClick(Preference preference)
+				{
+					Intent intent = new Intent(getActivity(), FolderManagerActivity.class);
+					startActivity(intent);
+					return true;
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		// Figure out which preference was changed
-		Preference preference = findPreference(key);
-		if (null != preference) {
-			if(preference.getKey().equalsIgnoreCase(getContext().getString(R.string.pref_night_mode_on_key)))
-			{
-				int nightMode= ((SwitchPreference)preference).isChecked()
-						? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-
-					mSetNightMode.onNightModeSelected(nightMode);
-			}
-		}
 	}
 
 	/**
@@ -106,11 +85,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 			int prefIndex = listPreference.findIndexOfValue(value);
 			if (prefIndex >= 0) {
 				// Set the summary to that label
-				listPreference.setSummary(listPreference.getEntries()[prefIndex]);
+				listPreference.setTitle(getString(R.string.pref_night_mode_menu_label_formatted,
+						listPreference.getEntries()[prefIndex]));
 			}
-		} else if (preference instanceof EditTextPreference) {
-			// For EditTextPreferences, set the summary to the value's simple string representation.
-			preference.setSummary(value);
 		}
 	}
 
@@ -118,9 +95,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 	@Override
 	public boolean onPreferenceChange(Preference preference, Object newValue)
 	{
-		// In this context, we're using the onPreferenceChange listener for checking whether the
-		// size setting was set to a valid value.
-
+		if(preference.hasKey())
+		{
+			if(preference.getKey().equalsIgnoreCase(getString(R.string.pref_night_mode_menu_key)))
+			{
+				mSetNightMode.onNightModeSelected(Integer.valueOf(newValue.toString()));
+			}
+		}
 		return true;
 	}
 

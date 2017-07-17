@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,23 +23,18 @@ public class MainActivity extends AppCompatActivity
 {
 	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
-
 	private MenuItem mMenuItemWaiting;
 	private DrawerLayout drawer;
-	private int mNightMode;
-	private static final String EXTRA_NIGHT_MODE = "night_mode";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		int nightMode = Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
+				getString(R.string.pref_night_mode_value_off)));
 
+		getDelegate().setLocalNightMode(nightMode);
 		super.onCreate(savedInstanceState);
-		final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		boolean isNightMode =(mSharedPreference.getBoolean(getString(R.string.pref_night_mode_on_key), false));
-		mNightMode = isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
-
-
-		getDelegate().setLocalNightMode(mNightMode);
 
 		setContentView(R.layout.activity_main);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
@@ -68,15 +62,6 @@ public class MainActivity extends AppCompatActivity
 		NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 	}
-
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		super.onSaveInstanceState(outState);
-		outState.putInt(EXTRA_NIGHT_MODE, mNightMode);
-	}
-
 
 	@Override
 	public void onBackPressed()
