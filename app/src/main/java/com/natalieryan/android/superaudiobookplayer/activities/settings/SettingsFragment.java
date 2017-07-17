@@ -1,11 +1,13 @@
 package com.natalieryan.android.superaudiobookplayer.activities.settings;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
+import android.support.v14.preference.SwitchPreference;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
@@ -15,16 +17,36 @@ import android.support.v7.preference.PreferenceScreen;
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 
+@SuppressWarnings("unused")
 public class SettingsFragment extends PreferenceFragmentCompat implements OnSharedPreferenceChangeListener,
 																		  Preference.OnPreferenceChangeListener
 {
+
+	private SetNightMode mSetNightMode;
+
+	interface SetNightMode
+	{
+		void onNightModeSelected(int nightMode);
+	}
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		try {
+			mSetNightMode = (SetNightMode) context;
+		} catch (ClassCastException castException) {
+			//nothing to do here yet
+		}
+	}
+
 	@Override
 	public void onCreatePreferences(Bundle bundle, String s) {
 
 		addPreferencesFromResource(R.xml.pref_library);
 
-		SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+		//SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
 		PreferenceScreen prefScreen = getPreferenceScreen();
+
 		int count = prefScreen.getPreferenceCount();
 
 		// Go through all of the preferences, and set up their preference summary.
@@ -46,10 +68,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 					});
 				}
 			}
+			/*
 			if (!(p instanceof CheckBoxPreference)) {
 				String value = sharedPreferences.getString(p.getKey(), "");
 				setPreferenceSummary(p, value);
 			}
+			*/
 		}
 
 	}
@@ -59,10 +83,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements OnShar
 		// Figure out which preference was changed
 		Preference preference = findPreference(key);
 		if (null != preference) {
-			// Updates the summary for the preference
-			if (!(preference instanceof CheckBoxPreference)) {
-				String value = sharedPreferences.getString(preference.getKey(), "");
-				setPreferenceSummary(preference, value);
+			if(preference.getKey().equalsIgnoreCase(getContext().getString(R.string.pref_night_mode_on_key)))
+			{
+				int nightMode= ((SwitchPreference)preference).isChecked()
+						? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+
+					mSetNightMode.onNightModeSelected(nightMode);
 			}
 		}
 	}

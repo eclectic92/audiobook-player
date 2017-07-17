@@ -8,4 +8,9 @@
 		android:summary="@string/pref_manage_folders_summary">
 	</Preference>
 
+	<SwitchPreference
+		android:key="@string/pref_night_mode_on_key"
+		android:title="@string/pref_night_mode_on_title"
+		android:summary="@string/pref_night_mode_on_summary"
+		android:defaultValue="false" />
 </PreferenceScreen>

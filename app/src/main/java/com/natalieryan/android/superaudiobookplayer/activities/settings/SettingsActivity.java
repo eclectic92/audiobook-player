@@ -21,7 +21,7 @@ import com.natalieryan.android.superaudiobookplayer.R;
  * API Guide</a> for more information on developing a Settings UI.
  */
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements SettingsFragment.SetNightMode {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,4 +45,10 @@ public class SettingsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onNightModeSelected(int nightMode)
+	{
+		getDelegate().setLocalNightMode(nightMode);
+		recreate();
+	}
 }

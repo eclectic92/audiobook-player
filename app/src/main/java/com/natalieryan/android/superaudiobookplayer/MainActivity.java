@@ -1,9 +1,11 @@
 package com.natalieryan.android.superaudiobookplayer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity;
@@ -24,22 +25,22 @@ public class MainActivity extends AppCompatActivity
 	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
 
-	private static final int SELECT_FOLDER_RESULT_CODE = 1;
-	private static final String SELECTED_FILE = "selected_file";
 	private MenuItem mMenuItemWaiting;
 	private DrawerLayout drawer;
+	private int mNightMode;
+	private static final String EXTRA_NIGHT_MODE = "night_mode";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 
 		super.onCreate(savedInstanceState);
-		if (savedInstanceState == null) {
-			// Set the local night mode to some value
-			getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-			// Now recreate for it to take effect
-			recreate();
-		}
+		final SharedPreferences mSharedPreference= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		boolean isNightMode =(mSharedPreference.getBoolean(getString(R.string.pref_night_mode_on_key), false));
+		mNightMode = isNightMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+
+
+		getDelegate().setLocalNightMode(mNightMode);
 
 		setContentView(R.layout.activity_main);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
@@ -66,6 +67,14 @@ public class MainActivity extends AppCompatActivity
 
 		NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
+	}
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putInt(EXTRA_NIGHT_MODE, mNightMode);
 	}
 
 
@@ -159,21 +168,5 @@ public class MainActivity extends AppCompatActivity
 		Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
 		startActivity(startSettingsActivity);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		// check that it is the SecondActivity with an OK result
-		if (requestCode == SELECT_FOLDER_RESULT_CODE)
-		{
-			if (resultCode == RESULT_OK)
-			{
-				// get String data from Intent
-				String returnString = data.getStringExtra(SELECTED_FILE);
-				Toast.makeText(this, returnString, Toast.LENGTH_SHORT).show();
-			}
-		}
 	}
 }
