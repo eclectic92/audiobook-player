@@ -3,6 +3,7 @@ package com.natalieryan.android.superaudiobookplayer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +32,15 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+
 		super.onCreate(savedInstanceState);
+		if (savedInstanceState == null) {
+			// Set the local night mode to some value
+			getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+			// Now recreate for it to take effect
+			recreate();
+		}
+
 		setContentView(R.layout.activity_main);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 		Toolbar toolbar=(Toolbar)findViewById(R.id.main_activity_toolbar);

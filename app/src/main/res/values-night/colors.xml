@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- night -->
+	<color name="colorPrimary">#212121</color>
+	<color name="colorPrimaryDark">#000000</color>
+	<color name="colorPrimaryLight">#757575</color>
+	<color name="colorAccent">#00695c</color>
+	<color name="colorCancelButton">#b71c1c</color>
+
+	<!-- for fab -->
+	<color name="colorOverlaySemiTransparent">#b3212121</color>
+	<color name="colorAccentPressed">#00796b</color>
 </resources>

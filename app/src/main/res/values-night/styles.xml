@@ -2,13 +2,6 @@
 
 	<!-- Base application theme. -->
 	<style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
-		<item name="android:listDivider">@color/colorDivider</item>
-		<item name="colorControlNormal">@color/colorControlNormal</item>
-		<item name="android:textColorPrimary">@color/colorPrimaryText</item>
-		<item name="android:windowBackground">@color/colorWindowBackground</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 	</style>
 
@@ -35,14 +28,14 @@
 
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark"/>
 
 	<style name="SelectButton" parent="Widget.AppCompat.Button.Borderless">
-		<item name="android:textColor">@color/colorPrimaryDark</item>
+		<item name="android:textColor">?android:textColorPrimary</item>
 	</style>
 
 	<style name="CancelButton" parent="Widget.AppCompat.Button.Borderless">
-		<item name="android:textColor">@color/colorCancelButton</item>
+		<item name="android:textColor">?android:textColorSecondary</item>
 	</style>
 
 	<style name="FabLabels">

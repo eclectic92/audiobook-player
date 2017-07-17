@@ -97,13 +97,15 @@ public abstract class SwipeHelper extends ItemTouchHelper.SimpleCallback {
 		{
 			int iconIntrinsicWidth = swipeIcon.getIntrinsicWidth();
 			int iconIntrinsicHeight = swipeIcon.getIntrinsicHeight();
-			swipeIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 			if (dX > 0)
 			{ // swiping right
 				iconLeft = horizontalBounds + mIconMargin;
+				swipeIcon.setColorFilter(mSwipeRightIconColorCode, PorterDuff.Mode.SRC_ATOP);
+
 			}else
 			{ //swiping left
 				iconLeft = horizontalBounds - mIconMargin - iconIntrinsicWidth;
+				swipeIcon.setColorFilter(mSwipeLeftIconColorCode, PorterDuff.Mode.SRC_ATOP);
 			}
 			iconRight = iconLeft + iconIntrinsicWidth;
 			int iconTop = itemView.getTop()  + (itemHeight - iconIntrinsicHeight) / 2;
