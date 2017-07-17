@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<array name="pref_night_mode_option_labels">
+		<item>@string/pref_night_mode_label_auto</item>
+		<item>@string/pref_night_mode_label_on</item>
+		<item>@string/pref_night_mode_label_off</item>
+	</array>
+
+	<array name="pref_night_mode_option_values">
+		<item>@string/pref_night_mode_value_auto</item>
+		<item>@string/pref_night_mode_value_on</item>
+		<item>@string/pref_night_mode_value_off</item>
+	</array>
+</resources>

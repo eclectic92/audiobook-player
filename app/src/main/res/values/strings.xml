@@ -36,9 +36,22 @@
 	<string name="title_fab_folder_is_multibook">Contains single or multi-file \nbooks arranged into subfolders</string>
 
 	<!-- Strings related to Settings -->
-	<string name="pref_manage_folders_key">audiobook_folders</string>
+	<!-- folder manager pref -->
+	<string name="pref_manage_folders_key" translatable="false">audiobook_folders</string>
 	<string name="pref_manage_folders_title">Audiobook folders</string>
 	<string name="pref_manage_folders_summary">Set or change the folders for your books</string>
+
+	<!-- day/night theme pref -->
+	<string name="pref_night_mode_menu_summary">Choose a light theme for daytime, a darker theme\nfor night, or switch automatically between the two</string>
+	<string name="pref_night_mode_menu_key" translatable="false">night_mode_menu</string>
+	<string name="pref_night_mode_menu_label">Choose App Theme</string>
+	<string name="pref_night_mode_menu_label_formatted" translatable="false">Theme:\u0020%1$s</string>
+	<string name="pref_night_mode_label_on">Night mode</string>
+	<string name="pref_night_mode_label_off">Day mode</string>
+	<string name="pref_night_mode_label_auto">Auto day/night</string>
+	<string name="pref_night_mode_value_on">2</string>
+	<string name="pref_night_mode_value_off">1</string>
+	<string name="pref_night_mode_value_auto">0</string>
 
 	<!-- Strings for folder manager -->
 	<string name="header_sd_inserted">inserted</string>
@@ -49,8 +62,8 @@
 	<string name="folder_contains_multiple_books">Books arranged into subfolders</string>
 	<string name="folders_zero_state_title">No folders in your library yet!</string>
 	<string name="folders_zero_state_subtitle">Click the + button to get started</string>
-	<string name="delete_folder">Delete</string>
-	<string name="folder_delete_undo">Undo</string>
+	<string name="delete_folder">DELETE</string>
+	<string name="folder_delete_undo">UNDO</string>
 	<string name="folder_root_path">Root folder</string>
 	<string name="folder_deleted_message">%1$s\u0020removed from library</string>
 	<plurals name="folder_book_count">
