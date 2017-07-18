@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import com.natalieryan.android.superaudiobookplayer.model.Chapter;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileExtensionFilter;
 
@@ -13,9 +12,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
@@ -30,7 +26,6 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 	private final Context mContext;
 	private final ScanFolderListener mScanFolderListener;
 	private final ArrayList<String> mFolderPaths = new ArrayList<>();
-	//private ArrayList<Chapter> mChapters = new ArrayList<>();
 	private static final String[] mAllowedExtensions = {
 			"mp3", "m4a", "aac", "m4b"
 	};

@@ -18,6 +18,7 @@ public class Book implements Parcelable
 	private String mAuthor;
 	private long mDuration;
 	private String mCurrentFile;
+	private int mCurrentChapter;
 	private long mLastHeardPosition;
 	private boolean mIsStarted;
 	private boolean mIsFinished;
@@ -47,6 +48,7 @@ public class Book implements Parcelable
 		this.mAuthor = in.readString();
 		this.mDuration = in.readLong();
 		this.mCurrentFile = in.readString();
+		this.mCurrentChapter = in.readInt();
 		this.mLastHeardPosition = in.readLong();
 		this.mIsStarted = in.readInt() == 1;
 		this.mIsFinished = in.readInt() == 1;
@@ -61,6 +63,7 @@ public class Book implements Parcelable
 		out.writeString(mAuthor);
 		out.writeLong(mDuration);
 		out.writeString(mCurrentFile);
+		out.writeInt(mCurrentChapter);
 		out.writeLong(mLastHeardPosition);
 		out.writeInt(this.mIsStarted ? 1 : 0);
 		out.writeInt(this.mIsFinished ? 1 : 0);
@@ -129,6 +132,16 @@ public class Book implements Parcelable
 	public String getCurrentFile()
 	{
 		return mCurrentFile;
+	}
+
+	public int getCurrentChapter()
+	{
+		return mCurrentChapter;
+	}
+
+	public void setCurrentChapter(int currentChapter)
+	{
+		this.mCurrentChapter = currentChapter;
 	}
 
 	public void setCurrentFile(String currentFile)
