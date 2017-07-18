@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class MediaScanner
 {
+
 	public static int getBookCount()
 	{
 		Random rand = new Random();

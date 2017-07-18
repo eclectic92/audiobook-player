@@ -26,6 +26,8 @@ import java.util.Collections;
 @SuppressWarnings("unused")
 public class FileBrowserFragment extends Fragment implements FileItemAdapter.FileClickListener
 {
+	//TODO: Extend to allow showing files but NOT allowing selection
+	//TODO: Highlight active device/sd card
 	public static final String TAG = FileBrowserFragment.class.getSimpleName();
 
 	public static final String SHOW_FOLDERS_ONLY = "show_folders_only";

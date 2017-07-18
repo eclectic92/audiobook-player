@@ -33,11 +33,11 @@ import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibrar
 import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.utils.media.ScanFolderAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
-import com.natalieryan.android.superaudiobookplayer.utils.media.MediaScanner;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 
 /**
@@ -46,7 +46,8 @@ import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 public class FolderManagerFragment extends Fragment implements AddFolderToLibraryAsyncTask.AddFolderListener,
 															   LoaderManager.LoaderCallbacks<Cursor>,
 															   FabScrollListener.FabPositionListener,
-															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener
+															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener,
+															   ScanFolderAsyncTask.ScanFolderListener
 {
 
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
@@ -61,6 +62,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private boolean mFabIsVisible;
 
 	private LibraryFolder mDeletedFolder = null;
+	private LibraryFolder mFolderToAdd = null;
 	private FragmentFolderManagerBinding mBinder;
 	private FolderManagerAdapter mAdapter;
 
@@ -137,10 +139,10 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 				String rootPath = isOnSDCard ? PathUtils.getSdCardPath() : PathUtils.getDeviceRootStoragePath();
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
-					int bookCount = MediaScanner.getBookCount();
-					LibraryFolder folderToAdd =
-							new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, bookCount);
-					addFolderToLibrary(folderToAdd);
+					//int bookCount = MediaScanner.getBookCount();
+					//MediaScanner.scanDirectory(new File(filePath));
+					mFolderToAdd = new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, 0);
+					scanLibraryFolder(mFolderToAdd);
 				}
 			}
 		}
@@ -187,6 +189,24 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	//utility functions
 	//
 
+
+	private void scanLibraryFolder(LibraryFolder folderToScan)
+	{
+		ScanFolderAsyncTask scanFolderAsyncTask = new ScanFolderAsyncTask(getContext(), this);
+		scanFolderAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderToScan);
+	}
+
+	@Override
+	public void onFolderScanned(int bookCount)
+	{
+		if (mFolderToAdd != null)
+		{
+			mFolderToAdd.setBookCount(bookCount);
+			addFolderToLibrary(mFolderToAdd);
+		}
+
+	}
+
 	private void addFolderToLibrary(LibraryFolder folderToAdd)
 	{
 		AddFolderToLibraryAsyncTask addLibraryFolder = new AddFolderToLibraryAsyncTask(getContext(), this);
@@ -197,6 +217,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	public void onFolderAdded()
 	{
 		this.mDeletedFolder = null;
+		this.mFolderToAdd = null;
 	}
 
 

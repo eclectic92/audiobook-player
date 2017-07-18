@@ -21,6 +21,9 @@ import com.natalieryan.android.superaudiobookplayer.activities.settings.Settings
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
+
+	//TODO: Day-night should be moved to a static in app context
+
 	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
 	private MenuItem mMenuItemWaiting;
