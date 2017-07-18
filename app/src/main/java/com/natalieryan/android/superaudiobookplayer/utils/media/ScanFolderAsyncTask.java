@@ -4,14 +4,20 @@ import android.content.Context;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
+import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.model.Book;
+import com.natalieryan.android.superaudiobookplayer.model.Chapter;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.model.Track;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileExtensionFilter;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import wseemann.media.FFmpegMediaMetadataRetriever;
 
@@ -23,7 +29,12 @@ import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 {
+
+	private static final String TAG = ScanFolderAsyncTask.class.getSimpleName();
+
 	private final Context mContext;
+	private final FFmpegMediaMetadataRetriever mMetadataRetriever= new FFmpegMediaMetadataRetriever();
+	private final ArrayList<Book> mbooks = new ArrayList<>();
 	private final ScanFolderListener mScanFolderListener;
 	private final ArrayList<String> mFolderPaths = new ArrayList<>();
 	private static final String[] mAllowedExtensions = {
@@ -60,7 +71,7 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 
 		mFolderPaths.add(topFolder.getPath());
 		getFolderPaths(topFolder.getPath());
-		FFmpegMediaMetadataRetriever metaRetriver = new FFmpegMediaMetadataRetriever();
+
 		for (String path : mFolderPaths )
 		{
 			File singleFolder = new File(path);
@@ -68,38 +79,119 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 			Arrays.sort(files);
 			for (File file : files)
 			{
-				try
+				if(topFolder.getEachFileIsABook())
 				{
-					Uri fileUri =Uri.fromFile(file);
-					metaRetriver.setDataSource(mContext, fileUri);
-					FFmpegMediaMetadataRetriever.Metadata metadata = metaRetriver.getMetadata();
-					//metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.)
-					//String album=metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
-					//String artist=metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST);
-					String gener=metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_GENRE);
+					Book singleBook = getBook(file);
+					Track singleTrack = getTrack(file);
+					getChapters(singleTrack.getChapterCount(), 1);
+					ArrayList<Track> tracks = new ArrayList<>();
+					tracks.add(singleTrack);
+					singleBook.setTracks(tracks);
+					mbooks.add(singleBook);
 
 				}
-				catch (Exception e)
-				{
-					//TODO: how to handle this error
-				}
 
+			/*
+					if(chapterCount == 0)
+		{
+			ArrayList<Chapter> chapters = new ArrayList<>();
+			Chapter chapter = new Chapter(name, duration, 0, duration);
+			chapters.add(chapter);
+			singleTrack.setChapters(chapters);
+		}
+		else
+		{
+			singleTrack.setChapters(getChapters(chapterCount));
+		}
+			 */
 
 			}
 		}
-		metaRetriver.release();
-		/*
-		if (libraryFolder.getEachFileIsABook())
-		{
-
-		}
-		*/
-		//stuff
+		mMetadataRetriever.release();
 
 		return bookCount;
 	}
 
+	private Book getBook(File bookFile)
+	{
+		Book singleBook = new Book();
+		Uri fileUri=Uri.fromFile(bookFile);
+		mMetadataRetriever.setDataSource(mContext, fileUri);
 
+		//title
+		String title = mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
+		if(title == null || title.isEmpty())
+		{
+			title = removeFileExtension(bookFile.getName());
+		}
+		singleBook.setTitle(title);
+
+		//author
+		String author = mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST);
+		if(author == null || author.isEmpty())
+		{
+			author = mContext.getString(R.string.meta_author_unknown);
+		}
+		singleBook.setAuthor(author);
+
+		//create author+title key as duplicate check
+		String authorTitleKey = author.replaceAll("\\P{L}+", "") + title.replaceAll("\\P{L}+", "");
+		singleBook.setAuthorTitleKey(authorTitleKey);
+
+		return singleBook;
+	}
+
+	private Track getTrack(File trackFile)
+	{
+		Track singleTrack = new Track();
+
+		//path
+		singleTrack.setPath(trackFile.getAbsolutePath());
+
+		//name
+		String name = mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_TITLE);
+		if(name == null || name.isEmpty()){
+			name = removeFileExtension(trackFile.getAbsolutePath());
+		}
+		singleTrack.setName(name);
+
+		//times
+		long duration = getLongFromString(mMetadataRetriever
+				.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION));
+		singleTrack.setDuration(duration);
+		singleTrack.setStartTime(0);
+		singleTrack.setEndTime(duration);
+
+		//chapters (the metatata retriever returns string "0" if no chapters
+		int chapterCount = Integer.valueOf(mMetadataRetriever
+				.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_CHAPTER_COUNT));
+		singleTrack.setChapterCount(chapterCount);
+
+		//file info
+		singleTrack.setFileSize(getLongFromString(
+				mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_FILESIZE)));
+
+		singleTrack.setAudioCodec(mMetadataRetriever
+				.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_AUDIO_CODEC));
+
+
+		return singleTrack;
+	}
+
+	private ArrayList<Chapter> getChapters(int chapterCount, int startingIndex)
+	{
+		ArrayList<Chapter> chapters = new ArrayList<>();
+
+		for(int i = 0; i < chapterCount; i++)
+		{
+			Chapter singleChapter = new Chapter();
+			singleChapter.setTitle(mContext.getString(R.string.meta_author_chapter,
+					String.format(Locale.US, "%02d", startingIndex + i)));
+		}
+
+		//TODO: duration, start time, end time
+		return chapters;
+	}
 	@Override
 	protected void onPostExecute(Integer bookCount)
 	{
@@ -118,67 +210,32 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		for (File folder : folders) {
 			mFolderPaths.add(folder.getAbsolutePath());
 			getFolderPaths(folder.getPath());
-
-
 		}
 	}
-}
 
+	private static String removeFileExtension(@NonNull String fileName)
+	{
+		if(!fileName.contains("."))
+		{
+			return fileName;
+		}
+		return fileName.substring(0, fileName.lastIndexOf('.'));
+	}
 
-
-
-
-	/*
-
-
-	public void scanDirectory(LibraryFolder targetFolder) {
-
-		HashMap<String, String> song;
-		String mp3Pattern = ".mp3";
-		File listFile[] = dir.listFiles();
-
-		if (listFile != null) {
-			for (int i = 0; i < listFile.length; i++) {
-
-				if (listFile[i].isDirectory()) {
-					scanDirectory(listFile[i]);
-				} else {
-					if (listFile[i].getName().endsWith(mp3Pattern)){
-						song = new HashMap<String, String>();
-						song.put("songTitle", listFile[i].getName().substring(0, (listFile[i].getName().length() - 4)));
-						song.put("songPath", listFile[i].getPath());
-
-						// Adding each song to SongList
-						Log.d("songs", song.get("songTitle"));
-
-					}
-				}
+	private static long getLongFromString(String stringVal)
+	{
+		long retVal = 0;
+		if(stringVal != null && !stringVal.isEmpty())
+		{
+			try
+			{
+				retVal = Long.parseLong(stringVal);
+			}
+			catch (Exception e)
+			{
+				retVal = 0;
 			}
 		}
-		return;
-	}*/
-
-/*
-FFmpegMediaMetadataRetriever metaRetriver = new FFmpegMediaMetadataRetriever();\
-// or MediaMetadataRetriever metaRetriver = new MediaMetadataRetriever();
-
-String path = "audio";
-
-String [] files  = context.getAssets().list(path);
-
-for (int i = 0; i < files.length; i++) {
-    String file = path + "/" + files[i];
-
-    AssetFileDescriptor afd = context.getAssets().openFd(file);
-
-    metaRetriver.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-
-    String album = metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
-    String artist = metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST);
-    String gener = metaRetriver.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_GENRE);
-
-    afd.close();
+		return retVal;
+	}
 }
-
-metaRetriver.release();
- */

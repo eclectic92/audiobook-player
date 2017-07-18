@@ -105,6 +105,16 @@ public class Track implements Parcelable
 		this.mId = id;
 	}
 
+	public String getPath()
+	{
+		return mPath;
+	}
+
+	public void setPath(String path)
+	{
+		this.mPath = path;
+	}
+
 	public String getName()
 	{
 		return mName;

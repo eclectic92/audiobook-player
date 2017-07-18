@@ -2,6 +2,7 @@ package com.natalieryan.android.superaudiobookplayer.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 
@@ -16,10 +17,11 @@ public class Book implements Parcelable
 	private int mId;
 	private String mTitle;
 	private String mAuthor;
+	private String mAuthorTitleKey;
 	private long mDuration;
-	private String mCurrentFile;
-	private int mCurrentChapter;
-	private long mLastHeardPosition;
+	private String mCurrentFile = null;
+	private int mCurrentChapter = -1;
+	private long mLastHeardPosition = -1;
 	private boolean mIsStarted;
 	private boolean mIsFinished;
 	private ArrayList<Track> mTracks = new ArrayList<>();
@@ -109,14 +111,25 @@ public class Book implements Parcelable
 		this.mTitle = title;
 	}
 
+	@Nullable
 	public String getAuthor()
 	{
 		return mAuthor;
 	}
 
-	public void setAuthor(String author)
+	public void setAuthor(@Nullable String author)
 	{
 		this.mAuthor = author;
+	}
+
+	public String getAuthorTitleKey()
+	{
+		return mAuthorTitleKey;
+	}
+
+	public void setAuthorTitleKey(String authorTitleKey)
+	{
+		this.mAuthorTitleKey = authorTitleKey;
 	}
 
 	public long getDuration()
@@ -129,9 +142,15 @@ public class Book implements Parcelable
 		this.mDuration = duration;
 	}
 
+	@Nullable
 	public String getCurrentFile()
 	{
 		return mCurrentFile;
+	}
+
+	public void setCurrentFile(@Nullable String currentFile)
+	{
+		this.mCurrentFile = currentFile;
 	}
 
 	public int getCurrentChapter()
@@ -144,10 +163,6 @@ public class Book implements Parcelable
 		this.mCurrentChapter = currentChapter;
 	}
 
-	public void setCurrentFile(String currentFile)
-	{
-		this.mCurrentFile = currentFile;
-	}
 
 	public long getLastHeardPosition()
 	{

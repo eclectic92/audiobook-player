@@ -79,7 +79,6 @@ public class Chapter implements Parcelable
 		return 0;
 	}
 
-
 	public void setId(int id)
 	{
 		this.mId=id;
@@ -93,6 +92,36 @@ public class Chapter implements Parcelable
 	public void setTitle(String title)
 	{
 		this.mTitle = title;
+	}
+
+	public long getDuration()
+	{
+		return mDuration;
+	}
+
+	public void setDuration(long duration)
+	{
+		this.mDuration = duration;
+	}
+
+	public long getStartTime()
+	{
+		return mStartTime;
+	}
+
+	public void setStartTime(long startTime)
+	{
+		this.mStartTime = startTime;
+	}
+
+	public long getEndTime()
+	{
+		return mEndTime;
+	}
+
+	public void setEndTime(long endTime)
+	{
+		this.mEndTime = endTime;
 	}
 
 }

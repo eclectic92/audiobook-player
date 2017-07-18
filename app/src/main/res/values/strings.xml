@@ -70,4 +70,9 @@
 		<item quantity="one">%d book</item>
 		<item quantity="other">%d books</item>
 	</plurals>
+
+	<!-- metadata strings -->
+	<string name="meta_author_unknown">Author Unknown</string>
+	<string name="meta_author_chapter">Chapter\u0020%1$s</string>
+
 </resources>
