@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ import java.util.Collections;
 public class FileBrowserFragment extends Fragment implements FileItemAdapter.FileClickListener
 {
 	//TODO: Extend to allow showing files but NOT allowing selection
-	//TODO: Highlight active device/sd card
 	public static final String TAG = FileBrowserFragment.class.getSimpleName();
 
 	public static final String SHOW_FOLDERS_ONLY = "show_folders_only";
@@ -152,7 +152,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			mBinder.sdCardButton.setVisibility(View.VISIBLE);
 			mBinder.deviceButton.setVisibility(View.VISIBLE);
 			mBinder.fileBrowserButtonBottom.setVisibility(View.VISIBLE);
-
+			toggleStorageButtons();
 			mBinder.sdCardButton.setOnClickListener(new View.OnClickListener()
 			{
 				public void onClick(View v)
@@ -167,19 +167,21 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 					{
 						handleSdCardNotPresent();
 					}
-
+					toggleStorageButtons();
 				}
 				}
 			});
+
 
 			mBinder.deviceButton.setOnClickListener(new View.OnClickListener()
 			{
 				public void onClick(View v)
 				{
-				if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
-				{
-					swapRoot(mDeviceRootPath);
-				}
+					if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
+					{
+						swapRoot(mDeviceRootPath);
+						toggleStorageButtons();
+					}
 				}
 			});
 		}
@@ -213,6 +215,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		{
 			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
 		}
+
+		mBinder.deviceButton.hasFocus();
+
 		return rootView;
 	}
 
@@ -487,5 +492,25 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		Toast.makeText(getContext(), R.string.sd_card_unmounted, Toast.LENGTH_LONG).show();
 		swapRoot(mDeviceRootPath);
 		mBinder.sdCardButton.setEnabled(false);
+	}
+
+	private void toggleStorageButtons(){
+		if(mBinder.deviceButton.getVisibility() == View.VISIBLE && mBinder.sdCardButton.getVisibility() == View.VISIBLE)
+		{
+			if(mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
+			{
+				mBinder.deviceButton
+						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
+				mBinder.sdCardButton
+						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
+			}
+			else
+			{
+				mBinder.deviceButton
+						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
+				mBinder.sdCardButton
+						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
+			}
+		}
 	}
 }

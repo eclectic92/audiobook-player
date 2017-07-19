@@ -61,6 +61,7 @@
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintEnd_toStartOf="@+id/sd_card_button"
 					android:text="@string/device_button_title"
+					android:foreground="?android:selectableItemBackground"
 					android:visibility="gone"
 					tools:visibility="visible"/>
 
@@ -76,9 +77,9 @@
 					android:paddingEnd="@dimen/file_browser_device_button_padding"
 					android:drawableStart="@drawable/ic_sd_card_black_24dp"
 					android:text="@string/sd_card_button_title"
+					android:foreground="?android:selectableItemBackground"
 					android:visibility="gone"
 					tools:visibility="visible"/>
-
 
 				<View style="@style/Divider"
 					  android:id="@+id/file_browser_button_bottom"

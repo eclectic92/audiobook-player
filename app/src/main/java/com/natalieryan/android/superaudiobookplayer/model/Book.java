@@ -18,10 +18,11 @@ public class Book implements Parcelable
 	private String mTitle;
 	private String mAuthor;
 	private String mAuthorTitleKey;
+	private String mSDCardPath;
 	private long mDuration;
 	private String mCurrentFile = null;
 	private int mCurrentChapter = -1;
-	private long mLastHeardPosition = -1;
+	private long mLastHeardPosition = 0;
 	private boolean mIsStarted;
 	private boolean mIsFinished;
 	private ArrayList<Track> mTracks = new ArrayList<>();
@@ -48,6 +49,8 @@ public class Book implements Parcelable
 		this.mId = in.readInt();
 		this.mTitle = in.readString();
 		this.mAuthor = in.readString();
+		this.mAuthorTitleKey = in.readString();
+		this.mSDCardPath = in.readString();
 		this.mDuration = in.readLong();
 		this.mCurrentFile = in.readString();
 		this.mCurrentChapter = in.readInt();
@@ -63,6 +66,8 @@ public class Book implements Parcelable
 		out.writeInt(mId);
 		out.writeString(mTitle);
 		out.writeString(mAuthor);
+		out.writeString(mAuthorTitleKey);
+		out.writeString(mSDCardPath);
 		out.writeLong(mDuration);
 		out.writeString(mCurrentFile);
 		out.writeInt(mCurrentChapter);
@@ -132,6 +137,17 @@ public class Book implements Parcelable
 		this.mAuthorTitleKey = authorTitleKey;
 	}
 
+	@Nullable
+	public String getSDCardPath()
+	{
+		return mSDCardPath;
+	}
+
+	public void setSDCardPath(String sdFolderPath)
+	{
+		this.mSDCardPath = sdFolderPath;
+	}
+
 	public long getDuration()
 	{
 		return mDuration;
@@ -162,7 +178,6 @@ public class Book implements Parcelable
 	{
 		this.mCurrentChapter = currentChapter;
 	}
-
 
 	public long getLastHeardPosition()
 	{
@@ -202,5 +217,9 @@ public class Book implements Parcelable
 	public void setTracks(ArrayList<Track> tracks)
 	{
 		this.mTracks = tracks;
+	}
+
+	public boolean isOnSDCard(){
+		return mSDCardPath != null;
 	}
 }

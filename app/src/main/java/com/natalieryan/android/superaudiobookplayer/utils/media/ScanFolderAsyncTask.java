@@ -27,6 +27,7 @@ import wseemann.media.FFmpegMediaMetadataRetriever;
  *
  */
 
+@SuppressWarnings("unused")
 public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 {
 
@@ -34,7 +35,6 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 
 	private final Context mContext;
 	private final FFmpegMediaMetadataRetriever mMetadataRetriever= new FFmpegMediaMetadataRetriever();
-	private final ArrayList<Book> mbooks = new ArrayList<>();
 	private final ScanFolderListener mScanFolderListener;
 	private final ArrayList<String> mFolderPaths = new ArrayList<>();
 	private static final String[] mAllowedExtensions = {
@@ -65,8 +65,7 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		{
 			return null;
 		}
-
-		int bookCount = 0;
+		final ArrayList<Book> books = new ArrayList<>();
 		LibraryFolder topFolder=params[0];
 
 		mFolderPaths.add(topFolder.getPath());
@@ -83,33 +82,26 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 				{
 					Book singleBook = getBook(file);
 					Track singleTrack = getTrack(file);
-					getChapters(singleTrack.getChapterCount(), 1);
+					singleBook.setDuration(singleTrack.getDuration());
+					singleBook.setCurrentFile(singleTrack.getPath());
+					if(singleTrack.getChapterCount() > 0)
+					{
+						singleTrack.setChapters(getChapters(singleTrack.getChapterCount(), 1));
+					}
 					ArrayList<Track> tracks = new ArrayList<>();
 					tracks.add(singleTrack);
 					singleBook.setTracks(tracks);
-					mbooks.add(singleBook);
-
+					if(topFolder.getIsSdCardFolder())
+					{
+						singleBook.setSDCardPath(topFolder.getRootPath());
+					}
+					books.add(singleBook);
 				}
-
-			/*
-					if(chapterCount == 0)
-		{
-			ArrayList<Chapter> chapters = new ArrayList<>();
-			Chapter chapter = new Chapter(name, duration, 0, duration);
-			chapters.add(chapter);
-			singleTrack.setChapters(chapters);
-		}
-		else
-		{
-			singleTrack.setChapters(getChapters(chapterCount));
-		}
-			 */
-
 			}
 		}
 		mMetadataRetriever.release();
 
-		return bookCount;
+		return books.size();
 	}
 
 	private Book getBook(File bookFile)
@@ -135,8 +127,8 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		singleBook.setAuthor(author);
 
 		//create author+title key as duplicate check
-		String authorTitleKey = author.replaceAll("\\P{L}+", "") + title.replaceAll("\\P{L}+", "");
-		singleBook.setAuthorTitleKey(authorTitleKey);
+		String authorTitleKey =  author.replaceAll("\\P{L}+", "") + title.replaceAll("\\P{L}+", "");
+		singleBook.setAuthorTitleKey(authorTitleKey.toUpperCase());
 
 		return singleBook;
 	}
@@ -187,9 +179,15 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 			Chapter singleChapter = new Chapter();
 			singleChapter.setTitle(mContext.getString(R.string.meta_author_chapter,
 					String.format(Locale.US, "%02d", startingIndex + i)));
+			long startTime = getLongFromString(mMetadataRetriever
+					.extractMetadataFromChapter(FFmpegMediaMetadataRetriever.METADATA_KEY_CHAPTER_START_TIME,i));
+			long endTime = getLongFromString(mMetadataRetriever
+					.extractMetadataFromChapter(FFmpegMediaMetadataRetriever.METADATA_KEY_CHAPTER_END_TIME,i));
+			singleChapter.setStartTime(startTime);
+			singleChapter.setEndTime(endTime);
+			singleChapter.setDuration(endTime-startTime);
+			chapters.add(singleChapter);
 		}
-
-		//TODO: duration, start time, end time
 		return chapters;
 	}
 	@Override

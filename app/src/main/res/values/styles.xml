@@ -7,7 +7,6 @@
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:listDivider">@color/colorDivider</item>
 		<item name="colorControlNormal">@color/colorControlNormal</item>
-		<item name="android:textColorPrimary">@color/colorPrimaryText</item>
 		<item name="android:windowBackground">@color/colorWindowBackground</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 	</style>
@@ -38,7 +37,6 @@
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 	<style name="SelectButton" parent="Widget.AppCompat.Button.Borderless">
-		<item name="android:textColor">@color/colorPrimaryDark</item>
 	</style>
 
 	<style name="CancelButton" parent="Widget.AppCompat.Button.Borderless">

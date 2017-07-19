@@ -13,6 +13,7 @@ public class FileExtensionFilter implements FileFilter
 
 	private final String[] validExtensions;
 
+	@SuppressWarnings("SameParameterValue")
 	public FileExtensionFilter(String... validExtensions)
 	{
 		this.validExtensions = validExtensions;

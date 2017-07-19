@@ -8,6 +8,7 @@ import android.os.Parcelable;
  *
  */
 
+@SuppressWarnings("unused")
 public class Chapter implements Parcelable
 {
 	private int mId;

@@ -8,7 +8,8 @@ import java.util.Random;
  * total dummy class - just need some data back before real scanner is implemented
  */
 
-public class MediaScanner
+@SuppressWarnings("unused")
+class MediaScanner
 {
 
 	public static int getBookCount()

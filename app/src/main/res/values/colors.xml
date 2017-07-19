@@ -6,12 +6,11 @@
 	<color name="colorPrimaryLight">#D1C4E9</color>
 	<color name="colorAccent">#009688</color>
 	<color name="colorControlNormal">#757575</color>
-	<color name="colorPrimaryText">#212121</color>
 	<color name="colorIcons">#FFFFFF</color>
 	<color name="colorDivider">#BDBDBD</color>
 	<color name="colorCancelButton">#e53935</color>
 	<color name="colorWindowBackground">#fffafafa</color>
-
+	<color name="colorTransparent">@android:color/transparent</color>
 	<!-- for fab -->
 	<color name="colorOverlaySemiTransparent">#b3fafafa</color>
 	<color name="colorAccentPressed">#4db6ac</color>
