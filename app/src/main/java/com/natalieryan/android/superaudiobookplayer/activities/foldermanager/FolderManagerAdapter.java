@@ -14,7 +14,7 @@ import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryFolderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.util.ArrayList;
 
@@ -273,18 +273,18 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 	public String getHeaderForFolderGroup(LibraryFolder currentFolder)
 	{
 		String rootPath = currentFolder.getRootPath();
-		if(rootPath.equalsIgnoreCase(PathUtils.getDeviceRootStoragePath()))
+		if(rootPath.equalsIgnoreCase(FileUtils.getDeviceRootStoragePath()))
 		{
 			return mContext.getString(R.string.header_for_device_folders);
 		}
 		else
 		{
-			String sdState = PathUtils.sdCardIsMounted(rootPath)
+			String sdState = FileUtils.sdCardIsMounted(rootPath)
 					? mContext.getString(R.string.header_sd_inserted)
 					: mContext.getString(R.string.header_sd_not_inserted);
 
 			return mContext.getString(R.string.header_for_sd_card_folders,
-					PathUtils.getFriendlySdCardName(rootPath),sdState);
+					FileUtils.getFriendlySdCardName(rootPath),sdState);
 		}
 	}
 }

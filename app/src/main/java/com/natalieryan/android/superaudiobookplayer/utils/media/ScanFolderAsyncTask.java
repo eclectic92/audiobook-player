@@ -12,6 +12,7 @@ import com.natalieryan.android.superaudiobookplayer.model.Chapter;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.model.Track;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileExtensionFilter;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -74,7 +75,7 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		for (String path : mFolderPaths )
 		{
 			File singleFolder = new File(path);
-			File files[] = singleFolder.listFiles(new FileExtensionFilter(mAllowedExtensions));
+			File files[] = singleFolder.listFiles(new FileExtensionFilter(false, mAllowedExtensions));
 			Arrays.sort(files);
 			for (File file : files)
 			{
@@ -114,7 +115,7 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		String title = mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
 		if(title == null || title.isEmpty())
 		{
-			title = removeFileExtension(bookFile.getName());
+			title = FileUtils.getFileNameWithoutExtension(bookFile.getName());
 		}
 		singleBook.setTitle(title);
 
@@ -143,7 +144,7 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 		//name
 		String name = mMetadataRetriever.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_TITLE);
 		if(name == null || name.isEmpty()){
-			name = removeFileExtension(trackFile.getAbsolutePath());
+			name = FileUtils.getFileNameWithoutExtension(trackFile.getAbsolutePath());
 		}
 		singleTrack.setName(name);
 
@@ -209,15 +210,6 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 			mFolderPaths.add(folder.getAbsolutePath());
 			getFolderPaths(folder.getPath());
 		}
-	}
-
-	private static String removeFileExtension(@NonNull String fileName)
-	{
-		if(!fileName.contains("."))
-		{
-			return fileName;
-		}
-		return fileName.substring(0, fileName.lastIndexOf('.'));
 	}
 
 	private static long getLongFromString(String stringVal)

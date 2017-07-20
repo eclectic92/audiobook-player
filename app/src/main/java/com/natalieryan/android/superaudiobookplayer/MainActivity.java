@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivityTabbed;
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity;
 
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity
 {
 
 	//TODO: Day-night should be moved to a static in app context
+
+	//TODO - remove this once view pager is working
+	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 
 	@SuppressWarnings("unused")
 	private static final String TAG = MainActivity.class.getSimpleName();
@@ -123,6 +127,12 @@ public class MainActivity extends AppCompatActivity
 
 		switch (id)
 		{
+			//TODO remove this once view pager is working
+			case R.id.nav_files:
+			{
+				startFolderBrowserActivity();
+				break;
+			}
 			case R.id.nav_library:
 			{
 				break;
@@ -156,5 +166,13 @@ public class MainActivity extends AppCompatActivity
 		Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
 		startActivity(startSettingsActivity);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
+	}
+
+	//TODO - remove this once view pager is working
+	private void startFolderBrowserActivity()
+	{
+		Intent intent = new Intent(this, FileBrowserActivityTabbed.class);
+		intent.putExtra("show_folders_only", 1);
+		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}
 }

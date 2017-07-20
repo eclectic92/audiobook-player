@@ -35,8 +35,8 @@
 		<activity
 			android:name=".activities.foldermanager.FolderManagerActivity"
 			android:label="@string/title_activity_folder_manager"
-			android:theme="@style/AppTheme"
-			android:parentActivityName=".activities.settings.SettingsActivity">
+			android:parentActivityName=".activities.settings.SettingsActivity"
+			android:theme="@style/AppTheme">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity"/>
@@ -56,6 +56,15 @@
 			android:authorities="com.natalieryan.android.superaudiobookplayer"
 			android:exported="false"/>
 
+		<activity
+			android:name=".activities.filebrowser.FileBrowserActivityTabbed"
+			android:label="@string/title_activity_folder_browser"
+			android:parentActivityName=".activities.foldermanager.FolderManagerActivity"
+			android:theme="@style/AppTheme.NoActionBar">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity"/>
+		</activity>
 	</application>
 
 </manifest>

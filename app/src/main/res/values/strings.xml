@@ -18,9 +18,9 @@
 	<!-- file browser -->
 	<string name="selected_folder">Selected:\u0020%1$s</string>
 	<string name="device_root_folder">Device home</string>
-	<string name="device_button_title">Device</string>
+	<string name="device_tab_title">Device</string>
+	<string name="sd_card_tab_title">SD Card</string>
 	<string name="sd_root_folder">SD card home</string>
-	<string name="sd_card_button_title">SD Card</string>
 	<string name="sd_card_unmounted">Error: SD Card not mounted</string>
 	<string name="browser_select_button">Select</string>
 	<string name="browser_cancel_button">Cancel</string>
@@ -74,5 +74,7 @@
 	<!-- metadata strings -->
 	<string name="meta_author_unknown">Author Unknown</string>
 	<string name="meta_author_chapter">Chapter\u0020%1$s</string>
+	<string name="title_activity_file_browser_activirty_tabbed">FileBrowserActivirtyTabbed</string>
+	<string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

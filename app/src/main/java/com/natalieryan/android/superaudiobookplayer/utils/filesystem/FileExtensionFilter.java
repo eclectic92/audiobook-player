@@ -11,24 +11,26 @@ import java.io.FileFilter;
 public class FileExtensionFilter implements FileFilter
 {
 
-	private final String[] validExtensions;
+	private final String[] mValidExtensions;
+	private final boolean mIncludeDirectories;
 
 	@SuppressWarnings("SameParameterValue")
-	public FileExtensionFilter(String... validExtensions)
+	public FileExtensionFilter(boolean includeDirectories, String... validExtensions)
 	{
-		this.validExtensions = validExtensions;
+		this.mValidExtensions = validExtensions;
+		this.mIncludeDirectories = includeDirectories;
 	}
 
 	public boolean accept(File pathname)
 	{
-		if (pathname.isDirectory())
+		if (pathname.isDirectory() && !mIncludeDirectories)
 		{
 			return false;
 		}
 
 		String name = pathname.getName().toLowerCase();
 
-		for (String ext : validExtensions) {
+		for (String ext : mValidExtensions) {
 			if(name.endsWith(ext))
 			{
 				return true;

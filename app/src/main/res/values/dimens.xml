@@ -6,6 +6,7 @@
 	<dimen name="file_icon_margin_start">8dp</dimen>
 	<dimen name="file_item_margin">8dp</dimen>
 	<dimen name="file_browser_back_icon_margin">24dp</dimen>
+	<dimen name="file_browser_back_icon_size">32dp</dimen>
 	<dimen name="file_browser_device_button_padding">36dp</dimen>
 	<dimen name="file_browser_divider_margin">8dp</dimen>
 
@@ -25,4 +26,6 @@
 	<dimen name="fab_menu_margin">8dp</dimen>
 
 	<dimen name="divider_height">1dp</dimen>
+	<dimen name="fab_margin">16dp</dimen>
+	<dimen name="appbar_padding_top">8dp</dimen>
 </resources>

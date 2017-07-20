@@ -7,7 +7,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
+import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserTabbedBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
@@ -25,38 +24,51 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @SuppressWarnings("unused")
-public class FileBrowserFragment extends Fragment implements FileItemAdapter.FileClickListener
+public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapter.FileClickListener
 {
 	//TODO: Extend to allow showing files but NOT allowing selection
-	public static final String TAG = FileBrowserFragment.class.getSimpleName();
+	public static final String TAG = FileBrowserFragmentTabbed.class.getSimpleName();
 
+	//public options for the fragment
 	public static final String SHOW_FOLDERS_ONLY = "show_folders_only";
+	public static final String ALLOW_FILE_SELECTION = "allow_file_selection";
+	public static final String BROWSER_ROOT_PATH = "browser_root_path";
+
+	//extras for the return intent
 	public static final String EXTRA_FILE_PATH = "file_path";
 	public static final String EXTRA_FILE_IS_ON_SD_CARD = "file_is_on_sd_card";
 
+	//additional keys for saved instance state
 	private static final String CURRENT_PATH = "current_path";
 	private static final String PARENT_PATH = "parent_path";
 	private static final String DEVICE_ROOT_PATH = "device_root_path";
-	private static final String SD_CARD_ROOT_PATH = "sd_card_root_path";
 	private static final String FILES = "files";
 	private static final String SELECTED_ITEM = "selected_item";
 	private static final String ROOT_ITEM = "root_item";
+	private static final String ROOT_PATH_IS_ON_SD = "root_path_is_on_sd";
 	private static final String SELECTED_FILE = "selected_file";
 
-	private FragmentFileBrowserBinding mBinder;
-	private String mDeviceRootPath;
-	private String mSdCardRootPath;
+	private FragmentFileBrowserTabbedBinding mBinder;
 	private FileItem mSelectedItem;
 	private FileItem mSessionRootItem;
 	private String mCurrentPath;
 	private String mParentPath;
 	private ArrayList<FileItem> mFiles = new ArrayList<>();
-	private boolean mShowOnlyFolders = false;
 	private FileItemAdapter mFileItemAdapter;
+	private boolean mRootPathIsOnSDCard;
+
+	/*
+		these can be overriden by passing in args to the fragment after construction
+		by default, the browser will show files and folder, allow files and folders to be
+		selected, and start off at the root of the device's internal emulated storage
+	 */
+	private boolean mShowOnlyFolders = false;
+	private Boolean mAllowFileSelection = true;
+	private String mBrowserRootPath = FileUtils.getDeviceRootStoragePath();
 
 
 	//default constructor
-	public FileBrowserFragment() {}
+	public FileBrowserFragmentTabbed() {}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -73,24 +85,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				mParentPath = savedInstanceState.getString(PARENT_PATH);
 			}
 
-			if(savedInstanceState.containsKey(FILES))
+			if(savedInstanceState.containsKey(BROWSER_ROOT_PATH))
 			{
-				mFiles = savedInstanceState.getParcelableArrayList(FILES);
-			}
-
-			if(savedInstanceState.containsKey(DEVICE_ROOT_PATH))
-			{
-				mDeviceRootPath = savedInstanceState.getString(DEVICE_ROOT_PATH);
-			}
-
-			if(savedInstanceState.containsKey(SD_CARD_ROOT_PATH))
-			{
-				mSdCardRootPath = savedInstanceState.getString(SD_CARD_ROOT_PATH);
-			}
-
-			if(savedInstanceState.containsKey(SHOW_FOLDERS_ONLY))
-			{
-				mShowOnlyFolders = savedInstanceState.getInt(SHOW_FOLDERS_ONLY) == 1;
+				mBrowserRootPath = savedInstanceState.getString(BROWSER_ROOT_PATH);
 			}
 
 			if(savedInstanceState.containsKey(SELECTED_ITEM))
@@ -102,6 +99,26 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			{
 				mSessionRootItem = savedInstanceState.getParcelable(ROOT_ITEM);
 			}
+
+			if(savedInstanceState.containsKey(FILES))
+			{
+				mFiles = savedInstanceState.getParcelableArrayList(FILES);
+			}
+
+			if(savedInstanceState.containsKey(SHOW_FOLDERS_ONLY))
+			{
+				mShowOnlyFolders = savedInstanceState.getBoolean(SHOW_FOLDERS_ONLY);
+			}
+
+			if(savedInstanceState.containsKey(ALLOW_FILE_SELECTION))
+			{
+				mAllowFileSelection = savedInstanceState.getBoolean(ALLOW_FILE_SELECTION);
+			}
+
+			if(savedInstanceState.containsKey(ROOT_PATH_IS_ON_SD))
+			{
+				mRootPathIsOnSDCard = savedInstanceState.getBoolean(ROOT_PATH_IS_ON_SD);
+			}
 		}
 		else
 		{
@@ -110,26 +127,20 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			{
 				if (args.containsKey(SHOW_FOLDERS_ONLY))
 				{
-					mShowOnlyFolders = getArguments().getInt(SHOW_FOLDERS_ONLY) == 1;
+					mShowOnlyFolders = getArguments().getBoolean(SHOW_FOLDERS_ONLY);
+					mAllowFileSelection = getArguments().getBoolean(ALLOW_FILE_SELECTION);
+					mBrowserRootPath = getArguments().getString(BROWSER_ROOT_PATH);
 				}
 			}
-			mDeviceRootPath = FileUtils.getDeviceRootStoragePath();
-			mSdCardRootPath = FileUtils.getSdCardPath();
-			mCurrentPath = mDeviceRootPath;
-			mSessionRootItem = createRootLevelFileItem(mCurrentPath, false);
+			mCurrentPath = mBrowserRootPath;
+			mRootPathIsOnSDCard = FileUtils.fileIsOnMountedSdCard(mCurrentPath);
+			mSessionRootItem = createRootLevelFileItem(mCurrentPath, mRootPathIsOnSDCard);
 			mSelectedItem = mSessionRootItem;
 		}
 
-		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_file_browser, container, false);
 
+		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_file_browser_tabbed, container, false);
 		View rootView = mBinder.getRoot();
-
-		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v) {
-				navigateBack();
-			}
-		});
 
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
 		mFileItemAdapter = new FileItemAdapter();
@@ -146,47 +157,8 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			loadFileList(mCurrentPath);
 		}
 
-		//show device/sd card toggle buttons if SD card present
-		if(FileUtils.sdCardIsMounted())
-		{
-			mBinder.sdCardButton.setVisibility(View.VISIBLE);
-			mBinder.deviceButton.setVisibility(View.VISIBLE);
-			mBinder.fileBrowserButtonBottom.setVisibility(View.VISIBLE);
-			toggleStorageButtons();
-			mBinder.sdCardButton.setOnClickListener(new View.OnClickListener()
-			{
-				public void onClick(View v)
-				{
-				if(!isUsingSdCard())
-				{
-					if(FileUtils.sdCardIsMounted())
-					{
-						swapRoot(mSdCardRootPath);
-					}
-					else
-					{
-						handleSdCardNotPresent();
-					}
-					toggleStorageButtons();
-				}
-				}
-			});
 
-
-			mBinder.deviceButton.setOnClickListener(new View.OnClickListener()
-			{
-				public void onClick(View v)
-				{
-					if(!mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
-					{
-						swapRoot(mDeviceRootPath);
-						toggleStorageButtons();
-					}
-				}
-			});
-		}
-
-		//set the handlers for our select/cancel buttons
+		//set the handlers for our select/cancel/back buttons
 		mBinder.browserSelectButton.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
@@ -194,7 +166,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				Activity callingActivity = getActivity();
 				Intent returnIntent = new Intent();
 				returnIntent.putExtra(EXTRA_FILE_PATH, mSelectedItem.getPath());
-				returnIntent.putExtra(EXTRA_FILE_IS_ON_SD_CARD, isUsingSdCard());
+				returnIntent.putExtra(EXTRA_FILE_IS_ON_SD_CARD, mRootPathIsOnSDCard);
 				callingActivity.setResult(Activity.RESULT_OK, returnIntent);
 				callingActivity.finish();
 			}
@@ -210,13 +182,19 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			}
 		});
 
+		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v) {
+				navigateBack();
+			}
+		});
+
+		//set the icon foe the selected file/folder
 		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 		if(mSelectedItem.equals(mSessionRootItem))
 		{
 			mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
 		}
-
-		mBinder.deviceButton.hasFocus();
 
 		return rootView;
 	}
@@ -240,14 +218,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			outState.putParcelableArrayList(FILES, mFiles);
 		}
 
-		if(mDeviceRootPath != null)
+		if(mBrowserRootPath != null)
 		{
-			outState.putString(DEVICE_ROOT_PATH, mDeviceRootPath);
-		}
-
-		if(mSdCardRootPath != null)
-		{
-			outState.putString(SD_CARD_ROOT_PATH, mSdCardRootPath);
+			outState.putString(BROWSER_ROOT_PATH, mBrowserRootPath);
 		}
 
 		if(mSelectedItem != null)
@@ -260,7 +233,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 			outState.putParcelable(ROOT_ITEM, mSessionRootItem);
 		}
 
-		outState.putInt(SHOW_FOLDERS_ONLY, mShowOnlyFolders ? 1 : 0);
+		outState.putBoolean(SHOW_FOLDERS_ONLY, mShowOnlyFolders);
+		outState.putBoolean(ALLOW_FILE_SELECTION, mAllowFileSelection);
+		outState.putBoolean(ROOT_PATH_IS_ON_SD, mRootPathIsOnSDCard);
 	}
 
 	private void loadFileList(String currentLocation)
@@ -268,7 +243,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		if(currentLocation != null && !currentLocation.isEmpty())
 		{
 			//check to make sure the SD card is still mounted if it's in play
-
+//TODO - sd card check here
 			mFiles = getFileItems(currentLocation, mShowOnlyFolders);
 			mFileItemAdapter.setFileList(mFiles);
 		}
@@ -280,7 +255,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	{
 		File currentFile = new File(currentFilePath);
 
-		if(!currentFilePath.equalsIgnoreCase(mDeviceRootPath) && !currentFilePath.equalsIgnoreCase(mSdCardRootPath))
+		if(!currentFilePath.equalsIgnoreCase(mBrowserRootPath))
 		{
 			return currentFile.getParentFile().getAbsolutePath();
 		}
@@ -292,7 +267,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 	public void navigateBack() {
 
-		if(isUsingSdCard() && !FileUtils.sdCardIsMounted())
+		if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted())
 		{
 			handleSdCardNotPresent();
 			return;
@@ -326,7 +301,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	@Override
 	public void onFileClick (View view, int position)
 	{
-		if(isUsingSdCard() && !FileUtils.sdCardIsMounted()){
+		if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted()){
 			handleSdCardNotPresent();
 			return;
 		}
@@ -393,7 +368,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 					fileItem.setName(file.getName());
 					fileItem.setPath(file.getPath());
 					fileItem.setIsDirectory(false);
-					fileItem.setIcon(R.drawable.ic_insert_drive_file_black_24dp);
+					fileItem.setIcon(FileUtils.getIconIdForFile(file.getPath()));
 					fileItem.setSize(file.length());
 					fileItem.setHasChildren(false);
 					fileItem.setParentPath(filePath);
@@ -409,24 +384,14 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 	private boolean isTopLevelFolder(String folderPath)
 	{
-		boolean isTopLevel = false;
-
-		if(folderPath.equalsIgnoreCase(mDeviceRootPath))
-		{
-			isTopLevel = true;
-		}
-		else if (mSdCardRootPath != null && folderPath.equalsIgnoreCase(mSdCardRootPath))
-		{
-			isTopLevel = true;
-		}
-
-		return isTopLevel;
+		return folderPath.equalsIgnoreCase(mBrowserRootPath);
 	}
 
 	private FileItem createRootLevelFileItem(String rootPath, boolean isSDCard)
 	{
 		FileItem fileItem = new FileItem();
 		File file = new File(rootPath);
+
 		if(isSDCard)
 		{
 			fileItem.setName(getString(R.string.sd_root_folder));
@@ -440,7 +405,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		fileItem.setIsDirectory(true);
 		fileItem.setSize(-1);
 		fileItem.setHasChildren(file.listFiles().length > 0);
-		fileItem.setIsTopLevel(isTopLevelFolder(file.getAbsolutePath()));
+		fileItem.setIsTopLevel(true);
 		fileItem.setParentPath(null);
 		return fileItem;
 	}
@@ -465,52 +430,9 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 		return fileItem;
 	}
 
-	private void swapRoot(String rootPath)
-	{
-		boolean isSDCard = false;
-
-		if(rootPath.equals(mSdCardRootPath))
-		{
-			isSDCard = true;
-		}
-		mSessionRootItem = createRootLevelFileItem(rootPath,isSDCard);
-		mSelectedItem = mSessionRootItem;
-		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
-		mBinder.backArrowImageView.setImageResource(mSelectedItem.getIcon());
-		mCurrentPath = mSelectedItem.getPath();
-		mParentPath = null;
-		loadFileList(mCurrentPath);
-	}
-
-	private boolean isUsingSdCard()
-	{
-		return mSessionRootItem.getPath().equalsIgnoreCase(mSdCardRootPath);
-	}
-
 	private void handleSdCardNotPresent()
 	{
 		Toast.makeText(getContext(), R.string.sd_card_unmounted, Toast.LENGTH_LONG).show();
-		swapRoot(mDeviceRootPath);
-		mBinder.sdCardButton.setEnabled(false);
-	}
-
-	private void toggleStorageButtons(){
-		if(mBinder.deviceButton.getVisibility() == View.VISIBLE && mBinder.sdCardButton.getVisibility() == View.VISIBLE)
-		{
-			if(mSessionRootItem.getPath().equalsIgnoreCase(mDeviceRootPath))
-			{
-				mBinder.deviceButton
-						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
-				mBinder.sdCardButton
-						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-			}
-			else
-			{
-				mBinder.deviceButton
-						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorTransparent));
-				mBinder.sdCardButton
-						.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryLight));
-			}
-		}
+		//TODO - listener callback here
 	}
 }
