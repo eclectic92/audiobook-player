@@ -60,7 +60,7 @@
 			android:name=".activities.filebrowser.FileBrowserActivityTabbed"
 			android:label="@string/title_activity_folder_browser"
 			android:parentActivityName=".activities.foldermanager.FolderManagerActivity"
-			android:theme="@style/AppTheme.NoActionBar">
+			android:theme="@style/AppTheme.NoActionBar.Close">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity"/>

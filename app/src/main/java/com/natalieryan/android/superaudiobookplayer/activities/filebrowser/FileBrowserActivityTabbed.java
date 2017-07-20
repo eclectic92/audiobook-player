@@ -1,9 +1,13 @@
 package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -11,8 +15,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
@@ -21,14 +26,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileBrowserActivityTabbed extends AppCompatActivity
+		implements FileBrowserFragmentTabbed.OnSDCardNotMountedListener,
+				   FileBrowserFragmentTabbed.OnFileSelectedListener
 {
+	private ViewPager mViewPager;
 	private ViewPagerAdapter mViewPagerAdapter;
 	private boolean mSdCardIsMounted;
+	private TabLayout mTabLayout;
+	private int mNightMode;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		//setup night mode flags
+		if(savedInstanceState != null)
+		{
+			if(savedInstanceState.containsKey(getString(R.string.pref_night_mode_menu_key)))
+			{
+				mNightMode = savedInstanceState.getInt(getString(R.string.pref_night_mode_menu_key),
+						Integer.valueOf(getString(R.string.pref_night_mode_value_off)));
+			}
+		}
+		else
+		{
+			final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+			mNightMode = Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
+					getString(R.string.pref_night_mode_value_off)));
+		}
+
+		getDelegate().setLocalNightMode(mNightMode);
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_file_browser_activity_tabbed);
 
 		Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
@@ -40,26 +69,23 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 		}
 
 		mSdCardIsMounted = FileUtils.sdCardIsMounted();
+		mTabLayout=(TabLayout)findViewById(R.id.tabs);
+		mViewPager = (ViewPager)findViewById(R.id.browser_pager_container);
+		setupViewPager(mViewPager);
+		mViewPager.setAdapter(mViewPagerAdapter);
 
-		TabLayout tabLayout=(TabLayout)findViewById(R.id.tabs);
-		ViewPager viewPager = (ViewPager)findViewById(R.id.browser_pager_container);
-		setupViewPager(viewPager);
-		viewPager.setAdapter(mViewPagerAdapter);
-		tabLayout.setupWithViewPager(viewPager);
-		// Set up the ViewPager with the sections adapter.
 		if(mSdCardIsMounted)
 		{
-			tabLayout.setVisibility(View.VISIBLE);
+			mTabLayout.setVisibility(View.VISIBLE);
 		}
 		else
 		{
-			tabLayout.setVisibility(View.GONE);
+			mTabLayout.setVisibility(View.GONE);
 		}
-		tabLayout.setupWithViewPager(viewPager);
+		mTabLayout.setupWithViewPager(mViewPager);
 	}
 
 	private void setupViewPager(ViewPager viewPager) {
-
 		//instantiate the adapter
 		mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -101,13 +127,56 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 			sdBrowserArgs.putString(FileBrowserFragmentTabbed.BROWSER_ROOT_PATH, FileUtils.getSdCardPath());
 			FileBrowserFragmentTabbed sdBrowser = new FileBrowserFragmentTabbed();
 			sdBrowser.setArguments(sdBrowserArgs);
-
 			mViewPagerAdapter.addFragment(sdBrowser, getString(R.string.sd_card_tab_title));
-
 		}
 		viewPager.setAdapter(mViewPagerAdapter);
 	}
 
+	@Override
+	public void onSDCardUnmounted()
+	{
+		mViewPager.setCurrentItem(0);
+		TabLayout.Tab sdTab = mTabLayout.getTabAt(1);
+		if(sdTab != null) mTabLayout.removeTab(sdTab);
+		mTabLayout.setVisibility(View.GONE);
+		Toast.makeText(this, R.string.sd_card_unmounted, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		FileBrowserFragmentTabbed currentFragment  = (FileBrowserFragmentTabbed) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.browser_pager_container + ":"
+						+ mViewPager.getCurrentItem());
+		currentFragment.onBackPressed();
+	}
+
+	@Override
+	public void onFileSelected(String path, boolean isOnSDCard)
+	{
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(FileBrowserFragmentTabbed.EXTRA_FILE_PATH, path);
+		returnIntent.putExtra(FileBrowserFragmentTabbed.EXTRA_FILE_IS_ON_SD_CARD, isOnSDCard);
+		this.setResult(Activity.RESULT_OK, returnIntent);
+		this.finish();
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putInt(getString(R.string.pref_night_mode_menu_key), mNightMode);
+	}
 
 	class ViewPagerAdapter extends FragmentPagerAdapter {
 		private final List<Fragment> mFragmentList = new ArrayList<>();

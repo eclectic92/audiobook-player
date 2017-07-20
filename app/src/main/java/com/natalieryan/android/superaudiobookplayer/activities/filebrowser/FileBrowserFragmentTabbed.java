@@ -2,16 +2,17 @@ package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserTabbedBinding;
@@ -48,6 +49,8 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 	private static final String ROOT_PATH_IS_ON_SD = "root_path_is_on_sd";
 	private static final String SELECTED_FILE = "selected_file";
 
+	private OnSDCardNotMountedListener mSDCardNotMountedListener;
+	private OnFileSelectedListener mFileSelectedListener;
 	private FragmentFileBrowserTabbedBinding mBinder;
 	private FileItem mSelectedItem;
 	private FileItem mSessionRootItem;
@@ -69,6 +72,36 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 	//default constructor
 	public FileBrowserFragmentTabbed() {}
+
+
+	public interface OnSDCardNotMountedListener
+	{
+		void onSDCardUnmounted();
+	}
+
+	public interface OnFileSelectedListener
+	{
+		void onFileSelected(String path, boolean isOnSDCard);
+	}
+
+	@Override
+	public void onAttach(Context context)
+	{
+		super.onAttach(context);
+
+		try {
+			mSDCardNotMountedListener = (OnSDCardNotMountedListener) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString() + " must implement OnSDCardNotMountedListener");
+		}
+
+		try {
+			mFileSelectedListener= (OnFileSelectedListener) context;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(context.toString() + " must implement OnFileSelectedListener");
+		}
+	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -157,18 +190,12 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 			loadFileList(mCurrentPath);
 		}
 
-
 		//set the handlers for our select/cancel/back buttons
 		mBinder.browserSelectButton.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				Activity callingActivity = getActivity();
-				Intent returnIntent = new Intent();
-				returnIntent.putExtra(EXTRA_FILE_PATH, mSelectedItem.getPath());
-				returnIntent.putExtra(EXTRA_FILE_IS_ON_SD_CARD, mRootPathIsOnSDCard);
-				callingActivity.setResult(Activity.RESULT_OK, returnIntent);
-				callingActivity.finish();
+				mFileSelectedListener.onFileSelected(mSelectedItem.getPath(), mRootPathIsOnSDCard);
 			}
 		});
 
@@ -189,7 +216,7 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 			}
 		});
 
-		//set the icon foe the selected file/folder
+		//set the icon for the selected file/folder
 		mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
 		if(mSelectedItem.equals(mSessionRootItem))
 		{
@@ -198,7 +225,6 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 		return rootView;
 	}
-
 
 	@Override
 	public void onSaveInstanceState(Bundle outState)
@@ -242,13 +268,14 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 	{
 		if(currentLocation != null && !currentLocation.isEmpty())
 		{
-			//check to make sure the SD card is still mounted if it's in play
-//TODO - sd card check here
+			if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted()){
+				mSDCardNotMountedListener.onSDCardUnmounted();
+				return;
+			}
 			mFiles = getFileItems(currentLocation, mShowOnlyFolders);
 			mFileItemAdapter.setFileList(mFiles);
 		}
 	}
-
 
 	@Nullable
 	private String getParentFilePath(String currentFilePath)
@@ -269,13 +296,13 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 		if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted())
 		{
-			handleSdCardNotPresent();
+			mSDCardNotMountedListener.onSDCardUnmounted();
 			return;
 		}
 
 		if(mParentPath !=null)
 		{
-			mCurrentPath = mParentPath;
+			if(mSelectedItem.getIsDirectory()) mCurrentPath = mParentPath;
 			mParentPath = getParentFilePath(mCurrentPath);
 			loadFileList(mCurrentPath);
 			mSelectedItem = CreateParentFileItem(mCurrentPath);
@@ -302,7 +329,7 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 	public void onFileClick (View view, int position)
 	{
 		if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted()){
-			handleSdCardNotPresent();
+			mSDCardNotMountedListener.onSDCardUnmounted();
 			return;
 		}
 		final FileItem fileItem = mFileItemAdapter.getItem(position);
@@ -323,9 +350,7 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 	private ArrayList<FileItem> getFileItems(String filePath, boolean fetchFoldersOnly)
 	{
 		ArrayList<FileItem> fileAndFolderItems = new ArrayList<>();
-
 		File currentLocation = new File(filePath);
-
 		File[] folders = currentLocation.listFiles(new FileFilter() {
 			@Override
 			public boolean accept(File pathname) {
@@ -412,7 +437,6 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 	private FileItem CreateParentFileItem(String path)
 	{
-
 		FileItem fileItem = new FileItem();
 		File file = new File(path);
 		fileItem.setName(file.getName());
@@ -430,9 +454,15 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 		return fileItem;
 	}
 
-	private void handleSdCardNotPresent()
+	public void onBackPressed()
 	{
-		Toast.makeText(getContext(), R.string.sd_card_unmounted, Toast.LENGTH_LONG).show();
-		//TODO - listener callback here
+		if(isAtTopLevel())
+		{
+			NavUtils.navigateUpFromSameTask(getActivity());
+		}
+		else
+		{
+			navigateBack();
+		}
 	}
 }

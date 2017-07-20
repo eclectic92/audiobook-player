@@ -28,7 +28,7 @@
 		<item name="windowNoTitle">true</item>
 	</style>
 
-	<style name="AppTheme.ActionBarClose" parent="AppTheme">
+	<style name="AppTheme.NoActionBar.Close" parent="AppTheme.NoActionBar">
 		<item name="android:homeAsUpIndicator">@drawable/ic_action_close</item>
 	</style>
 

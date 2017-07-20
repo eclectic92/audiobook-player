@@ -28,6 +28,7 @@ import android.view.animation.LinearInterpolator;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivityTabbed;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragmentTabbed;
 import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
@@ -165,7 +166,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 	private void startFolderBrowserActivity()
 	{
-		Intent intent = new Intent(getContext(), FileBrowserActivity.class);
+		Intent intent = new Intent(getContext(), FileBrowserActivityTabbed.class);
 		intent.putExtra(FileBrowserFragmentTabbed.SHOW_FOLDERS_ONLY, true);
 		intent.putExtra(FileBrowserFragmentTabbed.ALLOW_FILE_SELECTION, false);
 		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
@@ -190,8 +191,6 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	//
 	//utility functions
 	//
-
-
 	private void scanLibraryFolder(LibraryFolder folderToScan)
 	{
 		ScanFolderAsyncTask scanFolderAsyncTask = new ScanFolderAsyncTask(getContext(), this);
