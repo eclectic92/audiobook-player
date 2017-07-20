@@ -14,6 +14,7 @@
 	<string name="description_file_icon">File icon</string>
 	<string name="description_back_icon">Back icon</string>
 	<string name="description_logo_icon">Super Audiobook Player</string>
+	<string name="description_storage_tab">Storage icon</string>
 
 	<!-- file browser -->
 	<string name="selected_folder">Selected:\u0020%1$s</string>

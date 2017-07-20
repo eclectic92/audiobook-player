@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.ui.custom.CustomIconTabLayout;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 	private boolean mSdCardIsMounted;
 	private TabLayout mTabLayout;
 	private int mNightMode;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -69,11 +69,12 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 		}
 
 		mSdCardIsMounted = FileUtils.sdCardIsMounted();
-		mTabLayout=(TabLayout)findViewById(R.id.tabs);
 		mViewPager = (ViewPager)findViewById(R.id.browser_pager_container);
 		setupViewPager(mViewPager);
 		mViewPager.setAdapter(mViewPagerAdapter);
 
+		//setup the tab layout
+		mTabLayout=(TabLayout)findViewById(R.id.tabs);
 		if(mSdCardIsMounted)
 		{
 			mTabLayout.setVisibility(View.VISIBLE);
@@ -82,7 +83,13 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 		{
 			mTabLayout.setVisibility(View.GONE);
 		}
+
+		//add the icons if it's visible
 		mTabLayout.setupWithViewPager(mViewPager);
+		if(mTabLayout.getVisibility() == View.VISIBLE)
+		{
+			setupTabIcons();
+		}
 	}
 
 	private void setupViewPager(ViewPager viewPager) {
@@ -130,6 +137,39 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 			mViewPagerAdapter.addFragment(sdBrowser, getString(R.string.sd_card_tab_title));
 		}
 		viewPager.setAdapter(mViewPagerAdapter);
+	}
+
+	private void setupTabIcons() {
+
+		/*
+		TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+        tabOne.setText("ONE");
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_favourite, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+		 */
+
+		TabLayout.Tab deviceTab = mTabLayout.getTabAt(0);
+		if(deviceTab != null)
+		{
+			CustomIconTabLayout deviceTabLayout = new CustomIconTabLayout(
+					this, getString(R.string.device_tab_title), R.drawable.ic_phone_android_light_24dp);
+			//TextView tvDeviceTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+			//tvDeviceTab.setText(R.string.device_tab_title);
+			////tvDeviceTab.setCompoundDrawablesWithIntrinsicBounds(mTabIcons[0], 0, 0, 0);
+			deviceTab.setCustomView(deviceTabLayout);
+		}
+
+		TabLayout.Tab sdTab = mTabLayout.getTabAt(1);
+		if(sdTab != null)
+		{
+			CustomIconTabLayout sdTabLayout = new CustomIconTabLayout(
+					this, getString(R.string.sd_card_tab_title), R.drawable.ic_sd_card_light_24dp);
+
+			//TextView tvSdTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+			//tvSdTab.setText(R.string.sd_card_tab_title);
+			//tvSdTab.setCompoundDrawablesWithIntrinsicBounds(mTabIcons[1], 0, 0, 0);
+			sdTab.setCustomView(sdTabLayout);
+		}
 	}
 
 	@Override

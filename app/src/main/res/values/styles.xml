@@ -60,4 +60,5 @@
 		<item name="fab_colorNormal">@color/colorAccent</item>
 		<item name="fab_colorPressed">@color/colorAccentPressed</item>
 	</style>
+
 </resources>
