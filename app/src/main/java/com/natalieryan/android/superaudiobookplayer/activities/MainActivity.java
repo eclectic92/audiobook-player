@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer;
+package com.natalieryan.android.superaudiobookplayer.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivityTabbed;
+import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity;
 
@@ -25,19 +25,17 @@ public class MainActivity extends AppCompatActivity
 
 	//TODO: Day-night should be moved to a static in app context
 
-	//TODO - remove this once view pager is working
-	private static final int SELECT_FOLDER_RESULT_CODE = 1;
-
 	@SuppressWarnings("unused")
-	private static final String TAG = MainActivity.class.getSimpleName();
+	private static final String TAG=MainActivity.class.getSimpleName();
 	private MenuItem mMenuItemWaiting;
 	private DrawerLayout drawer;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		final SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		int nightMode = Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
+		final SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		int nightMode=Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
 				getString(R.string.pref_night_mode_value_off)));
 
 		getDelegate().setLocalNightMode(nightMode);
@@ -50,13 +48,14 @@ public class MainActivity extends AppCompatActivity
 
 		drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
 
-		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+		ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(
 				this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 		{
 			@Override
-			public void onDrawerClosed(View drawerView) {
+			public void onDrawerClosed(View drawerView)
+			{
 				super.onDrawerClosed(drawerView);
-				if(mMenuItemWaiting != null)
+				if (mMenuItemWaiting!=null)
 				{
 					onNavigationItemSelected(mMenuItemWaiting);
 				}
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity
 		NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 	}
+
 
 	@Override
 	public void onBackPressed()
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		int id = item.getItemId();
+		int id=item.getItemId();
 
 		switch (id)
 		{
@@ -110,14 +110,16 @@ public class MainActivity extends AppCompatActivity
 
 	}
 
+
 	@SuppressWarnings("StatementWithEmptyBody")
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item)
 	{
 
-		mMenuItemWaiting = null;
-		if(drawer.isDrawerOpen(GravityCompat.START)) {
-			mMenuItemWaiting = item;
+		mMenuItemWaiting=null;
+		if (drawer.isDrawerOpen(GravityCompat.START))
+		{
+			mMenuItemWaiting=item;
 			drawer.closeDrawers();
 			return false;
 		}
@@ -127,12 +129,6 @@ public class MainActivity extends AppCompatActivity
 
 		switch (id)
 		{
-			//TODO remove this once view pager is working
-			case R.id.nav_files:
-			{
-				startFolderBrowserActivity();
-				break;
-			}
 			case R.id.nav_library:
 			{
 				break;
@@ -154,25 +150,19 @@ public class MainActivity extends AppCompatActivity
 		return true;
 	}
 
+
 	private void launchFolderManager()
 	{
-		Intent intent = new Intent(this, FolderManagerActivity.class);
+		Intent intent=new Intent(this, FolderManagerActivity.class);
 		startActivity(intent);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
 	}
 
+
 	private void launchSettings()
 	{
-		Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+		Intent startSettingsActivity=new Intent(this, SettingsActivity.class);
 		startActivity(startSettingsActivity);
 		overridePendingTransition(R.anim.swap_in_bottom, R.anim.swap_out_bottom);
-	}
-
-	//TODO - remove this once view pager is working
-	private void startFolderBrowserActivity()
-	{
-		Intent intent = new Intent(this, FileBrowserActivityTabbed.class);
-		intent.putExtra("show_folders_only", 1);
-		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}
 }

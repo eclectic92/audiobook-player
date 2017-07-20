@@ -98,7 +98,7 @@ public class FileUtils
 	}
 
 	@Nullable
-	public static String getFileExtension(@NonNull String fileName)
+	private static String getFileExtension(@NonNull String fileName)
 	{
 		if(!fileName.contains("."))
 		{

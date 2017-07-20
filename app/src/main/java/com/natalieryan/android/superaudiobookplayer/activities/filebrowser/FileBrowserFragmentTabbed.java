@@ -3,7 +3,6 @@ package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserTabbedBinding;
+import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
@@ -51,7 +50,7 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 	private OnSDCardNotMountedListener mSDCardNotMountedListener;
 	private OnFileSelectedListener mFileSelectedListener;
-	private FragmentFileBrowserTabbedBinding mBinder;
+	private FragmentFileBrowserBinding mBinder;
 	private FileItem mSelectedItem;
 	private FileItem mSessionRootItem;
 	private String mCurrentPath;
@@ -172,7 +171,7 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 		}
 
 
-		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_file_browser_tabbed, container, false);
+		mBinder = DataBindingUtil.inflate(inflater, R.layout.fragment_file_browser, container, false);
 		View rootView = mBinder.getRoot();
 
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());

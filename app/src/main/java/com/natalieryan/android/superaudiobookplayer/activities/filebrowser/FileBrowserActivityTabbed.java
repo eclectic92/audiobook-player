@@ -58,7 +58,7 @@ public class FileBrowserActivityTabbed extends AppCompatActivity
 		getDelegate().setLocalNightMode(mNightMode);
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_file_browser_activity_tabbed);
+		setContentView(R.layout.activity_file_browser);
 
 		Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

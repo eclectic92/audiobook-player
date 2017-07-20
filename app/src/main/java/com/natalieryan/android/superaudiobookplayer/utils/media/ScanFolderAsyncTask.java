@@ -4,7 +4,6 @@ import android.content.Context;
 
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.model.Book;

@@ -38,8 +38,6 @@ import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.utils.media.ScanFolderAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
 import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
-import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
-import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 /**
@@ -136,8 +134,8 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		{
 			if (resultCode == Activity.RESULT_OK)
 			{
-				String filePath = data.getStringExtra(FileBrowserFragment.EXTRA_FILE_PATH);
-				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD, false);
+				String filePath = data.getStringExtra(FileBrowserFragmentTabbed.EXTRA_FILE_PATH);
+				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragmentTabbed.EXTRA_FILE_IS_ON_SD_CARD, false);
 				String rootPath = isOnSDCard ? FileUtils.getSdCardPath() : FileUtils.getDeviceRootStoragePath();
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{

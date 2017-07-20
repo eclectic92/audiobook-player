@@ -10,7 +10,7 @@
 	<color name="colorDivider">#BDBDBD</color>
 	<color name="colorCancelButton">#e53935</color>
 	<color name="colorWindowBackground">#fffafafa</color>
-	<color name="colorTransparent">@android:color/transparent</color>
+
 	<!-- for fab -->
 	<color name="colorOverlaySemiTransparent">#b3fafafa</color>
 	<color name="colorAccentPressed">#4db6ac</color>

@@ -29,7 +29,7 @@
 	</style>
 
 	<style name="AppTheme.NoActionBar.Close" parent="AppTheme.NoActionBar">
-		<item name="android:homeAsUpIndicator">@drawable/ic_action_close</item>
+		<item name="android:homeAsUpIndicator">@drawable/ic_close_black_24dp</item>
 	</style>
 
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

@@ -74,7 +74,5 @@
 	<!-- metadata strings -->
 	<string name="meta_author_unknown">Author Unknown</string>
 	<string name="meta_author_chapter">Chapter\u0020%1$s</string>
-	<string name="title_activity_file_browser_activirty_tabbed">FileBrowserActivirtyTabbed</string>
-	<string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

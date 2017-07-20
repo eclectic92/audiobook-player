@@ -14,7 +14,7 @@
 		android:theme="@style/AppTheme"
 		tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 		<activity
-			android:name=".MainActivity"
+			android:name=".activities.MainActivity"
 			android:label="@string/title_activity_main"
 			android:launchMode="singleTop"
 			android:theme="@style/AppTheme.NoActionBar">
@@ -27,10 +27,10 @@
 		<activity
 			android:name=".activities.settings.SettingsActivity"
 			android:label="@string/title_activity_settings"
-			android:parentActivityName=".MainActivity">
+			android:parentActivityName=".activities.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.MainActivity"/>
+				android:value="com.natalieryan.android.superaudiobookplayer.activities.MainActivity"/>
 		</activity>
 		<activity
 			android:name=".activities.foldermanager.FolderManagerActivity"
@@ -40,15 +40,6 @@
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity"/>
-		</activity>
-		<activity
-			android:name=".activities.filebrowser.FileBrowserActivity"
-			android:label="@string/title_activity_folder_browser"
-			android:parentActivityName=".activities.foldermanager.FolderManagerActivity"
-			android:theme="@style/AppTheme.ActionBarClose">
-			<meta-data
-				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity"/>
 		</activity>
 
 		<provider
