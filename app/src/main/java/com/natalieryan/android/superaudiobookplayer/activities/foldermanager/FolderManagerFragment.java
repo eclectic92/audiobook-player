@@ -37,6 +37,7 @@ import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderMa
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapter;
 import com.natalieryan.android.superaudiobookplayer.tasks.ScanFolderAsyncTask;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.GenericListAdapter;
 import com.natalieryan.android.superaudiobookplayer.ui.utils.FabScrollListener;
 import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
@@ -104,7 +105,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-		mAdapter = new FolderManagerAdapter(getContext(), true);
+		mAdapter = new FolderManagerAdapter(getContext());
 		mBinder.LibraryFolderListRv.setAdapter(mAdapter);
 		mBinder.LibraryFolderListRv.setLayoutManager(layoutManager);
 
@@ -325,7 +326,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 				final int dragFlags = 0;
 				final int swipeFlags = ItemTouchHelper.START;
-				return viewHolder.getItemViewType() == FolderManagerAdapter.VIEW_TYPE_HEADER
+				return viewHolder.getItemViewType() ==GenericListAdapter.ITEM_VIEW_TYPE_HEADER
 						? 0 : makeMovementFlags(dragFlags, swipeFlags);
 			}
 		};
@@ -396,7 +397,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	{
 		if (data!=null && data.getCount() > 0)
 		{
-			mAdapter.setFolderList(data);
+			mAdapter.setData(data, true);
 			mBinder.libraryFolderManagerScrollView.setVisibility(View.VISIBLE);
 			mBinder.libraryFolderManagerZeroState.setVisibility(View.GONE);
 		}

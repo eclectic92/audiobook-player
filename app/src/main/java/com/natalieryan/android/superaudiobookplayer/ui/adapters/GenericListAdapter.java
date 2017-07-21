@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericRecyclerViewHolder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
 public abstract class GenericListAdapter<T, S extends GenericListSorter>
 		extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-	private ArrayList<T> mData;
+	private final ArrayList<T> mData = new ArrayList<>();
 	private List<Integer> mNumberOfHeadersOnOrAbove;
 	private boolean mShowHeaders;
 	private S mSorter;
@@ -36,24 +38,30 @@ public abstract class GenericListAdapter<T, S extends GenericListSorter>
 	}
 
 	public void setData(@NonNull ArrayList<T> items, boolean showHeaders) {
-		mNumberOfHeadersOnOrAbove = null;
+		clearData();
 		this.mShowHeaders = showHeaders;
 		if(!items.isEmpty())
 		{
 			this.mData.addAll(items);
 		}
-		notifyDataSetChanged();
 	}
 
 	public void setData(@NonNull Cursor cursor, boolean showHeaders) {
-		mNumberOfHeadersOnOrAbove = null;
+		clearData();
 		this.mShowHeaders = showHeaders;
 	}
 
 	public void clearData(){
 		mNumberOfHeadersOnOrAbove = null;
 		mData.clear();
-		notifyDataSetChanged();
+	}
+
+	public void add(T t) {
+		mData.add(t);
+	}
+
+	public void remove(T t) {
+		mData.remove(t);
 	}
 
 	public S getSorter() {
@@ -65,7 +73,7 @@ public abstract class GenericListAdapter<T, S extends GenericListSorter>
 	}
 
 	@Nullable
-	private List<Integer> getNumHeadersOnOrAbove() {
+	public List<Integer> getNumHeadersOnOrAbove() {
 		return mNumberOfHeadersOnOrAbove;
 	}
 
@@ -73,7 +81,7 @@ public abstract class GenericListAdapter<T, S extends GenericListSorter>
 	{
 		return mData.size();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public int getItemCount()
@@ -161,6 +169,8 @@ public abstract class GenericListAdapter<T, S extends GenericListSorter>
 
 	public T getItem(int position)
 	{
+		if(!mShowHeaders) return mData.get(position);
+
 		if (mData!=null)
 		{
 			return mData.get(position-mNumberOfHeadersOnOrAbove.get(position));
