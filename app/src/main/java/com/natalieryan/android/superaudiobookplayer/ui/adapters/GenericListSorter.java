@@ -5,7 +5,8 @@ package com.natalieryan.android.superaudiobookplayer.ui.adapters;
  *
  */
 
-public interface GenericListSorter<T> {
+@SuppressWarnings("unused")
+interface GenericListSorter<T> {
 	String getHeaderForEntry(T currentEntry);
 	long getHeaderIdForEntry(T currentEntry);
 }

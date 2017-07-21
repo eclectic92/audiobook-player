@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -26,14 +25,14 @@ import java.util.ArrayList;
  */
 
 @SuppressWarnings("unused")
-public class FolderManagerAdapter extends GenericListAdapter<LibraryFolder, LibraryFolderSorter>
+public class FolderManagerAdapter extends GenericListAdapter<LibraryFolder, FolderManagerSorter>
 {
 	private LibraryFolderItemBinding mBinder;
 
 
 	public FolderManagerAdapter(Context context)
 	{
-		this.setSorter(new LibraryFolderSorter(context));
+		this.setSorter(new FolderManagerSorter(context));
 	}
 
 	@Override

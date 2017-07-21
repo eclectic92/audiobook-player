@@ -23,8 +23,6 @@
 			android:layout_centerVertical="true"
 			android:layout_marginBottom="@dimen/folder_item_margin_end"
 			android:layout_marginEnd="@dimen/folder_item_margin_end"
-			android:layout_marginLeft="@dimen/folder_item_margin_start"
-			android:layout_marginRight="@dimen/folder_item_margin_end"
 			android:layout_marginStart="@dimen/folder_item_margin_start"
 			android:layout_marginTop="@dimen/folder_item_margin_start"
 			android:gravity="start"

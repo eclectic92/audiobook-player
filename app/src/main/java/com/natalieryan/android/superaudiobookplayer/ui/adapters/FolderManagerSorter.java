@@ -12,12 +12,12 @@ import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
  *
  */
 
-public class LibraryFolderSorter implements GenericListSorter<LibraryFolder>
+public class FolderManagerSorter implements GenericListSorter<LibraryFolder>
 {
 	private final Context mContext;
 
 
-	public LibraryFolderSorter(Context context)
+	public FolderManagerSorter(Context context)
 	{
 		this.mContext=context;
 	}

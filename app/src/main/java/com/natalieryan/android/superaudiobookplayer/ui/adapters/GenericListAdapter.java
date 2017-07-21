@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericRecyclerViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,7 +169,7 @@ public abstract class GenericListAdapter<T, S extends GenericListSorter>
 	{
 		if(!mShowHeaders) return mData.get(position);
 
-		if (mData!=null)
+		if (!mData.isEmpty())
 		{
 			return mData.get(position-mNumberOfHeadersOnOrAbove.get(position));
 		}
