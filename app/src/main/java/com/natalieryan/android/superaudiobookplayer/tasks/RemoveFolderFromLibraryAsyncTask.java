@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.data.async;
+package com.natalieryan.android.superaudiobookplayer.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
