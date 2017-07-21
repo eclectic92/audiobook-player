@@ -35,9 +35,9 @@ import com.natalieryan.android.superaudiobookplayer.tasks.AddFolderToLibraryAsyn
 import com.natalieryan.android.superaudiobookplayer.tasks.RemoveFolderFromLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapter;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapterArray;
 import com.natalieryan.android.superaudiobookplayer.tasks.ScanFolderAsyncTask;
-import com.natalieryan.android.superaudiobookplayer.ui.adapters.GenericListAdapter;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.GenericArrayListAdapter;
 import com.natalieryan.android.superaudiobookplayer.ui.utils.FabScrollListener;
 import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
@@ -66,7 +66,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private LibraryFolder mDeletedFolder = null;
 	private LibraryFolder mFolderToAdd = null;
 	private FragmentFolderManagerBinding mBinder;
-	private FolderManagerAdapter mAdapter;
+	private FolderManagerAdapterArray mAdapter;
 
 	public FolderManagerFragment()
 	{
@@ -105,7 +105,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-		mAdapter = new FolderManagerAdapter(getContext());
+		mAdapter = new FolderManagerAdapterArray(getContext());
 		mBinder.LibraryFolderListRv.setAdapter(mAdapter);
 		mBinder.LibraryFolderListRv.setLayoutManager(layoutManager);
 
@@ -326,7 +326,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 				final int dragFlags = 0;
 				final int swipeFlags = ItemTouchHelper.START;
-				return viewHolder.getItemViewType() ==GenericListAdapter.ITEM_VIEW_TYPE_HEADER
+				return viewHolder.getItemViewType() ==GenericArrayListAdapter.ITEM_VIEW_TYPE_HEADER
 						? 0 : makeMovementFlags(dragFlags, swipeFlags);
 			}
 		};

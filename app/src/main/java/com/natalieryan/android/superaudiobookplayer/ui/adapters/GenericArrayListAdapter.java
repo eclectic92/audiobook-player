@@ -14,8 +14,8 @@ import java.util.List;
  *
  */
 
-@SuppressWarnings({"unused", "CanBeFinal"})
-public abstract class GenericListAdapter<T, S extends GenericListSorter>
+@SuppressWarnings("unused")
+public abstract class GenericArrayListAdapter<T, S extends GenericListSorter>
 		extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
 	private final ArrayList<T> mData = new ArrayList<>();
