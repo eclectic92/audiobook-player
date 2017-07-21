@@ -6,14 +6,12 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.databinding.GenericHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryFolderItemBinding;
-import com.natalieryan.android.superaudiobookplayer.databinding.LibraryHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
 import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericHeaderViewHolder;
 import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericRecyclerViewHolder;
@@ -230,6 +228,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<GenericRecyclerVi
 		String rootPath = currentFolder.getRootPath();
 		if(rootPath.equalsIgnoreCase(FileUtils.getDeviceRootStoragePath()))
 		{
+
 			return mContext.getString(R.string.header_for_device_folders);
 		}
 		else
@@ -237,7 +236,6 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<GenericRecyclerVi
 			String sdState = FileUtils.sdCardIsMounted(rootPath)
 					? mContext.getString(R.string.header_sd_inserted)
 					: mContext.getString(R.string.header_sd_not_inserted);
-
 			return mContext.getString(R.string.header_for_sd_card_folders,
 					FileUtils.getFriendlySdCardName(rootPath),sdState);
 		}

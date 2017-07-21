@@ -20,9 +20,9 @@ public class GenericHeaderViewHolder extends GenericRecyclerViewHolder
 	}
 
 	@Override
-	public void bind(String boundString)
+	public void bind(String bindingString)
 	{
-		mBinding.setVariable(BR.headerString, boundString );
+		mBinding.setVariable(BR.headerString, bindingString);
 		mBinding.executePendingBindings();
 	}
 }

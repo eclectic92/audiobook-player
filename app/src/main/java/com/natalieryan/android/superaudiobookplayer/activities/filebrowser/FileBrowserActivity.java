@@ -37,10 +37,6 @@ public class FileBrowserActivity extends AppCompatActivity
 	private TabLayout mTabLayout;
 	private int mNightMode;
 
-	//for intent return
-	private String mSelectedFilePath;
-	private boolean mIsSelectedFileOnSdCard;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
