@@ -1,7 +1,6 @@
 package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -24,10 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @SuppressWarnings("unused")
-public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapter.FileClickListener
+public class FileBrowserFragment extends Fragment implements FileItemAdapter.FileClickListener
 {
 	//TODO: Extend to allow showing files but NOT allowing selection
-	public static final String TAG = FileBrowserFragmentTabbed.class.getSimpleName();
+	public static final String TAG = FileBrowserFragment.class.getSimpleName();
 
 	//public options for the fragment
 	public static final String SHOW_FOLDERS_ONLY = "show_folders_only";
@@ -49,7 +48,6 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 	private static final String SELECTED_FILE = "selected_file";
 
 	private OnSDCardNotMountedListener mSDCardNotMountedListener;
-	private OnFileSelectedListener mFileSelectedListener;
 	private FragmentFileBrowserBinding mBinder;
 	private FileItem mSelectedItem;
 	private FileItem mSessionRootItem;
@@ -70,17 +68,12 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 
 
 	//default constructor
-	public FileBrowserFragmentTabbed() {}
+	public FileBrowserFragment() {}
 
 
 	public interface OnSDCardNotMountedListener
 	{
 		void onSDCardUnmounted();
-	}
-
-	public interface OnFileSelectedListener
-	{
-		void onFileSelected(String path, boolean isOnSDCard);
 	}
 
 	@Override
@@ -92,12 +85,6 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 			mSDCardNotMountedListener = (OnSDCardNotMountedListener) context;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(context.toString() + " must implement OnSDCardNotMountedListener");
-		}
-
-		try {
-			mFileSelectedListener= (OnFileSelectedListener) context;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(context.toString() + " must implement OnFileSelectedListener");
 		}
 	}
 
@@ -188,25 +175,6 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 		{
 			loadFileList(mCurrentPath);
 		}
-
-		//set the handlers for our select/cancel/back buttons
-		mBinder.browserSelectButton.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				mFileSelectedListener.onFileSelected(mSelectedItem.getPath(), mRootPathIsOnSDCard);
-			}
-		});
-
-		mBinder.browserCancelButton.setOnClickListener(new View.OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				Activity callingActivity = getActivity();
-				callingActivity.setResult(Activity.RESULT_CANCELED);
-				callingActivity.finish();
-			}
-		});
 
 		mBinder.backArrowImageView.setOnClickListener(new View.OnClickListener()
 		{
@@ -463,5 +431,10 @@ public class FileBrowserFragmentTabbed extends Fragment implements FileItemAdapt
 		{
 			navigateBack();
 		}
+	}
+
+	public FileItem getSelectedFile()
+	{
+		return mSelectedItem;
 	}
 }

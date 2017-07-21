@@ -48,7 +48,7 @@
 			android:exported="false"/>
 
 		<activity
-			android:name=".activities.filebrowser.FileBrowserActivityTabbed"
+			android:name=".activities.filebrowser.FileBrowserActivity"
 			android:label="@string/title_activity_folder_browser"
 			android:parentActivityName=".activities.foldermanager.FolderManagerActivity"
 			android:theme="@style/AppTheme.NoActionBar.Close">

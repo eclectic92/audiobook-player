@@ -28,8 +28,8 @@ import android.view.animation.LinearInterpolator;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivityTabbed;
-import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragmentTabbed;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
+import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
 import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
 import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromLibraryAsyncTask;
@@ -134,8 +134,8 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		{
 			if (resultCode == Activity.RESULT_OK)
 			{
-				String filePath = data.getStringExtra(FileBrowserFragmentTabbed.EXTRA_FILE_PATH);
-				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragmentTabbed.EXTRA_FILE_IS_ON_SD_CARD, false);
+				String filePath = data.getStringExtra(FileBrowserFragment.EXTRA_FILE_PATH);
+				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD, false);
 				String rootPath = isOnSDCard ? FileUtils.getSdCardPath() : FileUtils.getDeviceRootStoragePath();
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
@@ -164,9 +164,9 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 	private void startFolderBrowserActivity()
 	{
-		Intent intent = new Intent(getContext(), FileBrowserActivityTabbed.class);
-		intent.putExtra(FileBrowserFragmentTabbed.SHOW_FOLDERS_ONLY, true);
-		intent.putExtra(FileBrowserFragmentTabbed.ALLOW_FILE_SELECTION, false);
+		Intent intent = new Intent(getContext(), FileBrowserActivity.class);
+		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, true);
+		intent.putExtra(FileBrowserFragment.ALLOW_FILE_SELECTION, false);
 		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}
 
