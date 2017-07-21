@@ -25,12 +25,12 @@ import java.util.ArrayList;
  */
 
 @SuppressWarnings("unused")
-public class FolderManagerAdapterArray extends GenericArrayListAdapter<LibraryFolder, FolderManagerSorter>
+public class FolderManagerAdapter extends GenericArrayListAdapter<LibraryFolder, FolderManagerSorter>
 {
 	private LibraryFolderItemBinding mBinder;
 
 
-	public FolderManagerAdapterArray(Context context)
+	public FolderManagerAdapter(Context context)
 	{
 		this.setSorter(new FolderManagerSorter(context));
 	}

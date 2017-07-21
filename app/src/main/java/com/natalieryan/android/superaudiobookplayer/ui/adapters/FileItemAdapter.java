@@ -2,15 +2,16 @@ package com.natalieryan.android.superaudiobookplayer.ui.adapters;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FileItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.FileItemViewHolder;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericRecyclerViewHolder;
 
 import java.util.ArrayList;
 
@@ -20,95 +21,39 @@ import java.util.ArrayList;
  */
 
 @SuppressWarnings("unused")
-public class FileItemAdapter extends RecyclerView.Adapter<FileItemAdapter.ViewHolder>
+public class FileItemAdapter extends GenericArrayListAdapter<FileItem, BaseSorter>
 {
-	private final ArrayList<FileItem> mFiles = new ArrayList<>();
-	private FileClickListener clickListener;
+	private GenericRecyclerViewHolder.OnViewHolderClickListener mViewHolderClickListener;
 	private FileItemBinding mBinder;
 
 	//default constructor
 	public FileItemAdapter(){}
 
-	public interface FileClickListener
-	{
-		void onFileClick(View view, int position);
-	}
-
-	public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-	{
-
-		private final FileItemBinding mBinding;
-
-		public ViewHolder(FileItemBinding binding)
-		{
-			super(binding.getRoot());
-			binding.getRoot().setOnClickListener(this);
-			this.mBinding = binding;
-		}
-
-		public void bind(FileItem fileItem)
-		{
-			mBinding.setFileItem(fileItem);
-			mBinding.executePendingBindings();
-		}
-		@Override
-		public void onClick(View view)
-		{
-			if (clickListener!=null)
-			{
-				clickListener.onFileClick(view, getAdapterPosition());
-			}
-		}
-	}
-
 	@Override
-	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
+	public FileItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
 	{
 		Context context=viewGroup.getContext();
 		int layoutIdForListItem = R.layout.file_item;
 		LayoutInflater inflater = LayoutInflater.from(context);
 		FileItemBinding fileItemBinding = DataBindingUtil.inflate(inflater, layoutIdForListItem, viewGroup, false);
-		return new ViewHolder(fileItemBinding);
+		return new FileItemViewHolder(fileItemBinding, mViewHolderClickListener);
 	}
 
-	@Override
-	public void onBindViewHolder(FileItemAdapter.ViewHolder viewHolder, int position)
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position)
 	{
-		final FileItem fileItem = mFiles.get(position);
-		viewHolder.bind(fileItem);
+		GenericRecyclerViewHolder holder = (GenericRecyclerViewHolder) viewHolder;
+		final FileItem fileItem = getItem(position);
+		holder.bind(fileItem);
 	}
 
-
-	@Override
-	public int getItemCount()
+	public void setData(@NonNull ArrayList<FileItem> fileItems, boolean showHeaders)
 	{
-		return mFiles.size();
-	}
-
-	@Nullable
-	public FileItem getItem (int position){
-		return mFiles.get(position);
-	}
-
-	public ArrayList<FileItem> getFileList()
-	{
-		return mFiles;
-	}
-
-	public void setFileList(ArrayList<FileItem> fileList)
-	{
-
-		mFiles.clear();
-
-		if(fileList != null  && !fileList.isEmpty())
-		{
-			this.mFiles.addAll(fileList);
-		}
+		super.setData(fileItems, showHeaders);
 		notifyDataSetChanged();
 	}
 
-	public void setClickListener(FileClickListener fileClickListener)
+	public void setClickListener(GenericRecyclerViewHolder.OnViewHolderClickListener itemClickListener)
 	{
-		this.clickListener=fileClickListener;
+		this.mViewHolderClickListener=itemClickListener;
 	}
 }

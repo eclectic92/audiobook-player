@@ -1,8 +1,6 @@
 package com.natalieryan.android.superaudiobookplayer.ui.viewholders;
 
-import android.databinding.ViewDataBinding;
-
-import com.natalieryan.android.superaudiobookplayer.BR;
+import com.natalieryan.android.superaudiobookplayer.databinding.GenericHeaderItemBinding;
 
 /**
  * Created by natalier258 on 7/21/17.
@@ -11,9 +9,9 @@ import com.natalieryan.android.superaudiobookplayer.BR;
 
 public class GenericHeaderViewHolder extends GenericRecyclerViewHolder
 {
-	private final ViewDataBinding mBinding;
+	private final GenericHeaderItemBinding mBinding;
 
-	public GenericHeaderViewHolder(ViewDataBinding binding)
+	public GenericHeaderViewHolder(GenericHeaderItemBinding binding)
 	{
 		super(binding.getRoot());
 		this.mBinding = binding;
@@ -22,7 +20,7 @@ public class GenericHeaderViewHolder extends GenericRecyclerViewHolder
 	@Override
 	public void bind(String bindingString)
 	{
-		mBinding.setVariable(BR.headerString, bindingString);
+		mBinding.setHeaderString(bindingString);
 		mBinding.executePendingBindings();
 	}
 }

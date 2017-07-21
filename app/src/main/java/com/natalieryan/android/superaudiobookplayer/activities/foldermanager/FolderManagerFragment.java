@@ -35,7 +35,7 @@ import com.natalieryan.android.superaudiobookplayer.tasks.AddFolderToLibraryAsyn
 import com.natalieryan.android.superaudiobookplayer.tasks.RemoveFolderFromLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapterArray;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapter;
 import com.natalieryan.android.superaudiobookplayer.tasks.ScanFolderAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.ui.adapters.GenericArrayListAdapter;
 import com.natalieryan.android.superaudiobookplayer.ui.utils.FabScrollListener;
@@ -51,6 +51,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener,
 															   ScanFolderAsyncTask.ScanFolderListener
 {
+	//TODO - duplicate/subfolder check
 
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final int PERMISSION_REQUEST_CODE = 200;
@@ -66,7 +67,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private LibraryFolder mDeletedFolder = null;
 	private LibraryFolder mFolderToAdd = null;
 	private FragmentFolderManagerBinding mBinder;
-	private FolderManagerAdapterArray mAdapter;
+	private FolderManagerAdapter mAdapter;
 
 	public FolderManagerFragment()
 	{
@@ -105,7 +106,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-		mAdapter = new FolderManagerAdapterArray(getContext());
+		mAdapter = new FolderManagerAdapter(getContext());
 		mBinder.LibraryFolderListRv.setAdapter(mAdapter);
 		mBinder.LibraryFolderListRv.setLayoutManager(layoutManager);
 

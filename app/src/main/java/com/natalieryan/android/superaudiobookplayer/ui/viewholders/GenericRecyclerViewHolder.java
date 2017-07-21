@@ -17,7 +17,7 @@ public class GenericRecyclerViewHolder extends RecyclerView.ViewHolder implement
 
 	private OnViewHolderClickListener clickListener;
 
-	interface OnViewHolderClickListener
+	public interface OnViewHolderClickListener
 	{
 		void onViewHolderClick(View view, int position);
 	}

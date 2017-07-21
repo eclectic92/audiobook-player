@@ -16,6 +16,7 @@ import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 import com.natalieryan.android.superaudiobookplayer.ui.adapters.FileItemAdapter;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.FileItemViewHolder;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.io.File;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @SuppressWarnings("unused")
-public class FileBrowserFragment extends Fragment implements FileItemAdapter.FileClickListener
+public class FileBrowserFragment extends Fragment implements FileItemViewHolder.OnViewHolderClickListener
 {
 	//TODO: Extend to allow showing files but NOT allowing selection
 	public static final String TAG = FileBrowserFragment.class.getSimpleName();
@@ -170,7 +171,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 
 		if(mFiles !=null && !mFiles.isEmpty())
 		{
-			mFileItemAdapter.setFileList(mFiles);
+			mFileItemAdapter.setData(mFiles, false);
 		}
 		else
 		{
@@ -241,7 +242,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 				return;
 			}
 			mFiles = getFileItems(currentLocation, mShowOnlyFolders);
-			mFileItemAdapter.setFileList(mFiles);
+			mFileItemAdapter.setData(mFiles, false);
 		}
 	}
 
@@ -294,7 +295,7 @@ public class FileBrowserFragment extends Fragment implements FileItemAdapter.Fil
 	}
 
 	@Override
-	public void onFileClick (View view, int position)
+	public void onViewHolderClick (View view, int position)
 	{
 		if(mRootPathIsOnSDCard && !FileUtils.sdCardIsMounted()){
 			mSDCardNotMountedListener.onSDCardUnmounted();
