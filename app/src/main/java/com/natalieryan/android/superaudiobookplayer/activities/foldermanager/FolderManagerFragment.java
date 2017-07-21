@@ -55,8 +55,6 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener,
 															   ScanFolderAsyncTask.ScanFolderListener
 {
-	//TODO - duplicate/subfolder check
-
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final int PERMISSION_REQUEST_CODE = 200;
 	private static final int LIBRARY_FOLDER_LOADER = 100;
