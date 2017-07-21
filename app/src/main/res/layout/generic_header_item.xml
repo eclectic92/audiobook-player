@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+	<data>
+		<variable
+			name="headerString"
+			type="String"/>
+	</data>
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/list_header_item_height"
+		android:background="@color/colorPrimaryLight"
+		android:elevation="@dimen/folder_header_elevation"
+		android:layout_marginBottom="@dimen/folder_header_elevation">
+
+		<TextView
+			android:id="@+id/header_item_tv"
+			style="@style/FolderText"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_marginBottom="@dimen/folder_item_margin_end"
+			android:layout_marginEnd="@dimen/folder_item_margin_end"
+			android:layout_marginLeft="@dimen/folder_item_margin_start"
+			android:layout_marginRight="@dimen/folder_item_margin_end"
+			android:layout_marginStart="@dimen/folder_item_margin_start"
+			android:layout_marginTop="@dimen/folder_item_margin_start"
+			android:gravity="start"
+			android:text="@{headerString}"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent"
+			tools:text="Folders on SD card 0000-0000 (not inserted)"/>
+		<View style="@style/Divider"
+			  tools:layout_editor_absoluteX="0dp"
+			  app:layout_constraintBottom_toBottomOf="parent"
+			  app:layout_constraintEnd_toEndOf="parent"
+			  app:layout_constraintStart_toStartOf="parent"
+			  android:layout_marginBottom="0dp"/>
+	</android.support.constraint.ConstraintLayout>
+</layout>

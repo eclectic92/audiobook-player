@@ -11,9 +11,13 @@ import android.view.ViewGroup;
 
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
+import com.natalieryan.android.superaudiobookplayer.databinding.GenericHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryFolderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.databinding.LibraryHeaderItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericHeaderViewHolder;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.GenericRecyclerViewHolder;
+import com.natalieryan.android.superaudiobookplayer.ui.viewholders.LibraryFolderViewHolder;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ import java.util.List;
  */
 
 @SuppressWarnings("unused")
-public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdapter.LibraryViewHolder>
+public class FolderManagerAdapter extends RecyclerView.Adapter<GenericRecyclerViewHolder>
 {
 	public static final int VIEW_TYPE_HEADER=1;
 	public static final int VIEW_TYPE_FOLDER=2;
@@ -44,57 +48,8 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		this.mShowHeaders = showHeaders;
 	}
 
-	public class LibraryViewHolder extends RecyclerView.ViewHolder
-	{
-		public LibraryViewHolder (View view)
-		{
-			super(view);
-		}
-
-		public void bind(Object binding){}
-
-	}
-
-	public class LibraryFolderViewHolder extends LibraryViewHolder
-	{
-		private final LibraryFolderItemBinding mBinding;
-
-		public LibraryFolderViewHolder(LibraryFolderItemBinding binding)
-		{
-			super(binding.getRoot());
-			this.mBinding = binding;
-		}
-
-		@Override
-		public void bind(Object libraryFolderObject)
-		{
-			LibraryFolder libraryFolder = (LibraryFolder) libraryFolderObject;
-			mBinding.setLibraryFolderItem(libraryFolder);
-			mBinding.executePendingBindings();
-		}
-	}
-
-	public class LibraryHeaderViewHolder extends LibraryViewHolder
-	{
-		private final LibraryHeaderItemBinding mBinding;
-
-		public LibraryHeaderViewHolder(LibraryHeaderItemBinding binding)
-		{
-			super(binding.getRoot());
-			this.mBinding = binding;
-		}
-
-		@Override
-		public void bind(Object libraryHeaderString)
-		{
-			String headerString = (String) libraryHeaderString;
-			mBinding.setLibraryHeaderString(headerString);
-			mBinding.executePendingBindings();
-		}
-	}
-
 	@Override
-	public LibraryViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
+	public GenericRecyclerViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
 	{
 		Context context=viewGroup.getContext();
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -109,16 +64,16 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 			}
 			case VIEW_TYPE_HEADER:
 			{
-				LibraryHeaderItemBinding libraryHeaderItemBinding =
-						DataBindingUtil.inflate(inflater, R.layout.library_header_item, viewGroup, false);
-				return new LibraryHeaderViewHolder(libraryHeaderItemBinding);
+				GenericHeaderItemBinding headerItemBinding =
+						DataBindingUtil.inflate(inflater, R.layout.generic_header_item, viewGroup, false);
+				return new GenericHeaderViewHolder(headerItemBinding);
 			}
 		}
 		return null;
 	}
 
 	@Override
-	public void onBindViewHolder(LibraryViewHolder viewHolder, int position)
+	public void onBindViewHolder(GenericRecyclerViewHolder viewHolder, int position)
 	{
 		if(viewHolder instanceof LibraryFolderViewHolder)
 		{
@@ -130,7 +85,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 			final LibraryFolder folderItem = mFolders.get(itemPosition);
 			viewHolder.bind(folderItem);
 		}
-		else if(viewHolder instanceof LibraryHeaderViewHolder)
+		else if(viewHolder instanceof GenericHeaderViewHolder)
 		{
 			LibraryFolder folderItem = mFolders.get(position-mNumberOfHeadersOnOrAbove.get(position)+1);
 			viewHolder.bind(getHeaderForFolderGroup(folderItem));

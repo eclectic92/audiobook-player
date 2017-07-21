@@ -6,6 +6,7 @@
 	<dimen name="file_icon_margin_start">8dp</dimen>
 	<dimen name="file_item_margin">8dp</dimen>
 	<dimen name="file_select_fab_margin">16dp</dimen>
+	<dimen name="file_tab_indicator_height">4dp</dimen>
 	<dimen name="file_browser_back_icon_margin">24dp</dimen>
 	<dimen name="file_browser_back_icon_size">32dp</dimen>
 	<dimen name="file_browser_divider_margin">8dp</dimen>
@@ -27,4 +28,5 @@
 
 	<!-- global dimensions -->
 	<dimen name="divider_height">1dp</dimen>
+	<dimen name="list_header_item_height">32dp</dimen>
 </resources>
