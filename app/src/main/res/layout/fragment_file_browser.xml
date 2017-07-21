@@ -8,8 +8,7 @@
 		android:id="@+id/file_browser_fragment_tabbed"
 		tools:context="com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragmentTabbed"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:paddingBottom="?attr/actionBarSize">
+		android:layout_height="match_parent">
 		<RelativeLayout
 			android:id="@+id/file_browser_header"
 			android:layout_width="match_parent"
@@ -123,13 +122,6 @@
 			android:layout_below="@+id/file_browser_header"
 			android:scrollbars="none"
 			android:fillViewport="true">
-			<LinearLayout
-				android:id="@+id/file_browser_rv_container"
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:fillViewport="true">
-
 				<android.support.v7.widget.RecyclerView
 					android:id="@+id/file_list_rv"
 					android:layout_width="wrap_content"
@@ -141,7 +133,6 @@
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent"
 					tools:listitem="@layout/file_item"/>
-			</LinearLayout>
 		</ScrollView>
 	</RelativeLayout>
 </layout>
