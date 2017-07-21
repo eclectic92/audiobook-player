@@ -10,6 +10,12 @@
 	<string name="title_activity_folder_browser">Select a folder</string>
 	<string name="title_activity_folder_manager">Library Folders</string>
 
+	<!-- alerts -->
+	<string name="button_ok_text">OK</string>
+	<string name="alert_title_folder_already_added">Already in your library</string>
+	<string name="alert_body_parent_folder_already_added">%1$s\u0020is a subfolder of\u0020%2$s</string>
+	<string name="alert_body_folder_already_added">%1$s has already been added</string>
+
 	<!-- content descriptors -->
 	<string name="description_file_icon">File icon</string>
 	<string name="description_back_icon">Back icon</string>
@@ -23,8 +29,6 @@
 	<string name="sd_card_tab_title">SD Card</string>
 	<string name="sd_root_folder">SD card home</string>
 	<string name="sd_card_unmounted">Error: SD Card not mounted</string>
-	<string name="browser_select_button">Select</string>
-	<string name="browser_cancel_button">Cancel</string>
 
 	<!-- navigation -->
 	<string name="navigation_drawer_open">Open navigation drawer</string>

@@ -113,6 +113,11 @@ public class FileUtils
 		return fileName.substring(fileName.lastIndexOf('.')+1);
 	}
 
+	public static boolean isChildOfFolder(String parentPath, String childPath)
+	{
+		return childPath.contains(parentPath);
+	}
+
 	public static int getIconIdForFile(String path)
 	{
 		String ext = getFileExtension(path);

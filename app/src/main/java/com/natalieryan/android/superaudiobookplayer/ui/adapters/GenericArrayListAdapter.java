@@ -165,13 +165,26 @@ public abstract class GenericArrayListAdapter<T, S extends GenericListSorter>
 		}
 	}
 
+	@Nullable
 	public T getItem(int position)
 	{
-		if(!mShowHeaders) return mData.get(position);
-
 		if (!mData.isEmpty())
 		{
+			if(!mShowHeaders) return mData.get(position);
 			return mData.get(position-mNumberOfHeadersOnOrAbove.get(position));
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@Nullable
+	public T getDataItem(int position)
+	{
+		if (!mData.isEmpty())
+		{
+			return mData.get(position);
 		}
 		else
 		{
