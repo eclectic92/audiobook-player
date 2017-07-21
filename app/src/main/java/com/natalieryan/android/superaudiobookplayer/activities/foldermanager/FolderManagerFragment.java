@@ -35,9 +35,10 @@ import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibrar
 import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromLibraryAsyncTask;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
 import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapter;
 import com.natalieryan.android.superaudiobookplayer.utils.media.ScanFolderAsyncTask;
-import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
-import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
+import com.natalieryan.android.superaudiobookplayer.ui.utils.FabScrollListener;
+import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 /**
@@ -183,7 +184,6 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			}
 		}
 	}
-
 
 
 	//

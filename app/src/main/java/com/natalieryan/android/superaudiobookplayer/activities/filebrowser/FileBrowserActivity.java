@@ -197,24 +197,25 @@ public class FileBrowserActivity extends AppCompatActivity
 
 	@Override
 	public void onBackPressed() {
-		FileBrowserFragment currentFragment  = (FileBrowserFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.browser_pager_container + ":"
-						+ mViewPager.getCurrentItem());
-		currentFragment.onBackPressed();
+		getVisibleFragment().onBackPressed();
 	}
 
 	private void returnSelectedFile()
 	{
-		FileBrowserFragment currentFragment  = (FileBrowserFragment) getSupportFragmentManager()
-				.findFragmentByTag("android:switcher:" + R.id.browser_pager_container + ":"
-						+ mViewPager.getCurrentItem());
-		FileItem selectedFile = currentFragment.getSelectedFile();
+		FileItem selectedFile = getVisibleFragment().getSelectedFile();
 		Intent returnIntent = new Intent();
 		returnIntent.putExtra(FileBrowserFragment.EXTRA_FILE_PATH, selectedFile.getPath());
 		returnIntent.putExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD,
 				FileUtils.fileIsOnMountedSdCard(selectedFile.getPath()));
 		this.setResult(Activity.RESULT_OK, returnIntent);
 		this.finish();
+	}
+
+	private FileBrowserFragment getVisibleFragment()
+	{
+		return (FileBrowserFragment) getSupportFragmentManager()
+				.findFragmentByTag("android:switcher:" + R.id.browser_pager_container + ":"
+						+ mViewPager.getCurrentItem());
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFileBrowserBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.FileItemAdapter;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.io.File;

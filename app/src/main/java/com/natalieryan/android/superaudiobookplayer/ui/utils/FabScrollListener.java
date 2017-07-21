@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.utils.ui;
+package com.natalieryan.android.superaudiobookplayer.ui.utils;
 
 
 import android.support.v7.widget.RecyclerView;

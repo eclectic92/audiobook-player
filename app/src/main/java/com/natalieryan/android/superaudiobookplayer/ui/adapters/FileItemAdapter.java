@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
+package com.natalieryan.android.superaudiobookplayer.ui.adapters;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -86,7 +86,7 @@ public class FileItemAdapter extends RecyclerView.Adapter<FileItemAdapter.ViewHo
 	}
 
 	@Nullable
-	FileItem getItem (int position){
+	public FileItem getItem (int position){
 		return mFiles.get(position);
 	}
 
@@ -95,7 +95,7 @@ public class FileItemAdapter extends RecyclerView.Adapter<FileItemAdapter.ViewHo
 		return mFiles;
 	}
 
-	void setFileList(ArrayList<FileItem> fileList)
+	public void setFileList(ArrayList<FileItem> fileList)
 	{
 
 		mFiles.clear();

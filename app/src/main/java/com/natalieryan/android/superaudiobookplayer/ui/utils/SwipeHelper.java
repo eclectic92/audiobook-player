@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.utils.ui;
+package com.natalieryan.android.superaudiobookplayer.ui.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;

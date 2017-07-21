@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
+package com.natalieryan.android.superaudiobookplayer.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -38,7 +38,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 	private final Context mContext;
 
 
-	FolderManagerAdapter(Context context, boolean showHeaders)
+	public FolderManagerAdapter(Context context, boolean showHeaders)
 	{
 		this.mContext = context;
 		this.mShowHeaders = showHeaders;
@@ -138,7 +138,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 	}
 
 	@Nullable
-	LibraryFolder getItem (int position){
+	public LibraryFolder getItem (int position){
 
 		if(!mShowHeaders) return mFolders.get(position);
 
@@ -181,7 +181,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		}
 	}
 
-	void setFolderList(ArrayList<LibraryFolder> folderList)
+	public void setFolderList(ArrayList<LibraryFolder> folderList)
 	{
 		mFolders.clear();
 		mNumberOfHeadersOnOrAbove=null;
@@ -192,7 +192,7 @@ public class FolderManagerAdapter extends RecyclerView.Adapter<FolderManagerAdap
 		notifyDataSetChanged();
 	}
 
-	void setFolderList(Cursor cursor)
+	public void setFolderList(Cursor cursor)
 	{
 		mFolders.clear();
 		mNumberOfHeadersOnOrAbove=null;
