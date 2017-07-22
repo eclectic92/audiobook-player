@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -45,6 +46,7 @@ import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -144,20 +146,51 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 				String rootPath = isOnSDCard ? FileUtils.getSdCardPath() : FileUtils.getDeviceRootStoragePath();
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
-					//int bookCount = MediaScanner.getBookCount();
-					//MediaScanner.scanDirectory(new File(filePath));
 					mFolderToAdd = new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, 0);
+
+					//see if selected folder is the child of an existing folder and disallow if it is
 					int parentFolderId = getParentFolderId(mFolderToAdd);
 					if(parentFolderId > -1){
 						LibraryFolder parentFolder = mAdapter.getDataItem(parentFolderId);
 						if(parentFolder != null){
-							showSubfolderAlert(mFolderToAdd.getFriendlyPath(), parentFolder.getFriendlyPath());
+							if(mFolderToAdd.getFriendlyPath().equalsIgnoreCase(parentFolder.getFriendlyPath()))
+							{
+								showFolderNotAllowedAlert(getString(
+										R.string.alert_body_folder_already_added,
+										mFolderToAdd.getFriendlyPath()),
+										getString(R.string.alert_title_folder_already_added));
+							}
+							else
+							{
+								showFolderNotAllowedAlert(getString(
+										R.string.alert_body_parent_folder_already_added,
+										mFolderToAdd.getFriendlyPath(),
+										parentFolder.getFriendlyPath()),
+										getString(R.string.alert_title_folder_already_added));
+							}
 						}
 						mFolderToAdd = null;
 					}
 					else
 					{
-						scanLibraryFolder(mFolderToAdd);
+						//if it's not a child, see if it's that parent of any existing folders and disallow
+						ArrayList<String> childFolderNames = getChildFolderNames(mFolderToAdd);
+						if(childFolderNames.size() > 0)
+						{
+							StringBuilder sb = new StringBuilder();
+							for(int i=0; i < childFolderNames.size(); i++)
+							{
+									sb.append("\n");
+									sb.append(childFolderNames.get(i));
+							}
+
+							showFolderNotAllowedAlert(getString(
+									R.string.alert_body_folder_has_children, sb.toString()),
+									getString(R.string.alert_title_folder_has_children));
+						}
+						else{
+							scanLibraryFolder(mFolderToAdd);
+						}
 					}
 				}
 			}
@@ -223,6 +256,25 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			}
 		}
 		return parentFolderId;
+	}
+
+	private ArrayList<String> getChildFolderNames(LibraryFolder selectedFolder)
+	{
+		ArrayList<String> childFolders = new ArrayList<>();
+		ArrayList<LibraryFolder> existingFolders = mAdapter.getData();
+		for(int i = 0; i < existingFolders.size(); i++)
+		{
+			LibraryFolder childFolder = existingFolders.get(i);
+			if(childFolder != null)
+			{
+				if(FileUtils.isChildOfFolder(selectedFolder.getPath(), childFolder.getPath()) &&
+						selectedFolder.getIsSdCardFolder() == childFolder.getIsSdCardFolder())
+				{
+					childFolders.add(childFolder.getFriendlyPath());
+				}
+			}
+		}
+		return childFolders;
 	}
 
 	@Override
@@ -400,17 +452,11 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 	}
 
-	private void showSubfolderAlert(String childPath, String parentPath)
+	private void showFolderNotAllowedAlert(String body, String title)
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setTitle(getString(R.string.alert_title_folder_already_added));
-		if(childPath.equalsIgnoreCase(parentPath)){
-			builder.setMessage(getString(R.string.alert_body_folder_already_added, childPath));
-		}
-		else
-		{
-			builder.setMessage(getString(R.string.alert_body_parent_folder_already_added, childPath, parentPath));
-		}
+		builder.setTitle(title);
+		builder.setMessage(body);
 		builder.setIcon(R.drawable.ic_warning_black_24dp);
 		builder.setCancelable(true);
 		builder.setPositiveButton(
@@ -424,6 +470,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
+
 	// cursor loader to handle library folders ---------------------------------
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle loaderArgs)
 	{
