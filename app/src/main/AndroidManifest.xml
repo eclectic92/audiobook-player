@@ -14,7 +14,7 @@
 		android:theme="@style/AppTheme"
 		tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 		<activity
-			android:name=".activities.MainActivity"
+			android:name=".activities.main.MainActivity"
 			android:label="@string/title_activity_main"
 			android:launchMode="singleTop"
 			android:theme="@style/AppTheme.NoActionBar">
@@ -27,10 +27,10 @@
 		<activity
 			android:name=".activities.settings.SettingsActivity"
 			android:label="@string/title_activity_settings"
-			android:parentActivityName=".activities.MainActivity">
+			android:parentActivityName=".activities.main.MainActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value="com.natalieryan.android.superaudiobookplayer.activities.MainActivity"/>
+				android:value="com.natalieryan.android.superaudiobookplayer.activities.main.MainActivity"/>
 		</activity>
 		<activity
 			android:name=".activities.foldermanager.FolderManagerActivity"

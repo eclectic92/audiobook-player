@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.activities.main.BaseActivity;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 import com.natalieryan.android.superaudiobookplayer.ui.custom.CustomIconTabLayout;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
@@ -28,7 +29,7 @@ import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBrowserActivity extends AppCompatActivity
+public class FileBrowserActivity extends BaseActivity
 		implements FileBrowserFragment.OnSDCardNotMountedListener
 {
 	private ViewPager mViewPager;
@@ -40,23 +41,6 @@ public class FileBrowserActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		//setup night mode flags
-		if (savedInstanceState!=null)
-		{
-			if (savedInstanceState.containsKey(getString(R.string.pref_night_mode_menu_key)))
-			{
-				mNightMode=savedInstanceState.getInt(getString(R.string.pref_night_mode_menu_key),
-						Integer.valueOf(getString(R.string.pref_night_mode_value_off)));
-			}
-		}
-		else
-		{
-			final SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-			mNightMode=Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
-					getString(R.string.pref_night_mode_value_off)));
-		}
-
-		getDelegate().setLocalNightMode(mNightMode);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_file_browser);
@@ -212,13 +196,6 @@ public class FileBrowserActivity extends AppCompatActivity
 		return (FileBrowserFragment) getSupportFragmentManager()
 				.findFragmentByTag("android:switcher:" + R.id.browser_pager_container + ":"
 						+ mViewPager.getCurrentItem());
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		super.onSaveInstanceState(outState);
-		outState.putInt(getString(R.string.pref_night_mode_menu_key), mNightMode);
 	}
 
 	private class ViewPagerAdapter extends FragmentPagerAdapter {

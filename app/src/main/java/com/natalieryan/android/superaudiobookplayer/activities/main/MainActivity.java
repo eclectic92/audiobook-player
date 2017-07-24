@@ -1,4 +1,4 @@
-package com.natalieryan.android.superaudiobookplayer.activities;
+package com.natalieryan.android.superaudiobookplayer.activities.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +19,7 @@ import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.activities.foldermanager.FolderManagerActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.settings.SettingsActivity;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
 
@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		final SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		int nightMode=Integer.valueOf(sharedPreferences.getString(getString(R.string.pref_night_mode_menu_key),
-				getString(R.string.pref_night_mode_value_off)));
-
-		getDelegate().setLocalNightMode(nightMode);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
