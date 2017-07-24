@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 /**
  * Created by natalier258 on 7/12/17.
@@ -155,6 +155,6 @@ public class LibraryFolder implements Parcelable
 
 	public String getFriendlyPath()
 	{
-		return PathUtils.getFriendlyPath(mPath, mRootPath);
+		return FileUtils.getFriendlyPath(mPath, mRootPath);
 	}
 }

@@ -3,6 +3,7 @@ package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,9 +15,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -28,17 +31,22 @@ import android.view.animation.LinearInterpolator;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.natalieryan.android.superaudiobookplayer.R;
-import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
-import com.natalieryan.android.superaudiobookplayer.data.async.AddFolderToLibraryAsyncTask;
-import com.natalieryan.android.superaudiobookplayer.data.async.RemoveFolderFromLibraryAsyncTask;
-import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
-import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
-import com.natalieryan.android.superaudiobookplayer.utils.ui.FabScrollListener;
-import com.natalieryan.android.superaudiobookplayer.utils.ui.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserActivity;
 import com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment;
-import com.natalieryan.android.superaudiobookplayer.utils.media.MediaScanner;
-import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
+import com.natalieryan.android.superaudiobookplayer.data.LibraryContract;
+import com.natalieryan.android.superaudiobookplayer.tasks.AddFolderToLibraryAsyncTask;
+import com.natalieryan.android.superaudiobookplayer.tasks.RemoveFolderFromLibraryAsyncTask;
+import com.natalieryan.android.superaudiobookplayer.databinding.FragmentFolderManagerBinding;
+import com.natalieryan.android.superaudiobookplayer.model.LibraryFolder;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.FolderManagerAdapter;
+import com.natalieryan.android.superaudiobookplayer.tasks.ScanFolderAsyncTask;
+import com.natalieryan.android.superaudiobookplayer.ui.adapters.GenericArrayListAdapter;
+import com.natalieryan.android.superaudiobookplayer.ui.utils.FabScrollListener;
+import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
+import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,9 +54,9 @@ import com.natalieryan.android.superaudiobookplayer.utils.filesystem.PathUtils;
 public class FolderManagerFragment extends Fragment implements AddFolderToLibraryAsyncTask.AddFolderListener,
 															   LoaderManager.LoaderCallbacks<Cursor>,
 															   FabScrollListener.FabPositionListener,
-															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener
+															   RemoveFolderFromLibraryAsyncTask.RemoveFolderListener,
+															   ScanFolderAsyncTask.ScanFolderListener
 {
-
 	private static final int SELECT_FOLDER_RESULT_CODE = 1;
 	private static final int PERMISSION_REQUEST_CODE = 200;
 	private static final int LIBRARY_FOLDER_LOADER = 100;
@@ -61,6 +69,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private boolean mFabIsVisible;
 
 	private LibraryFolder mDeletedFolder = null;
+	private LibraryFolder mFolderToAdd = null;
 	private FragmentFolderManagerBinding mBinder;
 	private FolderManagerAdapter mAdapter;
 
@@ -101,7 +110,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 		//setup the recyclerview
 		LinearLayoutManager layoutManager=new LinearLayoutManager(getActivity());
-		mAdapter = new FolderManagerAdapter(getContext(), true);
+		mAdapter = new FolderManagerAdapter(getContext());
 		mBinder.LibraryFolderListRv.setAdapter(mAdapter);
 		mBinder.LibraryFolderListRv.setLayoutManager(layoutManager);
 
@@ -134,13 +143,55 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			{
 				String filePath = data.getStringExtra(FileBrowserFragment.EXTRA_FILE_PATH);
 				boolean isOnSDCard = data.getBooleanExtra(FileBrowserFragment.EXTRA_FILE_IS_ON_SD_CARD, false);
-				String rootPath = isOnSDCard ? PathUtils.getSdCardPath() : PathUtils.getDeviceRootStoragePath();
+				String rootPath = isOnSDCard ? FileUtils.getSdCardPath() : FileUtils.getDeviceRootStoragePath();
 				if(filePath != null && !filePath.isEmpty() && rootPath != null)
 				{
-					int bookCount = MediaScanner.getBookCount();
-					LibraryFolder folderToAdd =
-							new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, bookCount);
-					addFolderToLibrary(folderToAdd);
+					mFolderToAdd = new LibraryFolder(filePath, rootPath, isOnSDCard, mEachFileIsBook, 0);
+
+					//see if selected folder is the child of an existing folder and disallow if it is
+					int parentFolderId = getParentFolderId(mFolderToAdd);
+					if(parentFolderId > -1){
+						LibraryFolder parentFolder = mAdapter.getDataItem(parentFolderId);
+						if(parentFolder != null){
+							if(mFolderToAdd.getFriendlyPath().equalsIgnoreCase(parentFolder.getFriendlyPath()))
+							{
+								showFolderNotAllowedAlert(getString(
+										R.string.alert_body_folder_already_added,
+										mFolderToAdd.getFriendlyPath()),
+										getString(R.string.alert_title_folder_already_added));
+							}
+							else
+							{
+								showFolderNotAllowedAlert(getString(
+										R.string.alert_body_parent_folder_already_added,
+										mFolderToAdd.getFriendlyPath(),
+										parentFolder.getFriendlyPath()),
+										getString(R.string.alert_title_folder_already_added));
+							}
+						}
+						mFolderToAdd = null;
+					}
+					else
+					{
+						//if it's not a child, see if it's that parent of any existing folders and disallow
+						ArrayList<String> childFolderNames = getChildFolderNames(mFolderToAdd);
+						if(childFolderNames.size() > 0)
+						{
+							StringBuilder sb = new StringBuilder();
+							for(int i=0; i < childFolderNames.size(); i++)
+							{
+									sb.append("\n");
+									sb.append(childFolderNames.get(i));
+							}
+
+							showFolderNotAllowedAlert(getString(
+									R.string.alert_body_folder_has_children, sb.toString()),
+									getString(R.string.alert_title_folder_has_children));
+						}
+						else{
+							scanLibraryFolder(mFolderToAdd);
+						}
+					}
 				}
 			}
 		}
@@ -163,7 +214,8 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private void startFolderBrowserActivity()
 	{
 		Intent intent = new Intent(getContext(), FileBrowserActivity.class);
-		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, 1);
+		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, true);
+		intent.putExtra(FileBrowserFragment.ALLOW_FILE_SELECTION, false);
 		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}
 
@@ -182,10 +234,59 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	}
 
 
-
 	//
 	//utility functions
 	//
+	private void scanLibraryFolder(LibraryFolder folderToScan)
+	{
+		ScanFolderAsyncTask scanFolderAsyncTask = new ScanFolderAsyncTask(getContext(), this);
+		scanFolderAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderToScan);
+	}
+
+	private int getParentFolderId(LibraryFolder selectedFolder)
+	{
+		int parentFolderId = -1;
+		ArrayList<LibraryFolder> existingFolders = mAdapter.getData();
+		for(int i = 0; i < existingFolders.size(); i++)
+		{
+			if(FileUtils.isChildOfFolder(existingFolders.get(i).getPath(), selectedFolder.getPath()))
+			{
+				parentFolderId = i;
+				break;
+			}
+		}
+		return parentFolderId;
+	}
+
+	private ArrayList<String> getChildFolderNames(LibraryFolder selectedFolder)
+	{
+		ArrayList<String> childFolders = new ArrayList<>();
+		ArrayList<LibraryFolder> existingFolders = mAdapter.getData();
+		for(int i = 0; i < existingFolders.size(); i++)
+		{
+			LibraryFolder childFolder = existingFolders.get(i);
+			if(childFolder != null)
+			{
+				if(FileUtils.isChildOfFolder(selectedFolder.getPath(), childFolder.getPath()) &&
+						selectedFolder.getIsSdCardFolder() == childFolder.getIsSdCardFolder())
+				{
+					childFolders.add(childFolder.getFriendlyPath());
+				}
+			}
+		}
+		return childFolders;
+	}
+
+	@Override
+	public void onFolderScanned(int bookCount)
+	{
+		if (mFolderToAdd != null)
+		{
+			mFolderToAdd.setBookCount(bookCount);
+			addFolderToLibrary(mFolderToAdd);
+		}
+
+	}
 
 	private void addFolderToLibrary(LibraryFolder folderToAdd)
 	{
@@ -197,6 +298,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	public void onFolderAdded()
 	{
 		this.mDeletedFolder = null;
+		this.mFolderToAdd = null;
 	}
 
 
@@ -305,7 +407,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 			public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 				final int dragFlags = 0;
 				final int swipeFlags = ItemTouchHelper.START;
-				return viewHolder.getItemViewType() == FolderManagerAdapter.VIEW_TYPE_HEADER
+				return viewHolder.getItemViewType() ==GenericArrayListAdapter.ITEM_VIEW_TYPE_HEADER
 						? 0 : makeMovementFlags(dragFlags, swipeFlags);
 			}
 		};
@@ -350,6 +452,25 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 
 	}
 
+	private void showFolderNotAllowedAlert(String body, String title)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		builder.setTitle(title);
+		builder.setMessage(body);
+		builder.setIcon(R.drawable.ic_warning_black_24dp);
+		builder.setCancelable(true);
+		builder.setPositiveButton(
+				getString(R.string.button_ok_text),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
 	// cursor loader to handle library folders ---------------------------------
 	public Loader<Cursor> onCreateLoader(int loaderId, Bundle loaderArgs)
 	{
@@ -376,7 +497,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	{
 		if (data!=null && data.getCount() > 0)
 		{
-			mAdapter.setFolderList(data);
+			mAdapter.setData(data, true);
 			mBinder.libraryFolderManagerScrollView.setVisibility(View.VISIBLE);
 			mBinder.libraryFolderManagerZeroState.setVisibility(View.GONE);
 		}

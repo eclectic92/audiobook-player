@@ -6,7 +6,6 @@
 	<color name="colorPrimaryLight">#D1C4E9</color>
 	<color name="colorAccent">#009688</color>
 	<color name="colorControlNormal">#757575</color>
-	<color name="colorPrimaryText">#212121</color>
 	<color name="colorIcons">#FFFFFF</color>
 	<color name="colorDivider">#BDBDBD</color>
 	<color name="colorCancelButton">#e53935</color>

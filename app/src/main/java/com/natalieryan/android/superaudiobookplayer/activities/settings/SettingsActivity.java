@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.natalieryan.android.superaudiobookplayer.R;
+import com.natalieryan.android.superaudiobookplayer.activities.main.BaseActivity;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -21,7 +22,7 @@ import com.natalieryan.android.superaudiobookplayer.R;
  * API Guide</a> for more information on developing a Settings UI.
  */
 
-public class SettingsActivity extends AppCompatActivity implements SettingsFragment.SetNightMode {
+public class SettingsActivity extends BaseActivity implements SettingsFragment.SetNightMode {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

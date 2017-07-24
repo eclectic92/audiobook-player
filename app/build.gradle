@@ -52,5 +52,6 @@ dependencies {
     compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.android.support:preference-v14:25.3.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.wseemann:FFmpegMediaMetadataRetriever:1.0.14'
     testCompile 'junit:junit:4.12'
 }

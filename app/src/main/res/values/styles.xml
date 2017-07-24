@@ -7,7 +7,6 @@
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:listDivider">@color/colorDivider</item>
 		<item name="colorControlNormal">@color/colorControlNormal</item>
-		<item name="android:textColorPrimary">@color/colorPrimaryText</item>
 		<item name="android:windowBackground">@color/colorWindowBackground</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 	</style>
@@ -29,8 +28,8 @@
 		<item name="windowNoTitle">true</item>
 	</style>
 
-	<style name="AppTheme.ActionBarClose" parent="AppTheme">
-		<item name="android:homeAsUpIndicator">@drawable/ic_action_close</item>
+	<style name="AppTheme.NoActionBar.Close" parent="AppTheme.NoActionBar">
+		<item name="android:homeAsUpIndicator">@drawable/ic_close_black_24dp</item>
 	</style>
 
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -38,11 +37,15 @@
 	<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 	<style name="SelectButton" parent="Widget.AppCompat.Button.Borderless">
-		<item name="android:textColor">@color/colorPrimaryDark</item>
 	</style>
 
 	<style name="CancelButton" parent="Widget.AppCompat.Button.Borderless">
 		<item name="android:textColor">@color/colorCancelButton</item>
+	</style>
+
+	<style name="FileBrowserTabLayout" parent="Widget.Design.TabLayout">
+		<item name="tabGravity">fill</item>
+		<item name="tabMaxWidth">0dp</item>
 	</style>
 
 	<style name="FabLabels">
@@ -57,4 +60,5 @@
 		<item name="fab_colorNormal">@color/colorAccent</item>
 		<item name="fab_colorPressed">@color/colorAccentPressed</item>
 	</style>
+
 </resources>

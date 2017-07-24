@@ -70,7 +70,7 @@
 			android:theme="@style/FabMain"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			app:layout_behavior="com.natalieryan.android.superaudiobookplayer.utils.ui.FloatingActionMenuBehaviour"
+			app:layout_behavior="com.natalieryan.android.superaudiobookplayer.ui.utils.FloatingActionMenuBehaviour"
 			android:layout_gravity="bottom|end"
 			app:fab_labelStyle="@style/FabLabels"
 			app:fab_labelsPosition="left"

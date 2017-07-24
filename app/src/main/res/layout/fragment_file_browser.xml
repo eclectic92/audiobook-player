@@ -5,34 +5,29 @@
 	xmlns:tools="http://schemas.android.com/tools">
 
 	<RelativeLayout
-		android:id="@+id/file_browser_fragment"
+		android:id="@+id/file_browser_fragment_tabbed"
 		tools:context="com.natalieryan.android.superaudiobookplayer.activities.filebrowser.FileBrowserFragment"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-		<RelativeLayout
-			android:id="@+id/file_browser_header"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:gravity="start"
-			android:layout_gravity="start">
+		android:layout_height="match_parent"
+		app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 			<android.support.constraint.ConstraintLayout
+				android:id="@+id/file_browser_header"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
-
 				<ImageView
 					android:id="@+id/back_arrow_image_view"
-					android:layout_width="32dp"
-					android:layout_height="32dp"
+					android:layout_width="@dimen/file_browser_back_icon_size"
+					android:layout_height="@dimen/file_browser_back_icon_size"
 					android:contentDescription="@string/description_back_icon"
 					app:srcCompat="@drawable/ic_arrow_back_black_24dp"
 					app:layout_constraintStart_toStartOf="parent"
 					android:layout_marginTop="@dimen/file_item_margin"
-					app:layout_constraintTop_toBottomOf="@+id/device_button"
 					android:layout_marginStart="@dimen/file_item_margin"
 					app:layout_constraintBottom_toBottomOf="parent"
 					android:layout_marginBottom="@dimen/file_item_margin"
-					app:layout_constraintLeft_toLeftOf="parent"/>
+					app:layout_constraintLeft_toLeftOf="parent"
+					app:layout_constraintTop_toTopOf="parent"/>
 
 				<TextView
 					android:id="@+id/selected_file_name_tv"
@@ -47,38 +42,9 @@
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toEndOf="@+id/back_arrow_image_view"
 					app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"
-					tools:text="Selected File Name"/>
-
-				<Button
-					android:id="@+id/device_button"
-					style="@style/Widget.AppCompat.Button.Borderless"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:paddingStart="@dimen/file_browser_device_button_padding"
-					android:paddingEnd="@dimen/file_browser_device_button_padding"
-					android:drawableStart="@drawable/ic_phone_android_black_24dp"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toStartOf="@+id/sd_card_button"
-					android:text="@string/device_button_title"
-					android:visibility="gone"
-					tools:visibility="visible"/>
-
-				<Button
-					android:id="@+id/sd_card_button"
-					style="@style/Widget.AppCompat.Button.Borderless"
-					app:layout_constraintStart_toEndOf="@+id/device_button"
-					app:layout_constraintEnd_toEndOf="parent"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:paddingStart="@dimen/file_browser_device_button_padding"
-					android:paddingEnd="@dimen/file_browser_device_button_padding"
-					android:drawableStart="@drawable/ic_sd_card_black_24dp"
-					android:text="@string/sd_card_button_title"
-					android:visibility="gone"
-					tools:visibility="visible"/>
-
+					tools:text="Selected File Name"
+					tools:layout_editor_absoluteX="64dp"
+					app:layout_constraintVertical_bias="0.5"/>
 
 				<View style="@style/Divider"
 					  android:id="@+id/file_browser_button_bottom"
@@ -87,7 +53,7 @@
 					  android:layout_marginBottom="0dp"
 					  android:layout_width="0dp"
 					  android:layout_marginTop="0dp"
-					  app:layout_constraintTop_toBottomOf="@+id/sd_card_button"
+					  app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"
 					  android:visibility="gone"
 					  tools:visibility="visible"/>
 
@@ -98,68 +64,17 @@
 					  app:layout_constraintEnd_toEndOf="parent"
 					  app:layout_constraintStart_toStartOf="parent"
 					  android:layout_marginBottom="0dp"
-					  android:layout_width="0dp"
-					  android:layout_marginTop="@dimen/file_browser_divider_margin"
-					  app:layout_constraintTop_toBottomOf="@+id/back_arrow_image_view"/>
+					  android:paddingBottom="0dp"
+					  android:layout_width="0dp"/>
 			</android.support.constraint.ConstraintLayout>
 
-		</RelativeLayout>
-		<RelativeLayout
-			android:id="@+id/file_browser_footer"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:gravity="center"
-			android:layout_gravity="center">
-			<android.support.constraint.ConstraintLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-
-				<View style="@style/Divider"
-					  android:id="@+id/browser_footer_divider"
-					  tools:layout_editor_absoluteX="0dp"
-					  app:layout_constraintEnd_toEndOf="parent"
-					  app:layout_constraintStart_toStartOf="parent"
-					  android:layout_width="0dp"
-					  android:layout_marginBottom="@dimen/file_browser_divider_margin"
-					  app:layout_constraintTop_toTopOf="@+id/browser_cancel_button"/>
-
-				<Button
-					android:id="@+id/browser_cancel_button"
-					style="@style/CancelButton"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintEnd_toStartOf="@+id/browser_select_button"
-					android:text="@string/browser_cancel_button"/>
-
-				<Button
-					android:id="@+id/browser_select_button"
-					style="@style/SelectButton"
-					app:layout_constraintStart_toEndOf="@+id/browser_cancel_button"
-					app:layout_constraintEnd_toEndOf="parent"
-					android:layout_width="0dp"
-					android:layout_height="wrap_content"
-					android:gravity="center"
-					android:text="@string/browser_select_button"/>
-			</android.support.constraint.ConstraintLayout>
-		</RelativeLayout>
-		<ScrollView
+		<android.support.v4.widget.NestedScrollView
 			android:id="@+id/file_browser_scroll_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_above="@+id/file_browser_footer"
 			android:layout_below="@+id/file_browser_header"
 			android:scrollbars="none"
 			android:fillViewport="true">
-			<LinearLayout
-				android:id="@+id/file_browser_rv_container"
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:fillViewport="true">
-
 				<android.support.v7.widget.RecyclerView
 					android:id="@+id/file_list_rv"
 					android:layout_width="wrap_content"
@@ -167,11 +82,7 @@
 					android:layout_marginEnd="0dp"
 					android:layout_marginStart="0dp"
 					app:layoutManager="LinearLayoutManager"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent"
 					tools:listitem="@layout/file_item"/>
-			</LinearLayout>
-		</ScrollView>
+		</android.support.v4.widget.NestedScrollView>
 	</RelativeLayout>
 </layout>
