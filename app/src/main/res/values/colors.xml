@@ -10,6 +10,8 @@
 	<color name="colorDivider">#BDBDBD</color>
 	<color name="colorCancelButton">#e53935</color>
 	<color name="colorWindowBackground">#fffafafa</color>
+	<color name="textColorPrimary">#de000000</color>
+	<color name="textColorPrimaryDisabled">#39000000</color>
 
 	<!-- for fab -->
 	<color name="colorOverlaySemiTransparent">#b3fafafa</color>

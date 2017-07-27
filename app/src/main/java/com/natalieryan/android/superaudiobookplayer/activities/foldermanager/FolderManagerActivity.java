@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -17,7 +15,6 @@ public class FolderManagerActivity extends BaseActivity
 {
 
 	private FolderManagerFragment mFolderMgrFragment;
-	private int mNightMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

@@ -15,9 +15,6 @@
 	<style name="FolderText" parent="TextAppearance.AppCompat.Body2">
 	</style>
 
-	<style name="FileText" parent="TextAppearance.AppCompat.Body2">
-	</style>
-
 	<style name="AppTheme.NoActionBar" parent="AppTheme">
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>

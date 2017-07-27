@@ -214,7 +214,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private void startFolderBrowserActivity()
 	{
 		Intent intent = new Intent(getContext(), FileBrowserActivity.class);
-		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, true);
+		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, false);
 		intent.putExtra(FileBrowserFragment.ALLOW_FILE_SELECTION, false);
 		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}

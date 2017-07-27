@@ -6,8 +6,12 @@
 	<color name="colorPrimaryLight">#757575</color>
 	<color name="colorAccent">#00695c</color>
 	<color name="colorCancelButton">#b71c1c</color>
+	<color name="textColorPrimary">#FFFFFFFF</color>
+	<color name="textColorPrimaryDisabled">#4Dffffff</color>
 
 	<!-- for fab -->
 	<color name="colorOverlaySemiTransparent">#b3212121</color>
 	<color name="colorAccentPressed">#00796b</color>
+
+	<color name="colorDisabled">#59ffffff</color>
 </resources>

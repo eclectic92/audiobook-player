@@ -36,7 +36,7 @@ public class FileItemAdapter extends GenericArrayListAdapter<FileItem, BaseSorte
 		int layoutIdForListItem = R.layout.file_item;
 		LayoutInflater inflater = LayoutInflater.from(context);
 		FileItemBinding fileItemBinding = DataBindingUtil.inflate(inflater, layoutIdForListItem, viewGroup, false);
-		return new FileItemViewHolder(fileItemBinding, mViewHolderClickListener);
+		return new FileItemViewHolder(fileItemBinding, context, mViewHolderClickListener);
 	}
 
 	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position)
