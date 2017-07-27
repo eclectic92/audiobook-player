@@ -76,28 +76,66 @@ public class ScanFolderAsyncTask extends AsyncTask<LibraryFolder, Void, Integer>
 			File singleFolder = new File(path);
 			File files[] = singleFolder.listFiles(new FileExtensionFilter(false, mAllowedExtensions));
 			Arrays.sort(files);
-			for (File file : files)
+
+			//if each media file is separate book, don't need to worry about checking for additional parts
+			if(topFolder.getEachFileIsABook())
 			{
-				if(topFolder.getEachFileIsABook())
+				for (File file : files)
 				{
-					Book singleBook = getBook(file);
-					Track singleTrack = getTrack(file);
-					singleBook.setDuration(singleTrack.getDuration());
-					singleBook.setCurrentFile(singleTrack.getPath());
-					if(singleTrack.getChapterCount() > 0)
+					//if each media file is separate book, don't need to worry about checking file sequence
+					if(topFolder.getEachFileIsABook())
 					{
-						singleTrack.setChapters(getChapters(singleTrack.getChapterCount(), 1));
+						Book singleBook = getBook(file);
+						Track singleTrack = getTrack(file);
+						singleBook.setDuration(singleTrack.getDuration());
+						singleBook.setCurrentFile(singleTrack.getPath());
+						if(singleTrack.getChapterCount() > 0)
+						{
+							singleTrack.setChapters(getChapters(singleTrack.getChapterCount(), 1));
+						}
+						ArrayList<Track> tracks = new ArrayList<>();
+						tracks.add(singleTrack);
+						singleBook.setTracks(tracks);
+						if(topFolder.getIsSdCardFolder())
+						{
+							singleBook.setSDCardPath(topFolder.getRootPath());
+						}
+						books.add(singleBook);
 					}
-					ArrayList<Track> tracks = new ArrayList<>();
-					tracks.add(singleTrack);
-					singleBook.setTracks(tracks);
-					if(topFolder.getIsSdCardFolder())
-					{
-						singleBook.setSDCardPath(topFolder.getRootPath());
-					}
-					books.add(singleBook);
 				}
 			}
+			else //every media file in the folder is a part of a book
+			{
+				//get the base metadata from the first file (if there are any files found)
+				if(files.length > 0)
+				{
+					Book multiFileBook = getBook(files[0]);
+					ArrayList<Track> tracks = new ArrayList<>();
+					long duration = 0;
+					if(topFolder.getIsSdCardFolder())
+					{
+						multiFileBook.setSDCardPath(topFolder.getRootPath());
+					}
+					for (File file : files)
+					{
+						Uri fileUri=Uri.fromFile(file);
+						mMetadataRetriever.setDataSource(mContext, fileUri);
+						Track singleTrack = getTrack(file);
+						if(singleTrack.getChapterCount() > 0)
+						{
+							singleTrack.setChapters(getChapters(singleTrack.getChapterCount(), 1));
+						}
+						duration += singleTrack.getDuration();
+						tracks.add(singleTrack);
+					}
+					multiFileBook.setTracks(tracks);
+					multiFileBook.setCurrentFile(tracks.get(0).getPath());
+					multiFileBook.setDuration(duration);
+					books.add(multiFileBook);
+				}
+			}
+
+
 		}
 		mMetadataRetriever.release();
 
