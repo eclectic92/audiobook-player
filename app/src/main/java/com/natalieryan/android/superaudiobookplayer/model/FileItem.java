@@ -28,13 +28,14 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 	private boolean mIsDirectory;
 	private boolean mIsTopLevel;
 	private boolean mHasChildren;
+	private boolean mIsDisabled;
 
 	//empty constructor
 	public FileItem(){}
 
 	//baseline constructor
 	public FileItem(String name, String path, String parentPath, long size, int icon, boolean mIsDirectory,
-					boolean mIsTopLevel, boolean mHasChildren)
+					boolean mIsTopLevel, boolean mHasChildren, boolean isDisabled)
 	{
 		this.mName = name;
 		this.mPath = path;
@@ -44,6 +45,7 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 		this.mIsDirectory=mIsDirectory;
 		this.mIsTopLevel=mIsTopLevel;
 		this.mHasChildren=mHasChildren;
+		this.mIsDisabled=isDisabled;
 	}
 
 	//constructor for parceler
@@ -57,6 +59,7 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 		this.mIsDirectory = in.readInt() == 1;
 		this.mIsTopLevel = in.readInt() == 1;
 		this.mHasChildren = in.readInt() == 1;
+		this.mIsDisabled = in.readInt() == 1;
 	}
 
 	@Override
@@ -81,6 +84,7 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 		out.writeInt(mIsDirectory ? 1 : 0);
 		out.writeInt(mIsTopLevel ? 1 : 0);
 		out.writeInt(mHasChildren ? 1 : 0);
+		out.writeInt(mIsDisabled ? 1 : 0);
 	}
 
 	public static final Parcelable.Creator<FileItem> CREATOR = new Parcelable.Creator<FileItem>()
@@ -179,5 +183,15 @@ public class FileItem extends BaseObservable implements Parcelable, Comparable<F
 	public void setHasChildren(boolean hasChildren)
 	{
 		this.mHasChildren = hasChildren;
+	}
+
+	public boolean getIsDisabled()
+	{
+		return mIsDisabled;
+	}
+
+	public void setIsDisabled(boolean isDisabled)
+	{
+		this.mIsDisabled = isDisabled;
 	}
 }

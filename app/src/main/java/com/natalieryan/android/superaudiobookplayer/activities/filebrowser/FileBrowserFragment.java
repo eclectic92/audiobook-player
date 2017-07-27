@@ -149,9 +149,20 @@ public class FileBrowserFragment extends Fragment implements FileItemViewHolder.
 				if (args.containsKey(SHOW_FOLDERS_ONLY))
 				{
 					mShowOnlyFolders = getArguments().getBoolean(SHOW_FOLDERS_ONLY);
+
+				}
+
+				if(args.containsKey(ALLOW_FILE_SELECTION))
+				{
 					mAllowFileSelection = getArguments().getBoolean(ALLOW_FILE_SELECTION);
+				}
+
+				if(args.containsKey(BROWSER_ROOT_PATH))
+				{
 					mBrowserRootPath = getArguments().getString(BROWSER_ROOT_PATH);
 				}
+
+
 			}
 			mCurrentPath = mBrowserRootPath;
 			mRootPathIsOnSDCard = FileUtils.fileIsOnMountedSdCard(mCurrentPath);
@@ -301,17 +312,22 @@ public class FileBrowserFragment extends Fragment implements FileItemViewHolder.
 			mSDCardNotMountedListener.onSDCardUnmounted();
 			return;
 		}
+
 		final FileItem fileItem = mFileItemAdapter.getItem(position);
+
 		if(fileItem != null)
 		{
-			mSelectedItem = fileItem;
-			mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
-			mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
-			if(fileItem.getIsDirectory())
+			if (fileItem.getIsDirectory() || mAllowFileSelection)
 			{
-				mParentPath = fileItem.getParentPath();
-				mCurrentPath = fileItem.getPath();
-				loadFileList(mCurrentPath);
+				mSelectedItem=fileItem;
+				mBinder.selectedFileNameTv.setText(getString(R.string.selected_folder, mSelectedItem.getName()));
+				mBinder.backArrowImageView.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+				if (fileItem.getIsDirectory())
+				{
+					mParentPath=fileItem.getParentPath();
+					mCurrentPath=fileItem.getPath();
+					loadFileList(mCurrentPath);
+				}
 			}
 		}
 	}
@@ -359,10 +375,11 @@ public class FileBrowserFragment extends Fragment implements FileItemViewHolder.
 				for(File file : files)
 				{
 					FileItem fileItem = new FileItem();
+					fileItem.setIsDisabled(!mAllowFileSelection);
 					fileItem.setName(file.getName());
 					fileItem.setPath(file.getPath());
 					fileItem.setIsDirectory(false);
-					fileItem.setIcon(FileUtils.getIconIdForFile(file.getPath()));
+					fileItem.setIcon(FileUtils.getIconIdForFile(file.getPath(), !mAllowFileSelection));
 					fileItem.setSize(file.length());
 					fileItem.setHasChildren(false);
 					fileItem.setParentPath(filePath);

@@ -9,7 +9,6 @@
 	<dimen name="file_tab_indicator_height">4dp</dimen>
 	<dimen name="file_browser_back_icon_margin">24dp</dimen>
 	<dimen name="file_browser_back_icon_size">32dp</dimen>
-	<dimen name="file_browser_divider_margin">8dp</dimen>
 
 	<!-- library folder manager -->
 	<dimen name="folder_item_margin_start">8dp</dimen>

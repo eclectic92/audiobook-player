@@ -14,6 +14,7 @@ import java.util.ArrayList;
  *
  */
 
+@SuppressWarnings("unused")
 public class FileUtils
 {
 
@@ -120,11 +121,17 @@ public class FileUtils
 
 	public static int getIconIdForFile(String path)
 	{
+		return getIconIdForFile(path, false);
+	}
+
+	public static int getIconIdForFile(String path, boolean isDisabled)
+	{
 		String ext = getFileExtension(path);
 
 		if(ext == null || ext.isEmpty())
 		{
-			return R.drawable.ic_insert_drive_file_black_24dp;
+			return isDisabled ? R.drawable.ic_insert_drive_file_disabled_24dp
+					: R.drawable.ic_insert_drive_file_black_24dp;
 		}
 
 		switch (ext.toLowerCase())
@@ -136,17 +143,17 @@ public class FileUtils
 			case "oga":
 			case "aac":
 			case "flac":
-				return R.drawable.ic_audiotrack_black_24dp;
+				return isDisabled ? R.drawable.ic_audiotrack_disabled_24dp:  R.drawable.ic_audiotrack_black_24dp;
 			//audiobook
 			case "m4b":
-				return R.drawable.ic_book_black_24dp;
+				return isDisabled ? R.drawable.ic_book_disabled_24dp : R.drawable.ic_book_black_24dp;
 			//video
 			case "m4v":
 			case "mp4":
 			case "mkv":
 			case "flv":
 			case "ogv":
-				return R.drawable.ic_local_movies_black_24dp;
+				return isDisabled ? R.drawable.ic_local_movies_disabled_24dp : R.drawable.ic_local_movies_black_24dp;
 			//image
 			case "gif":
 			case "jpg":
@@ -154,9 +161,10 @@ public class FileUtils
 			case "jfif":
 			case "png":
 			case "bmp":
-				return R.drawable.ic_image_black_24dp;
+				return isDisabled ? R.drawable.ic_image_disabled_24dp : R.drawable.ic_image_black_24dp;
 			default:
-				return R.drawable.ic_insert_drive_file_black_24dp;
+				return isDisabled ? R.drawable.ic_insert_drive_file_disabled_24dp
+						: R.drawable.ic_insert_drive_file_black_24dp;
 		}
 	}
 }

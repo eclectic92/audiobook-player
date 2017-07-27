@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -46,7 +45,6 @@ import com.natalieryan.android.superaudiobookplayer.ui.utils.SwipeHelper;
 import com.natalieryan.android.superaudiobookplayer.utils.filesystem.FileUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -214,7 +212,7 @@ public class FolderManagerFragment extends Fragment implements AddFolderToLibrar
 	private void startFolderBrowserActivity()
 	{
 		Intent intent = new Intent(getContext(), FileBrowserActivity.class);
-		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, true);
+		intent.putExtra(FileBrowserFragment.SHOW_FOLDERS_ONLY, false);
 		intent.putExtra(FileBrowserFragment.ALLOW_FILE_SELECTION, false);
 		startActivityForResult(intent, SELECT_FOLDER_RESULT_CODE);
 	}

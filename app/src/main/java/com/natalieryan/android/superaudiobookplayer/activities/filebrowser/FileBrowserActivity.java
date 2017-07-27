@@ -2,13 +2,10 @@ package com.natalieryan.android.superaudiobookplayer.activities.filebrowser;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -36,7 +33,6 @@ public class FileBrowserActivity extends BaseActivity
 	private ViewPagerAdapter mViewPagerAdapter;
 	private boolean mSdCardIsMounted;
 	private TabLayout mTabLayout;
-	private int mNightMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

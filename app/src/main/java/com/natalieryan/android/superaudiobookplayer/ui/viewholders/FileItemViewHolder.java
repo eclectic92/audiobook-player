@@ -1,5 +1,9 @@
 package com.natalieryan.android.superaudiobookplayer.ui.viewholders;
 
+import android.content.Context;
+import android.support.v4.content.ContextCompat;
+
+import com.natalieryan.android.superaudiobookplayer.R;
 import com.natalieryan.android.superaudiobookplayer.databinding.FileItemBinding;
 import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 
@@ -11,11 +15,14 @@ import com.natalieryan.android.superaudiobookplayer.model.FileItem;
 public class FileItemViewHolder extends GenericRecyclerViewHolder
 {
 	private final FileItemBinding mBinding;
+	private final Context mContext;
 
-	public FileItemViewHolder(FileItemBinding binding, OnViewHolderClickListener clickListener)
+	public FileItemViewHolder(FileItemBinding binding, Context context, OnViewHolderClickListener clickListener)
 	{
 		super(binding.getRoot(), clickListener);
+		this.mContext = context;
 		this.mBinding = binding;
+
 	}
 
 	@Override
@@ -23,6 +30,9 @@ public class FileItemViewHolder extends GenericRecyclerViewHolder
 	{
 		FileItem fileItem = (FileItem) fileItemObject;
 		mBinding.setFileItem(fileItem);
+		int textColor = fileItem.getIsDisabled() ? ContextCompat.getColor(mContext, R.color.textColorPrimaryDisabled) :
+				ContextCompat.getColor(mContext, R.color.textColorPrimary);
+		mBinding.folderNameTv.setTextColor(textColor);
 		mBinding.executePendingBindings();
 	}
 }
