@@ -33,7 +33,6 @@ public class FileBrowserActivity extends BaseActivity
 	private ViewPagerAdapter mViewPagerAdapter;
 	private boolean mSdCardIsMounted;
 	private TabLayout mTabLayout;
-	private int mNightMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

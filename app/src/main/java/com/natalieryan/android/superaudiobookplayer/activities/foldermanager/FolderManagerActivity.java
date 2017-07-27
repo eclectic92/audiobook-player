@@ -1,6 +1,5 @@
 package com.natalieryan.android.superaudiobookplayer.activities.foldermanager;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;

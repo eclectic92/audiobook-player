@@ -12,6 +12,4 @@
 	<!-- for fab -->
 	<color name="colorOverlaySemiTransparent">#b3212121</color>
 	<color name="colorAccentPressed">#00796b</color>
-
-	<color name="colorDisabled">#59ffffff</color>
 </resources>
